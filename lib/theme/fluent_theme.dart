@@ -33,7 +33,7 @@ class FluentTheme {
       scaffoldBackgroundColor: FluentColors.gray20,
       
       // Card theme with Fluent elevation
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: 0,
         clipBehavior: Clip.antiAlias,
         shadowColor: Colors.black.withOpacity(0.07),
@@ -232,7 +232,7 @@ class FluentTheme {
       ),
       
       // Dialog with Fluent elevation
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         elevation: 0,
         backgroundColor: Colors.white,
         shadowColor: Colors.black.withOpacity(0.11),

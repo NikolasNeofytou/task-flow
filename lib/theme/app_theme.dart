@@ -75,13 +75,13 @@ ThemeData buildLightTheme() {
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.onPrimary,
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.md),
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.md),
@@ -196,13 +196,13 @@ ThemeData buildDarkTheme() {
       backgroundColor: colorScheme.primary,
       foregroundColor: colorScheme.onPrimary,
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: DialogThemeData(
       backgroundColor: colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.md),
       ),
     ),
-    cardTheme: CardTheme(
+    cardTheme: CardThemeData(
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.md),
