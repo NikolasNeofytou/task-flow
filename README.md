@@ -1,26 +1,57 @@
-# TaskFlow - Team Collaboration App
+# 🎓 TaskFlow - Team Collaboration App
 
-[![Flutter](https://img.shields.io/badge/Flutter-3.24.5-02569B?logo=flutter)](https://flutter.dev)
+[![Flutter](https://img.shields.io/badge/Flutter-3.38.5-02569B?logo=flutter)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.10.4-0175C2?logo=dart)](https://dart.dev)
 [![Node.js](https://img.shields.io/badge/Node.js-16+-339933?logo=node.js)](https://nodejs.org)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-A comprehensive Flutter application for team task management with real-time collaboration features, built as part of the Human-Computer Interaction course.
+> **University Project - For Display & Evaluation**  
+> A comprehensive Flutter application for team task management with real-time collaboration features.  
+> Built for the **Human-Computer Interaction** course at [Your University Name].
+
+---
+
+## 📌 Project Information
+
+- **Course**: Human-Computer Interaction (HCI)
+- **Academic Year**: 2024-2025
+- **Purpose**: Educational project demonstrating UI/UX principles, cross-platform development, and real-time collaboration
+- **Status**: ✅ Active Development
+- **Team**: [Add team member names if applicable]
+
+**Note**: This repository serves as a showcase of our coursework and learning journey in building accessible, user-friendly applications.
 
 ---
 
 ## 🚀 Quick Start
 
-**New to TaskFlow? Start here:**
+### Prerequisites
+- Flutter 3.38.5 or higher
+- Dart 3.10.4 or higher
+- Android Studio / Xcode (for mobile)
+- Chrome (for web testing)
 
+### Running the App
+
+**Option 1: Using Scripts (Recommended)**
 ```powershell
-# Fastest way to run (Windows)
-.\quick_start.ps1
+# Run on Chrome (fastest)
+.\scripts\run_chrome.ps1
+
+# Run on Android Emulator
+.\scripts\run_on_emulator.ps1
 ```
 
-This will automatically:
-- ✅ Detect or start the Android emulator
-- ✅ Launch the app with mock data
-- ✅ Get you running in ~60 seconds
+**Option 2: Manual Commands**
+```powershell
+# Get dependencies
+flutter pub get
+
+# Run on your preferred device
+flutter run -d chrome      # Chrome browser
+flutter run -d windows     # Windows desktop
+flutter run                # Android emulator (if running)
+```
 
 **For complete setup instructions, see:** [`GETTING_STARTED.md`](GETTING_STARTED.md)
 
@@ -318,30 +349,64 @@ We welcome contributions! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ---
 
+## 🎓 Academic Context
+
+This project was developed as part of the **Human-Computer Interaction (HCI)** course, demonstrating practical implementation of UI/UX principles and interaction design patterns.
+
+### Learning Outcomes Demonstrated
+- ✅ Cross-platform mobile application development
+- ✅ Platform-adaptive design systems (Fluent UI for Android, Glass UI for iOS)
+- ✅ Real-time collaboration features (chat, audio calls, file sharing)
+- ✅ Accessibility considerations and user feedback mechanisms
+- ✅ State management and app architecture patterns
+- ✅ QR code integration for user onboarding
+- ✅ Calendar integration for task scheduling
+
+### Key HCI Implementations
+1. **Axis 1: Interaction & Feedback** - Haptics, sounds, animations, visual feedback
+2. **Axis 2: Collaboration & Communication** - Real-time chat, voice messages, audio calls, file sharing
+3. **Axis 3: Platform-Adaptive Design** - Fluent UI (Android), Glass UI (iOS), responsive layouts
+
+For detailed technical analysis, see [docs/technical_report.md](docs/technical_report.md).
+
+---
+
+## ⚖️ Academic Integrity
+
+**This is a university coursework project.**
+
+- This repository is publicly available for **educational purposes** and **portfolio display**
+- The code represents original work completed as part of academic requirements
+- If you're a student working on a similar project, please use this as **reference only**
+- Direct copying violates academic integrity policies - understand and implement concepts yourself
+- **Citation**: If referencing this work, please provide appropriate attribution
+
+---
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 🎓 Academic Context
+## 🌟 Acknowledgments
 
-This project was developed as part of the **Human-Computer Interaction** course, Semester 7, 2025.
-
-**Key HCI Implementations:**
-1. **Axis 1: Interaction & Feedback** - Haptics, sounds, animations
-2. **Axis 2: Collaboration & Communication** - Chat, calls, file sharing
-3. **Axis 3: Platform-Adaptive Design** - Fluent UI (Android), Glass UI (iOS)
-
-See [docs/technical_report.md](docs/technical_report.md) for complete analysis.
+- **Course Instructors** - For guidance and feedback throughout development
+- **Flutter Team** - For the excellent cross-platform framework
+- **Open Source Community** - For the amazing packages and tools used in this project
+- **Material Design & Fluent Design** - For comprehensive design systems and guidelines
 
 ---
 
-## 🌟 Acknowledgments
+## 📧 Contact
 
-- Flutter team for the amazing framework
-- Material Design team for design guidelines
-- Open source community for excellent packages
+For questions about this project or collaboration opportunities:
+- Repository: [github.com/NikolasNeofytou/task-flow](https://github.com/NikolasNeofytou/task-flow)
+- Issues: Use GitHub Issues for bug reports or feature requests
+
+---
+
+**⭐ If you found this project helpful for learning, please consider giving it a star!**
 - Course instructors and teaching assistants
 
 ---
