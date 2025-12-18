@@ -180,7 +180,15 @@ class MockDataSource {
 
   static Future<List<TaskItem>> fetchCalendarTasks() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    return [
+    
+    // Collect all tasks from all projects
+    final allTasks = <TaskItem>[];
+    for (final tasks in _projectTasks.values) {
+      allTasks.addAll(tasks);
+    }
+    
+    // Add additional calendar-specific tasks
+    allTasks.addAll([
       TaskItem(
         id: 'task-1',
         title: 'Project X due tomorrow',
@@ -202,7 +210,12 @@ class MockDataSource {
         status: TaskStatus.done,
         projectId: 'proj-1',
       ),
-    ];
+    ]);
+    
+    // Sort by due date
+    allTasks.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+    
+    return allTasks;
   }
 
   static Future<List<TaskItem>> fetchProjectTasks(String projectId) async {

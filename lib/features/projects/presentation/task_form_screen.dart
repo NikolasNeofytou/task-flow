@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/models/task_item.dart';
 import '../../../core/models/user.dart';
 import '../../../core/providers/data_providers.dart';
+import '../../../core/providers/tasks_provider.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/gradients.dart';
 
@@ -67,6 +68,22 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
     }
     if (_saving) return;
     setState(() => _saving = true);
+    
+    // Create new task
+    if (widget.initialTask == null) {
+      final newTask = TaskItem(
+        id: 'task-${DateTime.now().millisecondsSinceEpoch}',
+        title: _titleController.text,
+        status: TaskStatus.pending,
+        dueDate: _dueDate!,
+        projectId: widget.projectId,
+        assignedTo: _assignedUser?.id,
+      );
+      
+      // Add task to provider to update calendar
+      ref.read(tasksProvider.notifier).addTask(newTask);
+    }
+    
     await Future.delayed(const Duration(milliseconds: 400));
     if (!mounted) return;
     

@@ -7,6 +7,7 @@ import '../../../core/models/project.dart';
 import '../../../core/models/task_item.dart';
 import '../../../core/models/user.dart';
 import '../../../core/providers/data_providers.dart';
+import '../../../core/providers/tasks_provider.dart';
 import '../../../core/utils/memoization.dart';
 import '../../../core/utils/debouncer.dart';
 import '../../../design_system/widgets/app_state.dart';
@@ -122,7 +123,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final asyncTasks = ref.watch(calendarTasksProvider);
+    final asyncTasks = ref.watch(tasksProvider);
     final asyncProjects = ref.watch(projectsProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
