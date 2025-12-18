@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Backend Test Client</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 { color: #667eea; margin-bottom: 10px; }
+        h2 { color: #333; margin: 30px 0 15px; font-size: 20px; }
+        .subtitle { color: #666; margin-bottom: 30px; }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        .status.connected { background: #d4edda; color: #155724; }
+        .status.disconnected { background: #f8d7da; color: #721c24; }
+        .test-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+        button:hover { background: #5568d3; }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .response {
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .response pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: #333;
+            font-size: 13px;
+        }
+        .socket-messages {
+            background: #fff;
+            border: 2px solid #28a745;
+            border-radius: 6px;
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .socket-message {
+            padding: 8px;
+            margin: 5px 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 TaskFlow Backend Test Client</h1>
+        <p class="subtitle">Test your backend API and real-time features</p>
+
+        <div id="status" class="status disconnected">
+            Server Status: <span id="serverStatus">Checking...</span>
+        </div>
+
+        <!-- Health Check -->
+        <div class="test-section">
+            <h2>1. Health Check</h2>
+            <button onclick="testHealth()">Test Health Endpoint</button>
+            <div id="healthResponse" class="response" style="display:none;">
+                <pre id="healthResult"></pre>
+            </div>
+        </div>
+
+        <!-- Authentication -->
+        <div class="test-section">
+            <h2>2. Authentication</h2>
+            <div class="input-group">
+                <label>Email:</label>
+                <input type="email" id="signupEmail" value="test@taskflow.com" />
+            </div>
+            <div class="input-group">
+                <label>Display Name:</label>
+                <input type="text" id="signupName" value="Test User" />
+            </div>
+            <div class="input-group">
+                <label>Password:</label>
+                <input type="password" id="signupPassword" value="password123" />
+            </div>
+            <button onclick="testSignup()">Sign Up</button>
+            <button onclick="testLogin()">Log In</button>
+            <div id="authResponse" class="response" style="display:none;">
+                <pre id="authResult"></pre>
+            </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="test-section">
+            <h2>3. User Profile</h2>
+            <button onclick="testGetProfile()">Get My Profile</button>
+            <button onclick="testUpdateStatus()">Update Status</button>
+            <button onclick="testUnlockBadge()">Unlock Badge</button>
+            <div id="profileResponse" class="response" style="display:none;">
+                <pre id="profileResult"></pre>
+            </div>
+        </div>
+
+        <!-- Projects -->
+        <div class="test-section">
+            <h2>4. Projects</h2>
+            <div class="input-group">
+                <label>Project Name:</label>
+                <input type="text" id="projectName" value="Test Project" />
+            </div>
+            <button onclick="testGetProjects()">Get Projects</button>
+            <button onclick="testCreateProject()">Create Project</button>
+            <div id="projectResponse" class="response" style="display:none;">
+                <pre id="projectResult"></pre>
+            </div>
+        </div>
+
+        <!-- Socket.IO -->
+        <div class="test-section">
+            <h2>5. Real-time Chat (Socket.IO)</h2>
+            <button onclick="connectSocket()">Connect Socket</button>
+            <button onclick="sendTestMessage()">Send Test Message</button>
+            <button onclick="disconnectSocket()">Disconnect</button>
+            <div class="socket-messages" id="socketMessages">
+                <div class="socket-message">Socket events will appear here...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const API_URL = 'http://localhost:3000';
+        let authToken = null;
+        let socket = null;
+
+        // Check server health on load
+        testHealth();
+
+        async function testHealth() {
+            try {
+                const response = await fetch(`${API_URL}/health`);
+                const data = await response.json();
+                document.getElementById('healthResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('healthResponse').style.display = 'block';
+                document.getElementById('serverStatus').textContent = '✅ Connected';
+                document.getElementById('status').className = 'status connected';
+            } catch (error) {
+                document.getElementById('healthResult').textContent = 'Error: ' + error.message;
+                document.getElementById('healthResponse').style.display = 'block';
+                document.getElementById('serverStatus').textContent = '❌ Disconnected';
+                document.getElementById('status').className = 'status disconnected';
+            }
+        }
+
+        async function testSignup() {
+            const email = document.getElementById('signupEmail').value;
+            const displayName = document.getElementById('signupName').value;
+            const password = document.getElementById('signupPassword').value;
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, displayName, password })
+                });
+                const data = await response.json();
+                if (data.token) authToken = data.token;
+                document.getElementById('authResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('authResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('authResult').textContent = 'Error: ' + error.message;
+                document.getElementById('authResponse').style.display = 'block';
+            }
+        }
+
+        async function testLogin() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            try {
+                const response = await fetch(`${API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (data.token) authToken = data.token;
+                document.getElementById('authResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('authResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('authResult').textContent = 'Error: ' + error.message;
+                document.getElementById('authResponse').style.display = 'block';
+            }
+        }
+
+        async function testGetProfile() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/users/me`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                document.getElementById('profileResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('profileResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('profileResult').textContent = 'Error: ' + error.message;
+                document.getElementById('profileResponse').style.display = 'block';
+            }
+        }
+
+        async function testUpdateStatus() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/users/me`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'away', customStatusMessage: 'Testing backend' })
+                });
+                const data = await response.json();
+                document.getElementById('profileResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('profileResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('profileResult').textContent = 'Error: ' + error.message;
+                document.getElementById('profileResponse').style.display = 'block';
+            }
+        }
+
+        async function testUnlockBadge() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/users/me/badges/team_player/unlock`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                document.getElementById('profileResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('profileResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('profileResult').textContent = 'Error: ' + error.message;
+                document.getElementById('profileResponse').style.display = 'block';
+            }
+        }
+
+        async function testGetProjects() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/api/projects`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
+                document.getElementById('projectResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('projectResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('projectResult').textContent = 'Error: ' + error.message;
+                document.getElementById('projectResponse').style.display = 'block';
+            }
+        }
+
+        async function testCreateProject() {
+            if (!authToken) {
+                alert('Please login first');
+                return;
+            }
+
+            const name = document.getElementById('projectName').value;
+
+            try {
+                const response = await fetch(`${API_URL}/api/projects`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, description: 'Created from test client', color: '#9747FF' })
+                });
+                const data = await response.json();
+                document.getElementById('projectResult').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('projectResponse').style.display = 'block';
+            } catch (error) {
+                document.getElementById('projectResult').textContent = 'Error: ' + error.message;
+                document.getElementById('projectResponse').style.display = 'block';
+            }
+        }
+
+        function connectSocket() {
+            if (socket) {
+                addSocketMessage('Already connected');
+                return;
+            }
+
+            socket = io(API_URL);
+
+            socket.on('connect', () => {
+                addSocketMessage('✅ Connected to Socket.IO server');
+                socket.emit('user:join', { userId: 'test123', userName: 'Test User' });
+            });
+
+            socket.on('disconnect', () => {
+                addSocketMessage('❌ Disconnected from server');
+            });
+
+            socket.on('chat:message', (data) => {
+                addSocketMessage(`💬 Message received: ${JSON.stringify(data)}`);
+            });
+
+            socket.on('user:online', (data) => {
+                addSocketMessage(`👤 User online: ${data.userName}`);
+            });
+
+            socket.on('error', (data) => {
+                addSocketMessage(`⚠️ Error: ${data.message}`);
+            });
+        }
+
+        function sendTestMessage() {
+            if (!socket || !socket.connected) {
+                alert('Please connect socket first');
+                return;
+            }
+
+            socket.emit('chat:join', { channelId: 'all' });
+            socket.emit('chat:message', {
+                channelId: 'all',
+                message: {
+                    type: 'text',
+                    text: 'Hello from test client! 👋'
+                }
+            });
+
+            addSocketMessage('📤 Test message sent');
+        }
+
+        function disconnectSocket() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+                addSocketMessage('👋 Disconnected');
+            }
+        }
+
+        function addSocketMessage(message) {
+            const container = document.getElementById('socketMessages');
+            const div = document.createElement('div');
+            div.className = 'socket-message';
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+    </script>
+</body>
+</html>

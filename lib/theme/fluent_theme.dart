@@ -35,7 +35,7 @@ class FluentTheme {
       // Card theme with Fluent elevation
       cardTheme: CardTheme(
         elevation: 0,
-        color: Colors.white,
+        clipBehavior: Clip.antiAlias,
         shadowColor: Colors.black.withOpacity(0.07),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FluentBorderRadius.large),

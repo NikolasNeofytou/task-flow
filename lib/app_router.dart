@@ -12,7 +12,12 @@ import 'features/inbox/presentation/inbox_screen.dart';
 import 'features/invite/presentation/invite_accept_screen.dart';
 import 'features/profile/presentation/profile_screen.dart';
 import 'features/profile/presentation/enhanced_profile_screen.dart';
+import 'features/profile/presentation/edit_profile_screen.dart';
+import 'features/profile/presentation/personal_qr_screen.dart';
+import 'features/profile/presentation/scan_teammate_screen.dart';
+import 'features/profile/presentation/team_screen.dart';
 import 'features/profile/presentation/signup_screen.dart';
+// import 'features/invite/presentation/unified_qr_screen.dart'; // TODO: Fix and re-enable
 import 'features/projects/presentation/projects_screen.dart';
 import 'features/projects/presentation/project_detail_screen.dart';
 import 'features/projects/presentation/task_form_screen.dart';
@@ -139,6 +144,33 @@ GoRouter createRouter() {
             path: '/profile',
             name: 'profile',
             pageBuilder: (context, state) => fadeSlide(const EnhancedProfileScreen()),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: 'profile-edit',
+                builder: (context, state) => const EditProfileScreen(),
+              ),
+              GoRoute(
+                path: 'team',
+                name: 'team',
+                builder: (context, state) => const TeamScreen(),
+              ),
+              GoRoute(
+                path: 'qr',
+                name: 'profile-qr',
+                builder: (context, state) => const PersonalQRScreen(),
+              ),
+              GoRoute(
+                path: 'scan',
+                name: 'scan-teammate',
+                builder: (context, state) => const ScanTeammateScreen(),
+              ),
+              // GoRoute(
+              //   path: 'invite',
+              //   name: 'unified-qr',
+              //   builder: (context, state) => const UnifiedQRScreen(),
+              // ),
+            ],
           ),
           GoRoute(
             path: '/chat',

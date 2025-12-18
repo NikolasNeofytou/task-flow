@@ -82,7 +82,7 @@ ThemeData buildLightTheme() {
       ),
     ),
     cardTheme: CardTheme(
-      color: Colors.white.withOpacity(0.9),
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.md),
       ),
@@ -203,7 +203,7 @@ ThemeData buildDarkTheme() {
       ),
     ),
     cardTheme: CardTheme(
-      color: const Color(0xFF1B1E28),
+      clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.md),
       ),

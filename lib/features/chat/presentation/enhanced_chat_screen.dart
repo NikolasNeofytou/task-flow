@@ -296,53 +296,56 @@ class EnhancedChatScreen extends ConsumerWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Chat')),
-      body: ListView.separated(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        itemCount: channels.length,
-        separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
-        itemBuilder: (context, index) {
-          final channel = channels[index];
-          final last = channel.messages.isNotEmpty ? channel.messages.last : null;
-          final subtitle = _getMessagePreview(last);
-          final accent = Theme.of(context).colorScheme.primary.withOpacity(0.15);
-
-          return ListTile(
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.sm,
-            ),
-            leading: CircleAvatar(
-              backgroundColor: accent,
-              child: Text(channel.label.isNotEmpty ? channel.label[0].toUpperCase() : '?'),
-            ),
-            title: Text(channel.label, style: Theme.of(context).textTheme.titleMedium),
-            subtitle: Text(
-              subtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            onTap: () {
-              context.go('/chat/${channel.id}', extra: channel.label);
+      appBar: AppBar(
+        title: const Text('Messages'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            tooltip: 'Search conversations',
+            onPressed: () {
+              // TODO: Implement search
             },
-          );
+          ),
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            tooltip: 'More options',
+            onPressed: () {
+              // TODO: Show options menu
+            },
+          ),
+        ],
+      ),
+      body: channels.isEmpty
+          ? _EmptyChatState()
+          : ListView.builder(
+              padding: const EdgeInsets.symmetric(
+                horizontal: AppSpacing.md,
+                vertical: AppSpacing.sm,
+              ),
+              itemCount: channels.length,
+              itemBuilder: (context, index) {
+                final channel = channels[index];
+                final last = channel.messages.isNotEmpty ? channel.messages.last : null;
+                final isFirst = index == 0;
+                
+                return _ChatChannelCard(
+                  channel: channel,
+                  lastMessage: last,
+                  isFirst: isFirst,
+                  onTap: () {
+                    context.go('/chat/${channel.id}', extra: channel.label);
+                  },
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // TODO: New conversation
         },
+        tooltip: 'New conversation',
+        child: const Icon(Icons.edit),
       ),
     );
-  }
-
-  String _getMessagePreview(ChatMessage? msg) {
-    if (msg == null) return 'No messages yet';
-
-    switch (msg.type) {
-      case MessageType.text:
-      case MessageType.textWithReferences:
-        return msg.text ?? 'Message';
-      case MessageType.voice:
-        return '🎤 Voice message';
-      case MessageType.file:
-        return '📎 ${msg.fileName ?? 'File'}';
-    }
   }
 }
 
@@ -365,7 +368,6 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
   final _controller = TextEditingController();
   bool _sending = false;
   bool _isRecordingVoice = false;
-  InputMode _inputMode = InputMode.text;
   String _currentText = '';
 
   @override
@@ -516,7 +518,6 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
 
   Widget _buildChatItem(BuildContext context, List<ChatMessage> messages, int visualIndex) {
     // Convert visual index to actual message structure
-    int messageIndex = 0;
     int currentVisualIndex = 0;
     
     for (int i = 0; i < messages.length; i++) {
@@ -1046,8 +1047,6 @@ class _RoleBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    
     // Parse hex color
     final hexColor = role.colorHex.replaceAll('#', '');
     final color = Color(int.parse('FF$hexColor', radix: 16));
@@ -1278,6 +1277,299 @@ class _PinnedMessageCard extends ConsumerWidget {
       case MessageType.file:
         return '📎 ${message.fileName ?? 'File'}';
     }
+  }
+}
+
+/// Aesthetic chat channel card widget
+class _ChatChannelCard extends StatelessWidget {
+  const _ChatChannelCard({
+    required this.channel,
+    required this.lastMessage,
+    required this.isFirst,
+    required this.onTap,
+  });
+
+  final _ChannelView channel;
+  final ChatMessage? lastMessage;
+  final bool isFirst;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
+    // Generate colors based on channel name
+    final colors = _getChannelColors(channel.label);
+    const hasUnread = false; // TODO: Implement unread logic
+    
+    return Card(
+      margin: EdgeInsets.only(
+        bottom: AppSpacing.md,
+        top: isFirst ? AppSpacing.sm : 0,
+      ),
+      elevation: 2,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(AppRadii.lg),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadii.lg),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Row(
+            children: [
+              // Avatar with gradient
+              Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: colors,
+                  ),
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: colors.first.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    channel.label.isNotEmpty 
+                        ? channel.label.substring(0, 1).toUpperCase() 
+                        : '?',
+                    style: theme.textTheme.headlineSmall?.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              
+              // Content
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Title row with timestamp
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            channel.label,
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: hasUnread ? FontWeight.bold : FontWeight.w600,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        if (lastMessage != null)
+                          const SizedBox(width: AppSpacing.xs),
+                        if (lastMessage != null)
+                          Text(
+                            _formatTimestamp(lastMessage!.timestamp),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: hasUnread 
+                                  ? colorScheme.primary 
+                                  : colorScheme.onSurfaceVariant,
+                              fontWeight: hasUnread ? FontWeight.w600 : FontWeight.normal,
+                            ),
+                          ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    
+                    // Message preview row
+                    Row(
+                      children: [
+                        // Message type icon
+                        if (lastMessage != null)
+                          Icon(
+                            _getMessageIcon(lastMessage!.type),
+                            size: 16,
+                            color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+                          ),
+                        if (lastMessage != null)
+                          const SizedBox(width: AppSpacing.xs),
+                        
+                        // Preview text
+                        Expanded(
+                          child: Text(
+                            _getMessagePreview(),
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                              color: hasUnread 
+                                  ? colorScheme.onSurface 
+                                  : colorScheme.onSurfaceVariant,
+                              fontWeight: hasUnread ? FontWeight.w500 : FontWeight.normal,
+                            ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        
+                        // Unread badge (TODO: Will be shown when unread logic is implemented)
+                        // if (hasUnread && unreadCount > 0)
+                        //   const SizedBox(width: AppSpacing.sm),
+                        // if (hasUnread && unreadCount > 0)
+                        //   Container(
+                        //     constraints: const BoxConstraints(minWidth: 20),
+                        //     height: 20,
+                        //     padding: const EdgeInsets.symmetric(horizontal: 6),
+                        //     decoration: BoxDecoration(
+                        //       color: colorScheme.primary,
+                        //       borderRadius: BorderRadius.circular(10),
+                        //     ),
+                        //     child: Center(
+                        //       child: Text(
+                        //         unreadCount > 99 ? '99+' : unreadCount.toString(),
+                        //         style: theme.textTheme.labelSmall?.copyWith(
+                        //           color: colorScheme.onPrimary,
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Color> _getChannelColors(String label) {
+    // Generate gradient colors based on channel name
+    final hash = label.hashCode;
+    final hue = (hash % 360).toDouble();
+    
+    return [
+      HSLColor.fromAHSL(1.0, hue, 0.7, 0.5).toColor(),
+      HSLColor.fromAHSL(1.0, (hue + 30) % 360, 0.7, 0.6).toColor(),
+    ];
+  }
+
+  IconData _getMessageIcon(MessageType type) {
+    switch (type) {
+      case MessageType.text:
+      case MessageType.textWithReferences:
+        return Icons.chat_bubble_outline;
+      case MessageType.voice:
+        return Icons.mic;
+      case MessageType.file:
+        return Icons.attach_file;
+    }
+  }
+
+  String _formatTimestamp(DateTime timestamp) {
+    final now = DateTime.now();
+    final difference = now.difference(timestamp);
+    
+    if (difference.inDays == 0) {
+      // Today - show time
+      final hour = timestamp.hour.toString().padLeft(2, '0');
+      final minute = timestamp.minute.toString().padLeft(2, '0');
+      return '$hour:$minute';
+    } else if (difference.inDays == 1) {
+      return 'Yesterday';
+    } else if (difference.inDays < 7) {
+      // This week - show day name
+      const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+      return days[(timestamp.weekday - 1) % 7];
+    } else {
+      // Older - show date
+      return '${timestamp.day}/${timestamp.month}';
+    }
+  }
+
+  String _getMessagePreview() {
+    if (lastMessage == null) return 'No messages yet';
+    
+    final prefix = lastMessage!.isMe ? 'You: ' : '${lastMessage!.author}: ';
+    
+    switch (lastMessage!.type) {
+      case MessageType.text:
+      case MessageType.textWithReferences:
+        return '$prefix${lastMessage!.text ?? 'Message'}';
+      case MessageType.voice:
+        return '${prefix}Voice message';
+      case MessageType.file:
+        return '$prefix${lastMessage!.fileName ?? 'File'}';
+    }
+  }
+}
+
+/// Empty state for chat when no conversations exist
+class _EmptyChatState extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xxl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    colorScheme.primary.withOpacity(0.2),
+                    colorScheme.secondary.withOpacity(0.2),
+                  ],
+                ),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.chat_bubble_outline,
+                size: 60,
+                color: colorScheme.primary,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            Text(
+              'No conversations yet',
+              style: theme.textTheme.headlineSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Start a conversation with your team\nto collaborate on projects',
+              style: theme.textTheme.bodyLarge?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            FilledButton.icon(
+              onPressed: () {
+                // TODO: New conversation
+              },
+              icon: const Icon(Icons.add),
+              label: const Text('Start a conversation'),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

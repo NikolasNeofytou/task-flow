@@ -15,8 +15,17 @@
   - Enhanced task detail screen with comments list and input
   - Backend endpoints for GET/POST comments
   - Time-ago formatting, empty states, error handling
+- **Calendar Enhancements** - Quick task creation and multiple view modes:
+  - **Quick Task Creation FAB**: Floating action button on calendar screen opens project selection dialog with status-based color coding, navigates to task creation form with project ID pre-filled
+  - **Multiple View Modes**: Month (existing grid), Week (7-day horizontal layout with task count badges), Day (detailed single-day view with large header)
+  - View mode toggle with segmented control styling and smooth transitions
+  - Task count indicators on week and day views
+  - Maintains selected date across view mode changes
+  - Empty states for all view modes
+  - Technical: `CalendarViewMode` enum, `_ViewModeButton`/`_WeekView`/`_DayView` widgets, Riverpod integration for project loading
 
 ## Next Up
+
 - Start extracting shared UI components (cards, tags, pills) into a design-system folder and add widget/golden tests.
 - Wire data layer (dio + interceptors) and analytics hooks; expand tests and accessibility labels.
 - Implement remaining Axis 2 features: haptics, sound feedback, camera/QR functionality.

@@ -62,6 +62,34 @@ let commentCounter = 5;
 // Format: { token: { projectId, createdAt, usedBy, expiresAt } }
 let inviteTokens = {};
 
+// In-memory users storage (simple mock)
+let users = {
+  'user1': {
+    id: 'user1',
+    email: 'demo@taskflow.com',
+    displayName: 'Demo User',
+    status: 'online',
+    team: [],
+    createdAt: '2025-08-01T00:00:00Z',
+  },
+  'user2': {
+    id: 'user2',
+    email: 'sarah@taskflow.com',
+    displayName: 'Sarah Chen',
+    status: 'online',
+    team: [],
+    createdAt: '2025-08-01T00:00:00Z',
+  },
+  'user3': {
+    id: 'user3',
+    email: 'mike@taskflow.com',
+    displayName: 'Mike Johnson',
+    status: 'busy',
+    team: [],
+    createdAt: '2025-08-01T00:00:00Z',
+  },
+};
+
 // Requests
 app.get('/requests', (req, res) => res.json(requests));
 app.post('/requests', (req, res) => {
@@ -232,6 +260,126 @@ app.post('/invite/:token/accept', (req, res) => {
   });
 });
 
+// Team/Users endpoints
+// Get user by ID
+app.get('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  const user = users[userId];
+  
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
+
+  res.json(user);
+});
+
+// Add teammate
+app.post('/api/users/team/add', (req, res) => {
+  const { userId, email, displayName } = req.body;
+  
+  // Mock current user as user1
+  const currentUser = users['user1'];
+  const userToAdd = users[userId];
+
+  if (!userToAdd) {
+    return res.status(404).json({ 
+      error: 'User not found',
+      message: 'The user you are trying to add does not exist.'
+    });
+  }
+
+  // Verify data matches
+  if (userToAdd.email !== email || userToAdd.displayName !== displayName) {
+    return res.status(400).json({ 
+      error: 'Invalid user data',
+      message: 'User information does not match. QR code may be invalid.'
+    });
+  }
+
+  // Prevent self-add
+  if (userId === 'user1') {
+    return res.status(400).json({ 
+      error: 'Invalid operation',
+      message: 'You cannot add yourself to your team.'
+    });
+  }
+
+  // Check if already in team
+  if (currentUser.team.includes(userId)) {
+    return res.status(400).json({ 
+      error: 'Already in team',
+      message: `${displayName} is already in your team.`
+    });
+  }
+
+  // Add to team (bidirectional)
+  currentUser.team.push(userId);
+  if (!userToAdd.team.includes('user1')) {
+    userToAdd.team.push('user1');
+  }
+
+  // Create notification
+  notifications.unshift({
+    id: `not-${nanoid(6)}`,
+    title: `${currentUser.displayName} added you to their team via QR code!`,
+    type: 'team_invite_accepted',
+    createdAt: new Date().toISOString(),
+  });
+
+  res.json({
+    success: true,
+    message: `${displayName} has been added to your team!`,
+    user: userToAdd,
+    teamSize: currentUser.team.length,
+  });
+});
+
+// Get team members
+app.get('/api/users/me/team', (req, res) => {
+  const currentUser = users['user1'];
+  
+  if (!currentUser.team || currentUser.team.length === 0) {
+    return res.json({ team: [], count: 0 });
+  }
+
+  const teamMembers = currentUser.team
+    .map(userId => users[userId])
+    .filter(user => user !== undefined);
+
+  res.json({ 
+    team: teamMembers,
+    count: teamMembers.length 
+  });
+});
+
+// Remove teammate
+app.delete('/api/users/me/team/:userId', (req, res) => {
+  const { userId } = req.params;
+  const currentUser = users['user1'];
+
+  if (!currentUser.team || !currentUser.team.includes(userId)) {
+    return res.status(400).json({ 
+      error: 'User not in team',
+      message: 'This user is not in your team.'
+    });
+  }
+
+  // Remove from team (bidirectional)
+  currentUser.team = currentUser.team.filter(id => id !== userId);
+  
+  const otherUser = users[userId];
+  if (otherUser && otherUser.team) {
+    otherUser.team = otherUser.team.filter(id => id !== 'user1');
+  }
+
+  res.json({ 
+    success: true,
+    message: 'User removed from team',
+    teamSize: currentUser.team.length
+  });
+});
+
 app.listen(port, () => {
   console.log(`Mock backend running at http://localhost:${port}`);
+  console.log(`Team API endpoints available at /api/users/*`);
 });

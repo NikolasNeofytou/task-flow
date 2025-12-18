@@ -154,6 +154,32 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     }
   }
 
+  /// Update profile information
+  Future<void> updateProfile({
+    String? displayName,
+    String? email,
+  }) async {
+    if (state == null) return;
+    
+    try {
+      if (displayName != null) {
+        await _storage.write(key: 'user_displayName', value: displayName);
+      }
+      if (email != null) {
+        await _storage.write(key: 'user_email', value: email);
+      }
+      
+      state = state!.copyWith(
+        displayName: displayName,
+        email: email,
+        lastActiveAt: DateTime.now(),
+      );
+    } catch (e) {
+      debugPrint('Error updating profile: $e');
+      rethrow;
+    }
+  }
+
   /// Select a badge to display
   Future<void> selectBadge(String? badgeId) async {
     if (badgeId != null) {

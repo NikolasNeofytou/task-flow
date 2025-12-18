@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../../../core/services/haptics_service.dart';
 
 import '../../../core/models/request.dart';
 import '../../../core/providers/data_providers.dart';

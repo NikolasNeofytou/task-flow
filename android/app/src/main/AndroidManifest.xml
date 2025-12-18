@@ -1,10 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Camera permission for QR code scanning -->
+    <!-- Camera permission for QR code scanning and profile pictures -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <!-- Vibration permission (already added) -->
     <uses-permission android:name="android.permission.VIBRATE"/>
     <!-- Microphone permission for voice recording -->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <!-- Storage permissions for profile pictures -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     
     <application
         android:label="taskflow"

@@ -47,7 +47,7 @@ class iOSGlassTheme {
       // iOS-style cards with glass effect
       cardTheme: CardTheme(
         elevation: 0,
-        color: Colors.white.withOpacity(0.7),
+        clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
@@ -147,7 +147,7 @@ class iOSGlassTheme {
       
       cardTheme: CardTheme(
         elevation: 0,
-        color: const Color(0xFF1C1C1E).withOpacity(0.8),
+        clipBehavior: Clip.antiAlias,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),

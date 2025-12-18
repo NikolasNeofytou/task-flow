@@ -7,6 +7,9 @@ import '../../../theme/tokens.dart';
 import '../models/badge_model.dart';
 import '../models/user_profile_model.dart';
 import '../providers/profile_provider.dart';
+import '../widgets/profile_stats_card.dart';
+import '../widgets/profile_completeness_card.dart';
+import '../widgets/quick_actions_card.dart';
 
 class EnhancedProfileScreen extends ConsumerWidget {
   const EnhancedProfileScreen({super.key});
@@ -27,8 +30,33 @@ class EnhancedProfileScreen extends ConsumerWidget {
         _ProfileHeader(profile: profile),
         const SizedBox(height: AppSpacing.xl),
 
+        // Profile completeness card
+        ProfileCompletenessCard(
+          profile: profile,
+          onAddPhoto: () => ref.read(userProfileProvider.notifier).updateProfilePicture(),
+          onSetStatus: () => _showStatusPicker(context, ref, profile.status),
+          onSelectBadge: () => _showBadgesSheet(context, ref, badges),
+        ),
+        const SizedBox(height: AppSpacing.lg),
+
+        // Statistics card
+        ProfileStatsCard(
+          tasksCompleted: 12,
+          projectsCreated: 3,
+          teamMembers: 8,
+          badgesEarned: badges.where((b) => b.isUnlocked).length,
+        ),
+        const SizedBox(height: AppSpacing.lg),
+
+        // Quick actions
+        const QuickActionsCard(),
+        const SizedBox(height: AppSpacing.lg),
+
         // Status section
-        _StatusSection(profile: profile),
+        _StatusSection(
+          profile: profile,
+          onStatusChange: () => _showStatusPicker(context, ref, profile.status),
+        ),
         const SizedBox(height: AppSpacing.xl),
 
         // Selected badge showcase
@@ -37,6 +65,72 @@ class EnhancedProfileScreen extends ConsumerWidget {
             badge: badges.firstWhere((b) => b.id == profile.selectedBadgeId),
           ),
         
+        const SizedBox(height: AppSpacing.lg),
+
+        // QR Code & Team actions
+        Card(
+          child: Column(
+            children: [
+              _ProfileTile(
+                icon: Icons.groups,
+                title: 'My Team',
+                subtitle: 'View team members',
+                onTap: () => context.push('/profile/team'),
+              ),
+              _ProfileTile(
+                icon: Icons.qr_code,
+                title: 'My QR Code',
+                subtitle: 'Share your profile',
+                trailing: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppSpacing.sm,
+                    vertical: AppSpacing.xs,
+                  ),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(AppRadii.sm),
+                  ),
+                  child: Text(
+                    'NEW',
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primary,
+                    ),
+                  ),
+                ),
+                onTap: () => context.push('/profile/qr'),
+              ),
+              _ProfileTile(
+                icon: Icons.qr_code_scanner,
+                title: 'Scan Teammate',
+                subtitle: 'Add team members via QR',
+                onTap: () => context.push('/profile/scan'),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.lg),
+
+        // Quick actions
+        Card(
+          child: Column(
+            children: [
+              _ProfileTile(
+                icon: Icons.edit_outlined,
+                title: 'Edit Profile',
+                subtitle: 'Update your information',
+                onTap: () => context.push('/profile/edit'),
+              ),
+              _ProfileTile(
+                icon: Icons.emoji_events_outlined,
+                title: 'My Badges',
+                subtitle: '${badges.where((b) => b.isUnlocked).length}/${badges.length} unlocked',
+                onTap: () => _showBadgesSheet(context, ref, badges),
+              ),
+            ],
+          ),
+        ),
         const SizedBox(height: AppSpacing.lg),
 
         // Settings tiles
@@ -48,12 +142,6 @@ class EnhancedProfileScreen extends ConsumerWidget {
                 title: 'Chat',
                 subtitle: 'Team conversations',
                 onTap: () => context.go('/chat'),
-              ),
-              _ProfileTile(
-                icon: Icons.emoji_events_outlined,
-                title: 'My Badges',
-                subtitle: '${badges.where((b) => b.isUnlocked).length}/${badges.length} unlocked',
-                onTap: () => _showBadgesSheet(context, ref, badges),
               ),
               _ProfileTile(
                 icon: Icons.vibration,
@@ -116,6 +204,13 @@ class EnhancedProfileScreen extends ConsumerWidget {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (context) => _BadgesSheet(badges: badgesList),
+    );
+  }
+
+  void _showStatusPicker(BuildContext context, WidgetRef ref, UserStatus currentStatus) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => _StatusPickerSheet(currentStatus: currentStatus),
     );
   }
 
@@ -235,9 +330,13 @@ class _ProfileHeader extends ConsumerWidget {
 }
 
 class _StatusSection extends ConsumerWidget {
-  const _StatusSection({required this.profile});
+  const _StatusSection({
+    required this.profile,
+    required this.onStatusChange,
+  });
 
   final UserProfile profile;
+  final VoidCallback onStatusChange;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -259,7 +358,7 @@ class _StatusSection extends ConsumerWidget {
                 ),
                 const Spacer(),
                 TextButton.icon(
-                  onPressed: () => _showStatusPicker(context, ref),
+                  onPressed: onStatusChange,
                   icon: const Icon(Icons.edit, size: 16),
                   label: const Text('Change'),
                 ),
@@ -278,13 +377,6 @@ class _StatusSection extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
-
-  void _showStatusPicker(BuildContext context, WidgetRef ref) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) => _StatusPickerSheet(currentStatus: profile.status),
     );
   }
 }

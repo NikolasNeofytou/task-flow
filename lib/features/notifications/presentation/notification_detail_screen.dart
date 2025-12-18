@@ -67,7 +67,7 @@ class NotificationDetailScreen extends ConsumerWidget {
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Opening related ${_typeLabel(resolved?.type ?? NotificationType.taskAssignment)}...'),
+                          content: Text('Opening related \${_typeLabel(resolved?.type ?? NotificationType.taskAssignment)}...'),
                         ),
                       );
                       // In a real app, this would navigate to the related item
