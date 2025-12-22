@@ -14,9 +14,14 @@ import 'features/profile/presentation/profile_screen.dart';
 import 'features/profile/presentation/enhanced_profile_screen.dart';
 import 'features/profile/presentation/edit_profile_screen.dart';
 import 'features/profile/presentation/personal_qr_screen.dart';
+import 'features/profile/presentation/enhanced_personal_qr_screen.dart';
+import 'features/profile/presentation/demo_qr_screen.dart';
+import 'features/profile/presentation/qr_analytics_dashboard.dart';
 import 'features/profile/presentation/scan_teammate_screen.dart';
 import 'features/profile/presentation/team_screen.dart';
 import 'features/profile/presentation/signup_screen.dart';
+import 'features/invite/presentation/qr_management_screen.dart';
+import 'features/testing/presentation/qr_testing_screen.dart';
 // import 'features/invite/presentation/unified_qr_screen.dart'; // TODO: Fix and re-enable
 import 'features/projects/presentation/projects_screen.dart';
 import 'features/projects/presentation/project_detail_screen.dart';
@@ -136,6 +141,14 @@ GoRouter createRouter() {
                       );
                     },
                   ),
+                  GoRoute(
+                    path: 'qr/manage',
+                    name: 'qr-management',
+                    builder: (context, state) {
+                      final id = state.pathParameters['id']!;
+                      return QRManagementScreen(projectId: int.parse(id));
+                    },
+                  ),
                 ],
               ),
             ],
@@ -159,6 +172,21 @@ GoRouter createRouter() {
                 path: 'qr',
                 name: 'profile-qr',
                 builder: (context, state) => const PersonalQRScreen(),
+              ),
+              GoRoute(
+                path: 'qr/demo',
+                name: 'demo-qr',
+                builder: (context, state) => const DemoQRScreen(),
+              ),
+              GoRoute(
+                path: 'qr/enhanced',
+                name: 'enhanced-qr',
+                builder: (context, state) => const EnhancedPersonalQRScreen(),
+              ),
+              GoRoute(
+                path: 'qr/analytics',
+                name: 'qr-analytics',
+                builder: (context, state) => const QRAnalyticsDashboard(),
               ),
               GoRoute(
                 path: 'scan',
@@ -240,6 +268,11 @@ GoRouter createRouter() {
         path: '/settings/patterns',
         name: 'pattern-showcase',
         builder: (context, state) => const PatternShowcaseScreen(),
+      ),
+      GoRoute(
+        path: '/testing/qr',
+        name: 'qr-testing',
+        builder: (context, state) => const QRTestingScreen(),
       ),
       GoRoute(
         path: '/onboarding',
