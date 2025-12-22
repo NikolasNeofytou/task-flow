@@ -16,6 +16,7 @@ import 'features/profile/presentation/edit_profile_screen.dart';
 import 'features/profile/presentation/personal_qr_screen.dart';
 import 'features/profile/presentation/enhanced_personal_qr_screen.dart';
 import 'features/profile/presentation/demo_qr_screen.dart';
+import 'features/profile/presentation/unified_qr_screen.dart';
 import 'features/profile/presentation/qr_analytics_dashboard.dart';
 import 'features/profile/presentation/scan_teammate_screen.dart';
 import 'features/profile/presentation/team_screen.dart';
@@ -172,6 +173,11 @@ GoRouter createRouter() {
                 path: 'qr',
                 name: 'profile-qr',
                 builder: (context, state) => const PersonalQRScreen(),
+              ),
+              GoRoute(
+                path: 'qr/unified',
+                name: 'unified-qr',
+                builder: (context, state) => const UnifiedQRScreen(),
               ),
               GoRoute(
                 path: 'qr/demo',

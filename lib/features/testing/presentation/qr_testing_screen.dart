@@ -34,7 +34,7 @@ class QRTestingScreen extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: Text(
-                      'Start with the Demo QR Screen first - it works immediately without any setup!',
+                      'NEW! Try the Unified QR Screen - Send AND Receive in one place!',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.orange.shade900,
@@ -48,7 +48,16 @@ class QRTestingScreen extends StatelessWidget {
           const SizedBox(height: 12),
           _buildTestCard(
             context,
-            title: '⭐ Demo QR Screen (Start Here!)',
+            title: '🚀 Unified QR Screen (NEW!)',
+            subtitle: 'Send & Receive with a simple toggle - best experience',
+            icon: Icons.swap_horiz,
+            color: Colors.green,
+            onTap: () => context.push('/profile/qr/unified'),
+          ),
+          const SizedBox(height: 12),
+          _buildTestCard(
+            context,
+            title: '⭐ Demo QR Screen',
             subtitle: 'Interactive demo with all features - works immediately',
             icon: Icons.play_circle_filled,
             color: Colors.orange,
