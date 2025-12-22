@@ -6,10 +6,21 @@ import 'app_router.dart';
 import 'core/providers/feedback_providers.dart';
 import 'core/providers/deep_link_providers.dart';
 import 'core/services/deep_link_service.dart';
+import 'core/services/hive_service.dart';
+import 'core/services/local_notification_service.dart';
 import 'theme/ios_glass_theme.dart';
 import 'theme/fluent_theme.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Hive for offline storage
+  await HiveService.initialize();
+  
+  // Initialize local notifications
+  await LocalNotificationService.initialize();
+  await LocalNotificationService.requestPermissions();
+  
   runApp(const ProviderScope(child: TaskflowApp()));
 }
 

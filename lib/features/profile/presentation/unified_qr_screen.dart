@@ -5,9 +5,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../../theme/tokens.dart';
 import '../../../core/services/haptics_service.dart';
+import '../../../core/services/team_service.dart';
 import '../../../core/widgets/branded_qr_code.dart';
 
 /// Unified QR Screen with Send/Receive toggle
@@ -24,6 +26,11 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
   QRCodeStyle _selectedStyle = QRCodeStyle.branded;
   bool _isExporting = false;
   bool _isSendMode = true; // true = Send, false = Receive
+  
+  // Scanner state
+  MobileScannerController? _scannerController;
+  bool _hasScanned = false;
+  bool _isFlashOn = false;
 
   // Demo data
   final String _demoName = 'John Doe';
@@ -49,16 +56,40 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
   @override
   void dispose() {
     _animationController.dispose();
+    _scannerController?.dispose();
     super.dispose();
   }
 
   void _toggleMode() {
     setState(() {
       _isSendMode = !_isSendMode;
+      if (!_isSendMode) {
+        // Entering receive mode - initialize scanner
+        _initializeScanner();
+      } else {
+        // Entering send mode - dispose scanner
+        _disposeScanner();
+      }
     });
     _animationController.reset();
     _animationController.forward();
     HapticsService().trigger(HapticFeedbackType.medium);
+  }
+
+  void _initializeScanner() {
+    _scannerController = MobileScannerController(
+      detectionSpeed: DetectionSpeed.noDuplicates,
+      facing: CameraFacing.back,
+      torchEnabled: _isFlashOn,
+    );
+    _hasScanned = false;
+  }
+
+  void _disposeScanner() {
+    _scannerController?.dispose();
+    _scannerController = null;
+    _hasScanned = false;
+    _isFlashOn = false;
   }
 
   @override
@@ -413,120 +444,248 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
   }
 
   Widget _buildReceiveMode() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(AppSpacing.xl),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // Scanner Icon
-            Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(AppRadii.lg),
-                border: Border.all(
-                  color: AppColors.primary.withOpacity(0.3),
-                  width: 2,
+    if (_scannerController == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    return Stack(
+      children: [
+        // Camera scanner
+        MobileScanner(
+          controller: _scannerController,
+          onDetect: _handleBarcode,
+        ),
+
+        // Overlay with scanning frame
+        CustomPaint(
+          painter: ScannerOverlayPainter(),
+          child: Container(),
+        ),
+
+        // Top instruction
+        Positioned(
+          top: 40,
+          left: 0,
+          right: 0,
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(AppSpacing.sm),
+                decoration: BoxDecoration(
+                  color: Colors.white.withOpacity(0.9),
+                  borderRadius: BorderRadius.circular(AppRadii.pill),
+                ),
+                child: const Icon(
+                  Icons.info_outline,
+                  color: AppColors.primary,
+                  size: 24,
                 ),
               ),
-              child: Icon(
-                Icons.qr_code_scanner,
-                size: 100,
-                color: AppColors.primary,
-              ),
-            ),
-            const SizedBox(height: AppSpacing.xxl),
+            ],
+          ),
+        ),
 
-            Text(
-              'Scan QR Code',
-              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-            Text(
-              'Point your camera at a QR code to scan it',
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: AppColors.neutral,
-                  ),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Start Scan Button
-            FilledButton.icon(
-              onPressed: () => _startScanning(),
-              icon: const Icon(Icons.camera_alt),
-              label: const Text('Start Camera'),
-              style: FilledButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.xxl,
-                  vertical: AppSpacing.md,
+        // Bottom instructions
+        Positioned(
+          bottom: 100,
+          left: 0,
+          right: 0,
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
+                padding: const EdgeInsets.all(AppSpacing.lg),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(AppRadii.md),
                 ),
-              ),
-            ),
-            const SizedBox(height: AppSpacing.md),
-
-            // Or import from gallery
-            TextButton.icon(
-              onPressed: () => _importFromGallery(),
-              icon: const Icon(Icons.photo_library),
-              label: const Text('Import from Gallery'),
-            ),
-
-            const SizedBox(height: AppSpacing.xxl),
-
-            // Info card
-            Card(
-              color: Colors.blue.shade50,
-              child: Padding(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                child: Row(
+                child: Column(
                   children: [
-                    Icon(Icons.info_outline, color: Colors.blue.shade700),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Text(
-                        'You\'ll need to grant camera permission to scan QR codes',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.blue.shade900,
-                        ),
+                    const Icon(
+                      Icons.qr_code_scanner,
+                      color: Colors.white,
+                      size: 48,
+                    ),
+                    const SizedBox(height: AppSpacing.md),
+                    const Text(
+                      'Point camera at teammate\'s QR code',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
+                      textAlign: TextAlign.center,
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    const Text(
+                      'The code will be scanned automatically',
+                      style: TextStyle(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
               ),
+              const SizedBox(height: AppSpacing.lg),
+              // Flash toggle
+              FloatingActionButton(
+                onPressed: _toggleFlash,
+                backgroundColor: Colors.black.withOpacity(0.7),
+                child: Icon(
+                  _isFlashOn ? Icons.flash_on : Icons.flash_off,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _handleBarcode(BarcodeCapture capture) {
+    if (_hasScanned) return;
+
+    final List<Barcode> barcodes = capture.barcodes;
+    if (barcodes.isEmpty) return;
+
+    final String? code = barcodes.first.rawValue;
+    if (code == null || code.isEmpty) return;
+
+    _handleScan(code);
+  }
+
+  Future<void> _handleScan(String data) async {
+    if (_hasScanned) return;
+
+    setState(() {
+      _hasScanned = true;
+    });
+
+    // Validate user invite link (taskflow://user/userId/email/name)
+    final isValid = data.startsWith('taskflow://user/') && data.split('/').length >= 5;
+
+    if (!isValid) {
+      // Invalid QR code - show error
+      await HapticsService().trigger(HapticFeedbackType.error);
+
+      if (!mounted) return;
+
+      await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Invalid QR Code'),
+          content: const Text('This QR code is not a valid user profile.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  _hasScanned = false;
+                });
+              },
+              child: const Text('Try Again'),
             ),
           ],
         ),
+      );
+
+      return;
+    }
+
+    // Valid user QR - trigger success feedback
+    await HapticsService().trigger(HapticFeedbackType.success);
+
+    // Parse user data
+    final parts = data.split('/');
+    final userData = {
+      'userId': parts[3],
+      'email': parts.length > 4 ? Uri.decodeComponent(parts[4]) : 'Unknown',
+      'displayName': parts.length > 5 ? Uri.decodeComponent(parts[5]) : 'Unknown User',
+    };
+
+    if (!mounted) return;
+
+    // Show success dialog
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green, size: 32),
+            SizedBox(width: 12),
+            Text('User Found!'),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              userData['displayName'] as String,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              userData['email'] as String,
+              style: TextStyle(color: Colors.grey[600]),
+            ),
+            const SizedBox(height: 16),
+            const Text('Do you want to add this person to your team?'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              setState(() {
+                _hasScanned = false;
+              });
+            },
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              // Add teammate logic
+              await TeamService().addTeammate(
+                userId: userData['userId'] as String,
+                email: userData['email'] as String,
+                displayName: userData['displayName'] as String,
+              );
+
+              if (!mounted) return;
+              Navigator.pop(context);
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${userData['displayName']} added to your team!'),
+                  backgroundColor: Colors.green,
+                ),
+              );
+
+              // Switch back to send mode
+              _toggleMode();
+            },
+            child: const Text('Add to Team'),
+          ),
+        ],
       ),
     );
   }
 
-  void _startScanning() {
+  void _toggleFlash() {
+    setState(() {
+      _isFlashOn = !_isFlashOn;
+    });
+    _scannerController?.toggleTorch();
     HapticsService().trigger(HapticFeedbackType.light);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Camera scanning will be available on mobile devices'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-    // TODO: Implement actual camera scanning using mobile_scanner package
-    // Navigator.push(context, MaterialPageRoute(builder: (context) => QRScannerScreen()));
-  }
-
-  void _importFromGallery() {
-    HapticsService().trigger(HapticFeedbackType.light);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Gallery import will be available soon'),
-        duration: Duration(seconds: 2),
-      ),
-    );
-    // TODO: Implement gallery import
   }
 
   Future<void> _shareQRCode(String qrData) async {
@@ -678,4 +837,92 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
       ),
     );
   }
+}
+
+/// Custom painter for the scanner overlay with semi-transparent background
+/// and transparent scanning area
+class ScannerOverlayPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final double scanAreaSize = size.width * 0.7;
+    final double left = (size.width - scanAreaSize) / 2;
+    final double top = (size.height - scanAreaSize) / 2;
+
+    // Semi-transparent overlay
+    final backgroundPaint = Paint()
+      ..color = Colors.black.withOpacity(0.5)
+      ..style = PaintingStyle.fill;
+
+    // Create path for the overlay with hole in the middle
+    final path = Path()
+      ..addRect(Rect.fromLTWH(0, 0, size.width, size.height))
+      ..addRRect(
+        RRect.fromRectAndRadius(
+          Rect.fromLTWH(left, top, scanAreaSize, scanAreaSize),
+          const Radius.circular(20),
+        ),
+      )
+      ..fillType = PathFillType.evenOdd;
+
+    canvas.drawPath(path, backgroundPaint);
+
+    // Draw corner brackets
+    final bracketPaint = Paint()
+      ..color = Colors.white
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 4;
+
+    final double bracketLength = 30;
+
+    // Top-left corner
+    canvas.drawLine(
+      Offset(left, top + bracketLength),
+      Offset(left, top),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(left, top),
+      Offset(left + bracketLength, top),
+      bracketPaint,
+    );
+
+    // Top-right corner
+    canvas.drawLine(
+      Offset(left + scanAreaSize - bracketLength, top),
+      Offset(left + scanAreaSize, top),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(left + scanAreaSize, top),
+      Offset(left + scanAreaSize, top + bracketLength),
+      bracketPaint,
+    );
+
+    // Bottom-left corner
+    canvas.drawLine(
+      Offset(left, top + scanAreaSize - bracketLength),
+      Offset(left, top + scanAreaSize),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(left, top + scanAreaSize),
+      Offset(left + bracketLength, top + scanAreaSize),
+      bracketPaint,
+    );
+
+    // Bottom-right corner
+    canvas.drawLine(
+      Offset(left + scanAreaSize - bracketLength, top + scanAreaSize),
+      Offset(left + scanAreaSize, top + scanAreaSize),
+      bracketPaint,
+    );
+    canvas.drawLine(
+      Offset(left + scanAreaSize, top + scanAreaSize - bracketLength),
+      Offset(left + scanAreaSize, top + scanAreaSize),
+      bracketPaint,
+    );
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

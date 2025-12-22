@@ -35,10 +35,12 @@ import 'features/settings/presentation/feedback_settings_screen.dart';
 import 'features/settings/presentation/accessibility_settings_screen.dart';
 import 'features/settings/presentation/theme_customization_screen.dart';
 import 'features/settings/presentation/pattern_showcase_screen.dart';
+import 'features/settings/presentation/notification_settings_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/shell/presentation/app_shell.dart';
 import 'features/chat/presentation/chat_screen.dart';
 import 'features/chat/presentation/enhanced_chat_screen.dart';
+import 'features/search/presentation/global_search_screen.dart';
 
 GoRouter createRouter() {
   final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -81,6 +83,12 @@ GoRouter createRouter() {
       return null;
     },
     routes: [
+      // Global search route (outside shell for full-screen experience)
+      GoRoute(
+        path: '/search',
+        name: 'search',
+        pageBuilder: (context, state) => fadeSlide(const GlobalSearchScreen()),
+      ),
       ShellRoute(
         navigatorKey: shellNavigatorKey,
         builder: (context, state, child) =>
@@ -269,6 +277,11 @@ GoRouter createRouter() {
         path: '/settings/theme',
         name: 'theme-customization',
         builder: (context, state) => const ThemeCustomizationScreen(),
+      ),
+      GoRoute(
+        path: '/settings/notifications',
+        name: 'notification-settings',
+        builder: (context, state) => const NotificationSettingsScreen(),
       ),
       GoRoute(
         path: '/settings/patterns',

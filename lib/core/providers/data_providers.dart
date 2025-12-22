@@ -78,6 +78,21 @@ final projectTasksProvider =
   return ref.read(projectsRepositoryProvider).fetchProjectTasks(projectId);
 });
 
+// All tasks provider (for search)
+final tasksProvider = FutureProvider.autoDispose<List<TaskItem>>(
+  (ref) async {
+    final projects = await ref.watch(projectsProvider.future);
+    final List<TaskItem> allTasks = [];
+    
+    for (final project in projects) {
+      final tasks = await ref.read(projectsRepositoryProvider).fetchProjectTasks(project.id);
+      allTasks.addAll(tasks);
+    }
+    
+    return allTasks;
+  },
+);
+
 // Users provider
 final usersProvider = FutureProvider.autoDispose<List<User>>(
   (ref) => MockDataSource.fetchUsers(),

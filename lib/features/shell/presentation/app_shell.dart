@@ -8,6 +8,7 @@ import '../../../theme/tokens.dart';
 import '../../../design_system/widgets/app_scaffold.dart';
 import '../../../design_system/widgets/expandable_fab.dart';
 import '../../../theme/gradients.dart';
+import '../../../core/widgets/offline_indicator.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key, required this.child, required this.location});
@@ -85,6 +86,8 @@ class _AppShellState extends State<AppShell> {
         body: SafeArea(
           child: Column(
             children: [
+              // Offline indicator at the very top
+              const OfflineIndicator(),
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: AppSpacing.lg,
@@ -93,6 +96,11 @@ class _AppShellState extends State<AppShell> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    IconButton(
+                      tooltip: 'Search (⌘K)',
+                      icon: const Icon(Icons.search),
+                      onPressed: () => context.push('/search'),
+                    ),
                     IconButton(
                       tooltip: 'Inbox (requests & notifications)',
                       icon: const Icon(Icons.inbox_outlined),
