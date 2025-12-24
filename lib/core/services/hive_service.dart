@@ -160,24 +160,26 @@ class TaskItemAdapter extends TypeAdapter<TaskItem> {
   TaskItem read(BinaryReader reader) {
     return TaskItem(
       id: reader.readString(),
-      projectId: reader.readString(),
       title: reader.readString(),
-      description: reader.readString(),
-      status: TaskStatus.values[reader.readInt()],
-      assignedTo: reader.readString(),
       dueDate: DateTime.parse(reader.readString()),
+      status: TaskStatus.values[reader.readInt()],
+      projectId: reader.readString().isEmpty ? null : reader.readString(),
+      assignedTo: reader.readString().isEmpty ? null : reader.readString(),
+      assignedBy: reader.readString().isEmpty ? null : reader.readString(),
+      requestId: reader.readString().isEmpty ? null : reader.readString(),
     );
   }
 
   @override
   void write(BinaryWriter writer, TaskItem obj) {
     writer.writeString(obj.id);
-    writer.writeString(obj.projectId);
     writer.writeString(obj.title);
-    writer.writeString(obj.description ?? '');
+    writer.writeString(obj.dueDate.toIso8601String());
     writer.writeInt(obj.status.index);
+    writer.writeString(obj.projectId ?? '');
     writer.writeString(obj.assignedTo ?? '');
-    writer.writeString(obj.dueDate?.toIso8601String() ?? '');
+    writer.writeString(obj.assignedBy ?? '');
+    writer.writeString(obj.requestId ?? '');
   }
 }
 
@@ -190,8 +192,11 @@ class ProjectAdapter extends TypeAdapter<Project> {
     return Project(
       id: reader.readString(),
       name: reader.readString(),
-      description: reader.readString(),
-      createdAt: DateTime.parse(reader.readString()),
+      status: ProjectStatus.values[reader.readInt()],
+      tasks: reader.readInt(),
+      deadline: reader.readString().isEmpty ? null : DateTime.parse(reader.readString()),
+      completedTasks: reader.readInt(),
+      teamMembers: List<String>.from(reader.readList()),
     );
   }
 
@@ -199,8 +204,11 @@ class ProjectAdapter extends TypeAdapter<Project> {
   void write(BinaryWriter writer, Project obj) {
     writer.writeString(obj.id);
     writer.writeString(obj.name);
-    writer.writeString(obj.description ?? '');
-    writer.writeString(obj.createdAt.toIso8601String());
+    writer.writeInt(obj.status.index);
+    writer.writeInt(obj.tasks);
+    writer.writeString(obj.deadline?.toIso8601String() ?? '');
+    writer.writeInt(obj.completedTasks);
+    writer.writeList(obj.teamMembers);
   }
 }
 

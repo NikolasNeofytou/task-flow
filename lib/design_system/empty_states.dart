@@ -36,7 +36,7 @@ class EmptyState extends StatelessWidget {
               decoration: BoxDecoration(
                 gradient: gradient ?? AppGradients.primary,
                 shape: BoxShape.circle,
-                boxShadow: AppShadows.large,
+                boxShadow: AppShadows.level2,
               ),
               child: Icon(
                 icon,
@@ -148,7 +148,7 @@ class EmptyStates {
       icon: Icons.search_off,
       title: 'No Results',
       description: 'We couldn\'t find anything matching "$query". Try different keywords or filters.',
-      gradient: AppGradients.neutral,
+      gradient: AppGradients.surface,
     );
   }
   

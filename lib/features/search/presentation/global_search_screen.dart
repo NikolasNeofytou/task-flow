@@ -224,26 +224,23 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
     List<Project> projects,
     List<User> users,
   ) {
-    final searchEngine = FuzzySearchEngine<dynamic>(
-      threshold: 0.3,
-      caseSensitive: false,
-      maxResults: 50,
-    );
-
     // Search tasks
     List<SearchResult<TaskItem>> taskResults = [];
     if (_selectedCategory == SearchCategory.all ||
         _selectedCategory == SearchCategory.tasks) {
-      taskResults = searchEngine.search(
+      final taskSearchEngine = FuzzySearchEngine<TaskItem>(
+        threshold: 0.3,
+        caseSensitive: false,
+        maxResults: 50,
+      );
+      taskResults = taskSearchEngine.search(
         query: _query,
         items: tasks,
         fieldExtractors: {
           'title': (task) => task.title,
-          'description': (task) => task.description ?? '',
         },
         fieldWeights: {
           'title': 2.0,
-          'description': 1.0,
         },
       );
     }
@@ -252,16 +249,19 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
     List<SearchResult<Project>> projectResults = [];
     if (_selectedCategory == SearchCategory.all ||
         _selectedCategory == SearchCategory.projects) {
-      projectResults = searchEngine.search(
+      final projectSearchEngine = FuzzySearchEngine<Project>(
+        threshold: 0.3,
+        caseSensitive: false,
+        maxResults: 50,
+      );
+      projectResults = projectSearchEngine.search(
         query: _query,
         items: projects,
         fieldExtractors: {
           'name': (project) => project.name,
-          'description': (project) => project.description ?? '',
         },
         fieldWeights: {
           'name': 2.0,
-          'description': 1.0,
         },
       );
     }
@@ -270,7 +270,12 @@ class _GlobalSearchScreenState extends ConsumerState<GlobalSearchScreen> {
     List<SearchResult<User>> userResults = [];
     if (_selectedCategory == SearchCategory.all ||
         _selectedCategory == SearchCategory.people) {
-      userResults = searchEngine.search(
+      final userSearchEngine = FuzzySearchEngine<User>(
+        threshold: 0.3,
+        caseSensitive: false,
+        maxResults: 50,
+      );
+      userResults = userSearchEngine.search(
         query: _query,
         items: users,
         fieldExtractors: {
@@ -491,12 +496,6 @@ class _TaskResultTile extends ConsumerWidget {
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (task.description != null && task.description!.isNotEmpty)
-              Text(
-                task.description!,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
             const SizedBox(height: 4),
             Row(
               children: [
@@ -519,14 +518,13 @@ class _TaskResultTile extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(width: AppSpacing.sm),
-                if (task.dueDate != null)
-                  Text(
-                    'Due ${_formatDate(task.dueDate!)}',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey.shade600,
-                    ),
+                Text(
+                  'Due ${_formatDate(task.dueDate)}',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey.shade600,
                   ),
+                ),
               ],
             ),
           ],
@@ -546,9 +544,9 @@ class _TaskResultTile extends ConsumerWidget {
 
   Color _getStatusColor(TaskStatus status) {
     return switch (status) {
-      TaskStatus.todo => Colors.grey,
-      TaskStatus.inProgress => Colors.blue,
+      TaskStatus.pending => Colors.grey,
       TaskStatus.done => Colors.green,
+      TaskStatus.blocked => Colors.red,
     };
   }
 
@@ -592,13 +590,6 @@ class _ProjectResultTile extends ConsumerWidget {
           project.name,
           style: const TextStyle(fontWeight: FontWeight.w600),
         ),
-        subtitle: project.description != null
-            ? Text(
-                project.description!,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              )
-            : null,
         trailing: Icon(
           Icons.arrow_forward_ios,
           size: 16,

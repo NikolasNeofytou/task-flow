@@ -15,7 +15,7 @@ ThemeData buildLightTheme() {
     onError: Colors.white,
     surface: AppColors.surface,
     onSurface: AppColors.neutral,
-    surfaceContainerHighest: AppColors.surface.withOpacity(0.9),
+    surfaceContainerHighest: AppColors.surface.withValues(alpha: 0.9),
     tertiary: AppColors.info,
     onTertiary: Colors.white,
     outline: AppColors.neutral,

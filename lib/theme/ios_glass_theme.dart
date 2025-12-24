@@ -9,10 +9,6 @@ class iOSGlassTheme {
 
   // iOS 18 Color Palette
   static const _systemBlue = Color(0xFF007AFF);
-  static const _systemGray = Color(0xFF8E8E93);
-  static const _systemGray2 = Color(0xFFAEAEB2);
-  static const _systemGray3 = Color(0xFFC7C7CC);
-  static const _systemGray4 = Color(0xFFD1D1D6);
   static const _systemGray5 = Color(0xFFE5E5EA);
   static const _systemGray6 = Color(0xFFF2F2F7);
   

@@ -22,69 +22,123 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
   EnhancedChatController(this._analytics)
       : super({
           'all': [
-            // Yesterday morning
+            // Yesterday morning - The Royal Planning Meeting
             ChatMessage(
               id: '1',
-              author: 'Sarah',
+              author: 'Hamlet',
               authorRole: UserRole.projectManager,
               timestamp: DateTime.now().subtract(const Duration(hours: 28)), // Yesterday morning
               isMe: false,
               type: MessageType.text,
-              text: 'Good morning team! Ready to start the sprint.',
+              text: 'To be or not to be... ready for this sprint? That is the question.',
             ),
             ChatMessage(
               id: '2',
-              author: 'Alex',
+              author: 'Romeo',
               authorRole: UserRole.developer,
               timestamp: DateTime.now().subtract(const Duration(hours: 27, minutes: 55)),
               isMe: false,
               type: MessageType.text,
-              text: 'Morning! Let\'s do this.',
+              text: 'But soft! What code through yonder window breaks? Let us begin!',
+            ),
+            ChatMessage(
+              id: '3',
+              author: 'Lady Macbeth',
+              authorRole: UserRole.teamLead,
+              timestamp: DateTime.now().subtract(const Duration(hours: 27, minutes: 30)),
+              isMe: false,
+              type: MessageType.text,
+              text: 'Out, damned bugs! Out, I say! We shall have a spotless release.',
             ),
             // Yesterday afternoon - different phase
             ChatMessage(
-              id: '3',
+              id: '4',
               author: 'You',
               authorRole: UserRole.designer,
               timestamp: DateTime.now().subtract(const Duration(hours: 21)), // Yesterday afternoon
               isMe: true,
               type: MessageType.text,
-              text: 'Just finished the design mockups.',
+              text: 'All the world\'s a stage... and I\'ve just finished the design mockups! 🎨',
+            ),
+            ChatMessage(
+              id: '5',
+              author: 'Puck',
+              authorRole: UserRole.tester,
+              timestamp: DateTime.now().subtract(const Duration(hours: 20, minutes: 45)),
+              isMe: false,
+              type: MessageType.text,
+              text: 'Lord, what fools these mortals be! Found 3 bugs in the mischievous code.',
             ),
             // Today morning
             ChatMessage(
-              id: '4',
-              author: 'Mike',
-              authorRole: UserRole.tester,
+              id: '6',
+              author: 'Julius Caesar',
+              authorRole: UserRole.stakeholder,
               timestamp: DateTime.now().subtract(const Duration(hours: 4)), // Today morning
               isMe: false,
               type: MessageType.text,
-              text: 'Great work everyone!',
+              text: 'Et tu, Brute? Great work on the project, friends!',
+            ),
+            ChatMessage(
+              id: '7',
+              author: 'Juliet',
+              authorRole: UserRole.analyst,
+              timestamp: DateTime.now().subtract(const Duration(hours: 3, minutes: 30)),
+              isMe: false,
+              type: MessageType.text,
+              text: 'What\'s in a name? That which we call a bug by any other name would still need fixing.',
             ),
             // Today afternoon - after 30+ min gap
             ChatMessage(
-              id: '5',
-              author: 'Alex',
+              id: '8',
+              author: 'Prospero',
               authorRole: UserRole.developer,
               timestamp: DateTime.now().subtract(const Duration(hours: 2)),
               isMe: false,
               type: MessageType.text,
-              text: 'Let\'s finalize the tasks for Project X.',
+              text: 'We are such stuff as code is made on... Let\'s finalize Project Tempest!',
             ),
             ChatMessage(
-              id: '6',
+              id: '9',
+              author: 'Ophelia',
+              authorRole: UserRole.designer,
+              timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
+              isMe: false,
+              type: MessageType.text,
+              text: 'There\'s rosemary, that\'s for remembrance... remember to update the style guide!',
+            ),
+            ChatMessage(
+              id: '10',
               author: 'You',
               authorRole: UserRole.designer,
               timestamp: DateTime.now().subtract(const Duration(hours: 1)),
               isMe: true,
               type: MessageType.text,
-              text: 'On it. Adding deadlines now.',
+              text: 'Brevity is the soul of wit - adding deadlines now! ⏰',
+            ),
+            ChatMessage(
+              id: '11',
+              author: 'King Lear',
+              authorRole: UserRole.client,
+              timestamp: DateTime.now().subtract(const Duration(minutes: 45)),
+              isMe: false,
+              type: MessageType.text,
+              text: 'How sharper than a serpent\'s tooth it is to have a missed deadline! Please proceed with haste.',
+            ),
+            ChatMessage(
+              id: '12',
+              author: 'Portia',
+              authorRole: UserRole.analyst,
+              timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
+              isMe: false,
+              type: MessageType.text,
+              text: 'The quality of mercy is not strained... but our code quality must be! Running tests now.',
             ),
           ],
         });
 
   final AnalyticsService _analytics;
-  int _messageIdCounter = 7;
+  int _messageIdCounter = 13;
 
   void sendTextMessage(String channelId, String text) {
     if (text.trim().isEmpty) return;

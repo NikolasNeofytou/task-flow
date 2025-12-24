@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../theme/tokens.dart';
-import '../../../theme/gradients.dart';
 import '../../../design_system/animations/micro_interactions.dart';
 
 /// Theme customization provider

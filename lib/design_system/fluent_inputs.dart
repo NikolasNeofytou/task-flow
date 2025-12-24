@@ -523,7 +523,7 @@ class _FluentSliderState extends State<FluentSlider> {
               thumbColor: Colors.white,
               overlayColor: FluentColors.primary.withOpacity(0.1),
               trackHeight: 4,
-              thumbShape: const RoundSliderThumbShape(
+              thumbShape: RoundSliderThumbShape(
                 enabledThumbRadius: _isHovered ? 8 : 6,
               ),
               overlayShape: const RoundSliderOverlayShape(overlayRadius: 16),

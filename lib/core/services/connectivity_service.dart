@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// Connectivity service to monitor online/offline status
 class ConnectivityService {
   final Connectivity _connectivity = Connectivity();
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  StreamSubscription<ConnectivityResult>? _subscription;
   
   final StreamController<bool> _statusController = StreamController<bool>.broadcast();
   
@@ -23,9 +23,9 @@ class ConnectivityService {
     _isOnline = await checkConnectivity();
     
     // Listen to connectivity changes
-    _subscription = _connectivity.onConnectivityChanged.listen((results) {
+    _subscription = _connectivity.onConnectivityChanged.listen((result) {
       final wasOnline = _isOnline;
-      _isOnline = results.any((result) => result != ConnectivityResult.none);
+      _isOnline = result != ConnectivityResult.none;
       
       if (wasOnline != _isOnline) {
         _statusController.add(_isOnline);
@@ -35,8 +35,8 @@ class ConnectivityService {
 
   /// Check current connectivity status
   Future<bool> checkConnectivity() async {
-    final results = await _connectivity.checkConnectivity();
-    return results.any((result) => result != ConnectivityResult.none);
+    final result = await _connectivity.checkConnectivity();
+    return result != ConnectivityResult.none;
   }
 
   /// Dispose resources

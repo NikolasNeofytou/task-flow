@@ -27,12 +27,9 @@ class HighContrastThemes {
         errorContainer: Color(0xFF8B0000),
         onErrorContainer: Color(0xFFFFFFFF),
         
-        background: Color(0xFFFFFFFF),       // Pure white
-        onBackground: Color(0xFF000000),     // Pure black
-        
         surface: Color(0xFFFFFFFF),
         onSurface: Color(0xFF000000),
-        surfaceVariant: Color(0xFFF0F0F0),
+        surfaceContainerHighest: Color(0xFFF0F0F0),
         onSurfaceVariant: Color(0xFF000000),
         
         outline: Color(0xFF000000),

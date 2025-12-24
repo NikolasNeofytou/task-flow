@@ -6,6 +6,9 @@ import 'core/models/app_notification.dart';
 import 'core/models/project.dart';
 import 'core/models/request.dart';
 import 'core/models/task_item.dart';
+import 'features/auth/presentation/splash_screen.dart';
+import 'features/auth/presentation/login_screen.dart';
+import 'features/auth/presentation/signup_screen.dart' as auth_signup;
 import 'features/notifications/presentation/notifications_screen.dart';
 import 'features/notifications/presentation/notification_detail_screen.dart';
 import 'features/inbox/presentation/inbox_screen.dart';
@@ -68,21 +71,72 @@ GoRouter createRouter() {
 
   return GoRouter(
     navigatorKey: rootNavigatorKey,
-    initialLocation: '/calendar',
+    initialLocation: '/splash',
     redirect: (context, state) async {
-      // Check if onboarding is complete
-      final onboardingComplete = await storage.read(key: 'onboarding_complete');
-      final isOnSignupPage = state.matchedLocation == '/signup';
-      
-      // If not completed and not on signup page, redirect to signup
-      if (onboardingComplete != 'true' && !isOnSignupPage) {
-        return '/signup';
+      final isOnAuthPage = state.matchedLocation == '/login' ||
+          state.matchedLocation == '/signup' ||
+          state.matchedLocation == '/splash';
+
+      // Check if user is authenticated
+      final token = await storage.read(key: 'auth_token');
+      final isAuthenticated = token != null && token.isNotEmpty;
+
+      // If on splash screen, check auth and redirect
+      if (state.matchedLocation == '/splash') {
+        return isAuthenticated ? '/calendar' : '/login';
       }
-      
-      // Allow navigation
+
+      // If not authenticated and not on auth page, redirect to login
+      if (!isAuthenticated && !isOnAuthPage) {
+        return '/login';
+      }
+
+      // If authenticated and on auth page, redirect to calendar
+      if (isAuthenticated && isOnAuthPage) {
+        return '/calendar';
+      }
+
+      // Check if onboarding is complete (only if authenticated)
+      if (isAuthenticated) {
+        final onboardingComplete = await storage.read(key: 'onboarding_complete');
+        final isOnOnboardingPage = state.matchedLocation == '/onboarding';
+
+        if (onboardingComplete != 'true' && !isOnOnboardingPage) {
+          return '/onboarding';
+        }
+      }
+
       return null;
     },
     routes: [
+      // Splash screen
+      GoRoute(
+        path: '/splash',
+        name: 'splash',
+        pageBuilder: (context, state) => fadeSlide(const SplashScreen()),
+      ),
+
+      // Login screen
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        pageBuilder: (context, state) => fadeSlide(const LoginScreen()),
+      ),
+
+      // Signup screen
+      GoRoute(
+        path: '/signup',
+        name: 'signup',
+        pageBuilder: (context, state) => fadeSlide(const auth_signup.SignupScreen()),
+      ),
+
+      // Onboarding screen (shown after first login)
+      GoRoute(
+        path: '/onboarding',
+        name: 'onboarding',
+        pageBuilder: (context, state) => fadeSlide(const OnboardingScreen()),
+      ),
+
       // Global search route (outside shell for full-screen experience)
       GoRoute(
         path: '/search',

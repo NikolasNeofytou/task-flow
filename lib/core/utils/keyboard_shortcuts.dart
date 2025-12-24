@@ -340,7 +340,7 @@ class CommonShortcuts {
         label: 'Command Palette',
         description: 'Open command palette',
         keys: LogicalKeySet(LogicalKeyboardKey.control, LogicalKeyboardKey.keyK),
-        icon: Icons.command,
+        icon: Icons.search,
         action: () => CommandPalette.show(context, registry),
       ),
       ShortcutCategory.general,

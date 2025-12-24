@@ -14,7 +14,6 @@ import '../../../design_system/widgets/empty_state.dart';
 import '../../../design_system/widgets/app_snackbar.dart';
 import '../../../theme/tokens.dart';
 import '_action_background.dart';
-import '../../../core/models/request.dart';
 
 class RequestsScreen extends ConsumerWidget {
   const RequestsScreen({super.key});

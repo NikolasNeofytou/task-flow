@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'app_router.dart';
@@ -8,7 +7,6 @@ import 'core/providers/deep_link_providers.dart';
 import 'core/services/deep_link_service.dart';
 import 'core/services/hive_service.dart';
 import 'core/services/local_notification_service.dart';
-import 'theme/ios_glass_theme.dart';
 import 'theme/fluent_theme.dart';
 
 void main() async {

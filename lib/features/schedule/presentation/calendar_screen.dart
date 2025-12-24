@@ -5,9 +5,8 @@ import 'package:intl/intl.dart';
 
 import '../../../core/models/project.dart';
 import '../../../core/models/task_item.dart';
-import '../../../core/models/user.dart';
-import '../../../core/providers/data_providers.dart';
 import '../../../core/providers/tasks_provider.dart';
+import '../../../core/providers/data_providers.dart' show usersProvider, projectsProvider, calendarTasksProvider;
 import '../../../core/utils/memoization.dart';
 import '../../../core/utils/debouncer.dart';
 import '../../../design_system/widgets/app_state.dart';
@@ -83,13 +82,6 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
       t.dueDate.month == date.month &&
       t.dueDate.day == date.day
     ).toList();
-  }
-
-  List<TaskItem> _getTasksForMonth(List<TaskItem> tasks) {
-    return tasks.where((t) =>
-      t.dueDate.year == _currentMonth.year &&
-      t.dueDate.month == _currentMonth.month
-    ).toList()..sort((a, b) => a.dueDate.compareTo(b.dueDate));
   }
   
   List<TaskItem> _applyFilters(List<TaskItem> tasks) {
@@ -591,14 +583,6 @@ class _CalendarGrid extends StatelessWidget {
     return days;
   }
 
-  int _getTaskCountForDate(DateTime date) {
-    return tasks.where((t) =>
-      t.dueDate.year == date.year &&
-      t.dueDate.month == date.month &&
-      t.dueDate.day == date.day
-    ).length;
-  }
-
   List<Project> _getProjectsForDate(DateTime date) {
     return projects.where((p) {
       if (p.deadline == null) return false;
@@ -1071,7 +1055,6 @@ class _WeekView extends StatelessWidget {
                 day.month == selectedDate!.month &&
                 day.day == selectedDate!.day;
             final dayTasks = _getTasksForDate(day);
-            final dayProjects = _getProjectsForDate(day);
             
             return Expanded(
               child: GestureDetector(

@@ -4,10 +4,9 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/models/task_item.dart';
 import '../../../core/models/user.dart';
-import '../../../core/providers/data_providers.dart';
 import '../../../core/providers/tasks_provider.dart';
+import '../../../core/providers/data_providers.dart' show usersProvider;
 import '../../../theme/tokens.dart';
-import '../../../theme/gradients.dart';
 
 class TaskFormScreen extends ConsumerStatefulWidget {
   const TaskFormScreen({

@@ -7,7 +7,6 @@ import '../../../core/providers/data_providers.dart';
 import '../../../core/services/audio_service.dart';
 import '../../../core/services/haptics_service.dart';
 import '../../../design_system/widgets/app_snackbar.dart';
-import '../../../design_system/widgets/loading_button.dart';
 import '../../../theme/tokens.dart';
 
 class RequestDetailScreen extends ConsumerWidget {
