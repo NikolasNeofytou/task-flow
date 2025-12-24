@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../theme/tokens.dart';
+import '../../auth/auth.dart';
 import '../models/badge_model.dart';
 import '../models/user_profile_model.dart';
 import '../providers/profile_provider.dart';
@@ -227,10 +228,9 @@ class EnhancedProfileScreen extends ConsumerWidget {
           ),
           FilledButton(
             onPressed: () async {
-              await ref.read(userProfileProvider.notifier).logout();
-              if (context.mounted) {
-                context.go('/signup');
-              }
+              Navigator.pop(context); // Close dialog first
+              await ref.read(authStateProvider.notifier).logout();
+              // Router will automatically redirect to /login
             },
             child: const Text('Logout'),
           ),
