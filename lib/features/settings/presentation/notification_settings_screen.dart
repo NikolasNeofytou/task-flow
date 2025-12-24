@@ -125,7 +125,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
             builder: (context, snapshot) {
               return Card(
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.info_outline,
                     color: AppColors.primary,
                   ),
@@ -148,7 +148,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
 
           // Task reminders
-          _SectionHeader(title: 'Task Reminders'),
+          const _SectionHeader(title: 'Task Reminders'),
           SwitchListTile(
             title: const Text('Task due date reminders'),
             subtitle: const Text('Get notified before tasks are due'),
@@ -162,7 +162,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           const Divider(),
 
           // Team notifications
-          _SectionHeader(title: 'Team Activity'),
+          const _SectionHeader(title: 'Team Activity'),
           SwitchListTile(
             title: const Text('New comments'),
             subtitle: const Text('When someone comments on your tasks'),
@@ -196,7 +196,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           const Divider(),
 
           // Digest
-          _SectionHeader(title: 'Daily Digest'),
+          const _SectionHeader(title: 'Daily Digest'),
           SwitchListTile(
             title: const Text('Daily summary'),
             subtitle: const Text('Get a daily digest of your tasks'),
@@ -210,7 +210,7 @@ class NotificationSettingsScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
 
           // Test notification
-          _SectionHeader(title: 'Test'),
+          const _SectionHeader(title: 'Test'),
           ListTile(
             leading: const Icon(Icons.notification_add),
             title: const Text('Send test notification'),

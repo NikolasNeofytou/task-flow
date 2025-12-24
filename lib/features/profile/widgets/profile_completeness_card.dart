@@ -40,7 +40,7 @@ class ProfileCompletenessCard extends StatelessWidget {
             children: [
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: Colors.green,
                   shape: BoxShape.circle,
                 ),

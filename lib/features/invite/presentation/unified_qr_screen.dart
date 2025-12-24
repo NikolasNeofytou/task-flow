@@ -4,10 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import '../../../core/services/team_service.dart';
-import '../../../core/services/qr_generation_service.dart';
 import '../../../core/services/haptics_service.dart';
 import '../../../core/services/audio_service.dart';
-import '../../../core/providers/qr_providers.dart';
 import '../../../theme/tokens.dart';
 
 enum QRMode {
@@ -250,9 +248,9 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
   Widget _buildShowQRMode(ThemeData theme, ColorScheme colorScheme) {
     // Generate deep link for user profile
     // TODO: Get actual user data from auth provider
-    final userId = 'user123';
-    final email = 'user@example.com';
-    final displayName = 'John Doe';
+    const userId = 'user123';
+    const email = 'user@example.com';
+    const displayName = 'John Doe';
     final qrData = 'taskflow://user/$userId?email=${Uri.encodeComponent(email)}&displayName=${Uri.encodeComponent(displayName)}';
 
     return SingleChildScrollView(

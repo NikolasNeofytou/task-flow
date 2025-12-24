@@ -92,7 +92,7 @@ class AppBadge {
 class BadgeCollection {
   static final List<AppBadge> all = [
     // Common badges
-    AppBadge(
+    const AppBadge(
       id: 'first_task',
       name: 'First Steps',
       description: 'Complete your first task',
@@ -100,7 +100,7 @@ class BadgeCollection {
       rarity: BadgeRarity.common,
       maxProgress: 1,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'team_player',
       name: 'Team Player',
       description: 'Join a team project',
@@ -108,7 +108,7 @@ class BadgeCollection {
       rarity: BadgeRarity.common,
       maxProgress: 1,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'early_bird',
       name: 'Early Bird',
       description: 'Complete a task before 9 AM',
@@ -118,7 +118,7 @@ class BadgeCollection {
     ),
     
     // Rare badges
-    AppBadge(
+    const AppBadge(
       id: 'steady_worker',
       name: 'Steady Worker',
       description: 'Complete 10 tasks',
@@ -126,7 +126,7 @@ class BadgeCollection {
       rarity: BadgeRarity.rare,
       maxProgress: 10,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'helper_hero',
       name: 'Helper Hero',
       description: 'Help 5 teammates',
@@ -134,7 +134,7 @@ class BadgeCollection {
       rarity: BadgeRarity.rare,
       maxProgress: 5,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'organizer',
       name: 'The Organizer',
       description: 'Create 5 projects',
@@ -144,7 +144,7 @@ class BadgeCollection {
     ),
     
     // Epic badges
-    AppBadge(
+    const AppBadge(
       id: 'speed_demon',
       name: 'Speed Demon',
       description: 'Complete 5 tasks in one day',
@@ -152,7 +152,7 @@ class BadgeCollection {
       rarity: BadgeRarity.epic,
       maxProgress: 5,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'streak_master',
       name: 'Streak Master',
       description: 'Work 7 days in a row',
@@ -160,7 +160,7 @@ class BadgeCollection {
       rarity: BadgeRarity.epic,
       maxProgress: 7,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'perfectionist',
       name: 'Perfectionist',
       description: 'Complete 20 tasks without missing a deadline',
@@ -170,7 +170,7 @@ class BadgeCollection {
     ),
     
     // Legendary badges
-    AppBadge(
+    const AppBadge(
       id: 'task_legend',
       name: 'Task Legend',
       description: 'Complete 100 tasks',
@@ -178,7 +178,7 @@ class BadgeCollection {
       rarity: BadgeRarity.legendary,
       maxProgress: 100,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'consistency_king',
       name: 'Consistency King',
       description: 'Work 30 days in a row',
@@ -186,7 +186,7 @@ class BadgeCollection {
       rarity: BadgeRarity.legendary,
       maxProgress: 30,
     ),
-    AppBadge(
+    const AppBadge(
       id: 'team_leader',
       name: 'Team Leader',
       description: 'Lead 10 successful projects',

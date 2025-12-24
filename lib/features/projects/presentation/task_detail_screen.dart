@@ -122,7 +122,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
             child: commentsAsync.when(
               data: (comments) {
                 if (comments.isEmpty) {
-                  return EmptyState(
+                  return const EmptyState(
                     icon: Icons.chat_bubble_outline,
                     title: 'No comments yet',
                     subtitle: 'Start the conversation by adding a comment!',

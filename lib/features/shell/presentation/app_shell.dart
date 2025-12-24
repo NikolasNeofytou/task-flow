@@ -182,7 +182,7 @@ class _AppShellState extends State<AppShell> {
                     onPressed: () => _showProjectSelectionDialog(context),
                     tooltip: 'Add new task',
                     child: Container(
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         gradient: AppGradients.primary,
                         shape: BoxShape.circle,
                       ),

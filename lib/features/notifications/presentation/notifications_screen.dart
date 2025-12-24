@@ -124,7 +124,7 @@ class _NotificationTile extends StatelessWidget {
                     label: const Text('Reject'),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppColors.error,
-                      side: BorderSide(color: AppColors.error),
+                      side: const BorderSide(color: AppColors.error),
                     ),
                   ),
                 ),

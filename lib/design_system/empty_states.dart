@@ -115,7 +115,7 @@ class EmptyStates {
   }
   
   static Widget noRequests() {
-    return EmptyState(
+    return const EmptyState(
       icon: Icons.inbox,
       title: 'No Requests',
       description: 'You\'re all caught up! No pending change requests at the moment.',
@@ -124,7 +124,7 @@ class EmptyStates {
   }
   
   static Widget noNotifications() {
-    return EmptyState(
+    return const EmptyState(
       icon: Icons.notifications_none,
       title: 'No Notifications',
       description: 'You\'re all up to date. New notifications will appear here.',
@@ -237,7 +237,7 @@ class ShimmerLoadingState extends StatelessWidget {
                   width: double.infinity,
                   height: 20,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
                 ),
@@ -246,7 +246,7 @@ class ShimmerLoadingState extends StatelessWidget {
                   width: 200,
                   height: 16,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.surfaceVariant,
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
                 ),

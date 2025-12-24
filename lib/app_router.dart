@@ -9,11 +9,9 @@ import 'core/models/task_item.dart';
 import 'features/auth/presentation/splash_screen.dart';
 import 'features/auth/presentation/login_screen.dart';
 import 'features/auth/presentation/signup_screen.dart' as auth_signup;
-import 'features/notifications/presentation/notifications_screen.dart';
 import 'features/notifications/presentation/notification_detail_screen.dart';
 import 'features/inbox/presentation/inbox_screen.dart';
 import 'features/invite/presentation/invite_accept_screen.dart';
-import 'features/profile/presentation/profile_screen.dart';
 import 'features/profile/presentation/enhanced_profile_screen.dart';
 import 'features/profile/presentation/edit_profile_screen.dart';
 import 'features/profile/presentation/personal_qr_screen.dart';
@@ -31,7 +29,6 @@ import 'features/projects/presentation/projects_screen.dart';
 import 'features/projects/presentation/project_detail_screen.dart';
 import 'features/projects/presentation/task_form_screen.dart';
 import 'features/projects/presentation/task_detail_screen.dart';
-import 'features/requests/presentation/requests_screen.dart';
 import 'features/requests/presentation/request_detail_screen.dart';
 import 'features/schedule/presentation/calendar_screen.dart';
 import 'features/settings/presentation/feedback_settings_screen.dart';
@@ -41,14 +38,13 @@ import 'features/settings/presentation/pattern_showcase_screen.dart';
 import 'features/settings/presentation/notification_settings_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/shell/presentation/app_shell.dart';
-import 'features/chat/presentation/chat_screen.dart';
 import 'features/chat/presentation/enhanced_chat_screen.dart';
 import 'features/search/presentation/global_search_screen.dart';
 
 GoRouter createRouter() {
   final rootNavigatorKey = GlobalKey<NavigatorState>();
   final shellNavigatorKey = GlobalKey<NavigatorState>();
-  final storage = const FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
   CustomTransitionPage<T> fadeSlide<T>(Widget child) {
     return CustomTransitionPage<T>(

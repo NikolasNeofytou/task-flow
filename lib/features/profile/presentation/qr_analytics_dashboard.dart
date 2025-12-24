@@ -155,7 +155,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
           children: [
             Row(
               children: [
-                Icon(Icons.trending_up, color: AppColors.primary),
+                const Icon(Icons.trending_up, color: AppColors.primary),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Activity Stats',
@@ -242,7 +242,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
           children: [
             Row(
               children: [
-                Icon(Icons.star, color: AppColors.warning),
+                const Icon(Icons.star, color: AppColors.warning),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Most Popular QR Codes',
@@ -277,7 +277,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
                   ),
                   child: Text(
                     '$count events',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w600,
                       fontSize: 12,
@@ -305,7 +305,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
           children: [
             Row(
               children: [
-                Icon(Icons.share, color: AppColors.info),
+                const Icon(Icons.share, color: AppColors.info),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Share Methods',
@@ -351,7 +351,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
                         value: percentage / 100,
                         minHeight: 8,
                         backgroundColor: AppColors.neutral.withOpacity(0.2),
-                        valueColor: AlwaysStoppedAnimation<Color>(AppColors.info),
+                        valueColor: const AlwaysStoppedAnimation<Color>(AppColors.info),
                       ),
                     ),
                   ],
@@ -375,7 +375,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
           children: [
             Row(
               children: [
-                Icon(Icons.storage, color: AppColors.success),
+                const Icon(Icons.storage, color: AppColors.success),
                 const SizedBox(width: AppSpacing.sm),
                 Text(
                   'Offline Cache',

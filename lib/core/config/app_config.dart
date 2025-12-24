@@ -17,9 +17,9 @@ class AppConfig {
 
   factory AppConfig.fromEnvironment() {
     const envBase =
-        String.fromEnvironment('API_BASE_URL', defaultValue: 'https://api.example.com');
+        String.fromEnvironment('API_BASE_URL', defaultValue: 'http://localhost:3000/api');
     const useMocksRaw =
-        String.fromEnvironment('USE_MOCKS', defaultValue: 'true');
+        String.fromEnvironment('USE_MOCKS', defaultValue: 'false');
     final useMocksEnv = useMocksRaw.toLowerCase() == 'true';
     return AppConfig(baseUrl: envBase, useMocks: useMocksEnv);
   }

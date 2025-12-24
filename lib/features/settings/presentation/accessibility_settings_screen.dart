@@ -138,7 +138,7 @@ class AccessibilitySettingsScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         children: [
           // Visual section
-          _SectionHeader(title: 'Visual'),
+          const _SectionHeader(title: 'Visual'),
           const SizedBox(height: 8),
           
           _AccessibilitySwitchTile(
@@ -223,7 +223,7 @@ class AccessibilitySettingsScreen extends ConsumerWidget {
           const SizedBox(height: 16),
           
           // Interaction section
-          _SectionHeader(title: 'Interaction'),
+          const _SectionHeader(title: 'Interaction'),
           const SizedBox(height: 8),
           
           _AccessibilitySwitchTile(

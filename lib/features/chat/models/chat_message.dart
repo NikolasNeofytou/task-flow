@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 /// Enhanced message model supporting text, voice, and file attachments
 class ChatMessage {

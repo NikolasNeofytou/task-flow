@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/providers/feedback_providers.dart';
 import '../../core/services/feedback_service.dart';
 import '../../theme/tokens.dart';
-import '../../theme/gradients.dart';
 
 /// Custom refresh indicator with haptic feedback
 class CustomRefreshIndicator extends ConsumerWidget {
@@ -123,7 +122,7 @@ class RefreshHeader extends StatelessWidget {
       height: 60,
       alignment: Alignment.center,
       child: refreshing
-          ? Row(
+          ? const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
@@ -134,8 +133,8 @@ class RefreshHeader extends StatelessWidget {
                     valueColor: AlwaysStoppedAnimation(AppColors.primary),
                   ),
                 ),
-                const SizedBox(width: AppSpacing.md),
-                const Text(
+                SizedBox(width: AppSpacing.md),
+                Text(
                   'Refreshing...',
                   style: TextStyle(
                     color: AppColors.neutral,
@@ -144,7 +143,7 @@ class RefreshHeader extends StatelessWidget {
                 ),
               ],
             )
-          : Row(
+          : const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
@@ -152,8 +151,8 @@ class RefreshHeader extends StatelessWidget {
                   color: AppColors.primary,
                   size: 20,
                 ),
-                const SizedBox(width: AppSpacing.sm),
-                const Text(
+                SizedBox(width: AppSpacing.sm),
+                Text(
                   'Pull to refresh',
                   style: TextStyle(
                     color: AppColors.neutral,

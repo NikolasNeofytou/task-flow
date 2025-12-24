@@ -445,7 +445,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
 
   Widget _buildReceiveMode() {
     if (_scannerController == null) {
-      return Center(
+      return const Center(
         child: CircularProgressIndicator(),
       );
     }
@@ -501,15 +501,15 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                   color: Colors.black.withOpacity(0.7),
                   borderRadius: BorderRadius.circular(AppRadii.md),
                 ),
-                child: Column(
+                child: const Column(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.qr_code_scanner,
                       color: Colors.white,
                       size: 48,
                     ),
-                    const SizedBox(height: AppSpacing.md),
-                    const Text(
+                    SizedBox(height: AppSpacing.md),
+                    Text(
                       'Point camera at teammate\'s QR code',
                       style: TextStyle(
                         color: Colors.white,
@@ -518,8 +518,8 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: AppSpacing.xs),
-                    const Text(
+                    SizedBox(height: AppSpacing.xs),
+                    Text(
                       'The code will be scanned automatically',
                       style: TextStyle(
                         color: Colors.white70,
@@ -872,7 +872,7 @@ class ScannerOverlayPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 4;
 
-    final double bracketLength = 30;
+    const double bracketLength = 30;
 
     // Top-left corner
     canvas.drawLine(

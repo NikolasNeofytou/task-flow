@@ -160,7 +160,7 @@ class _TeamHeader extends StatelessWidget {
                     color: AppColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppRadii.md),
                   ),
-                  child: Icon(
+                  child: const Icon(
                     Icons.groups,
                     color: AppColors.primary,
                     size: 32,
@@ -221,7 +221,7 @@ class _TeamMemberCard extends StatelessWidget {
               backgroundColor: AppColors.primary.withOpacity(0.1),
               child: Text(
                 displayName.substring(0, 2).toUpperCase(),
-                style: TextStyle(
+                style: const TextStyle(
                   color: AppColors.primary,
                   fontWeight: FontWeight.bold,
                   fontSize: 18,

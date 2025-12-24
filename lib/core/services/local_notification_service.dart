@@ -21,7 +21,7 @@ class LocalNotificationService {
     const AndroidInitializationSettings androidSettings =
         AndroidInitializationSettings('@mipmap/ic_launcher');
 
-    final DarwinInitializationSettings iosSettings =
+    const DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -29,7 +29,7 @@ class LocalNotificationService {
       onDidReceiveLocalNotification: _onDidReceiveLocalNotification,
     );
 
-    final InitializationSettings settings = InitializationSettings(
+    const InitializationSettings settings = InitializationSettings(
       android: androidSettings,
       iOS: iosSettings,
       macOS: iosSettings,

@@ -316,12 +316,12 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                   borderRadius: BorderRadius.circular(AppRadii.pill),
                   boxShadow: AppShadows.soft,
                 ),
-                child: Row(
+                child: const Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Icon(Icons.today, color: Colors.white, size: 18),
-                    const SizedBox(width: AppSpacing.xs),
-                    const Text(
+                    Icon(Icons.today, color: Colors.white, size: 18),
+                    SizedBox(width: AppSpacing.xs),
+                    Text(
                       'Today',
                       style: TextStyle(
                         color: Colors.white,
@@ -387,7 +387,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                 height: 300,
                 child: CalendarGridSkeleton(),
               ),
-              error: (err, _) => SizedBox(
+              error: (err, _) => const SizedBox(
                 height: 300,
                 child: AppStateView.error(message: 'Failed to load calendar'),
               ),
@@ -397,7 +397,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
             height: 300,
             child: CalendarGridSkeleton(),
           ),
-          error: (err, _) => SizedBox(
+          error: (err, _) => const SizedBox(
             height: 300,
             child: AppStateView.error(message: 'Failed to load calendar'),
           ),
@@ -458,7 +458,7 @@ class _CalendarScreenState extends ConsumerState<CalendarScreen> {
                               );
                             },
                             child: ContextMenuRegion(
-                              items: [
+                              items: const [
                                 ContextMenuItem(
                                   value: 'edit',
                                   icon: Icons.edit,
@@ -909,7 +909,7 @@ class _CalendarItem extends StatelessWidget {
             ),
           ),
           if (onTap != null)
-            Icon(Icons.chevron_right, color: AppColors.neutral),
+            const Icon(Icons.chevron_right, color: AppColors.neutral),
         ],
       ),
     );
@@ -1346,7 +1346,7 @@ class _DayView extends StatelessWidget {
                 ),
               ),
             );
-          }).toList(),
+          }),
           const SizedBox(height: AppSpacing.lg),
           const Divider(),
           const SizedBox(height: AppSpacing.md),
@@ -1373,7 +1373,7 @@ class _DayView extends StatelessWidget {
                 onTap: () => context.push('/projects/${task.projectId}/task/${task.id}'),
               ),
             );
-          }).toList(),
+          }),
       ],
     );
   }

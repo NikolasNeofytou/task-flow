@@ -270,7 +270,7 @@ class _EnhancedPersonalQRScreenState extends ConsumerState<EnhancedPersonalQRScr
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.lightbulb_outline,
                         color: AppColors.primary,
                         size: 20,
@@ -286,15 +286,15 @@ class _EnhancedPersonalQRScreenState extends ConsumerState<EnhancedPersonalQRScr
                     ],
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  _InstructionItem(
+                  const _InstructionItem(
                     number: '1',
                     text: 'Choose your favorite QR code style',
                   ),
-                  _InstructionItem(
+                  const _InstructionItem(
                     number: '2',
                     text: 'Share via messaging apps or save as image',
                   ),
-                  _InstructionItem(
+                  const _InstructionItem(
                     number: '3',
                     text: 'Teammates scan and you\'re instantly connected!',
                   ),
@@ -545,7 +545,7 @@ class _InstructionItem extends StatelessWidget {
           Container(
             width: 28,
             height: 28,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.primary,
               shape: BoxShape.circle,
             ),

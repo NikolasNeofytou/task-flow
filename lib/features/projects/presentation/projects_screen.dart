@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../../core/models/project.dart';
 import '../../../core/models/task_item.dart';
-import '../../../core/models/user.dart';
 import '../../../core/providers/data_providers.dart';
 import '../../../core/utils/memoization.dart';
 import '../../../core/utils/debouncer.dart';
@@ -12,15 +11,10 @@ import '../../../design_system/widgets/animated_card.dart';
 import '../../../design_system/widgets/app_pill.dart';
 import '../../../design_system/widgets/app_state.dart';
 import '../../../design_system/widgets/skeleton_loader.dart';
-import '../../../design_system/widgets/expandable_fab.dart';
 import '../../../design_system/widgets/context_menu.dart';
-import '../../../design_system/widgets/custom_refresh_indicator.dart';
-import '../../../design_system/widgets/empty_state.dart';
 import '../../../design_system/widgets/app_snackbar.dart';
 import '../../../design_system/widgets/app_bottom_sheet.dart';
-import '../../../design_system/animations/micro_interactions.dart';
 import '../../../theme/tokens.dart';
-import '../../../theme/gradients.dart';
 
 /// Projects overview with board + roadmap sections.
 class ProjectsScreen extends ConsumerStatefulWidget {
@@ -588,7 +582,7 @@ class _ProjectCard extends ConsumerWidget {
     final daysUntilDeadline = project.deadline?.difference(now).inDays;
     
     return ContextMenuRegion(
-      items: [
+      items: const [
         ContextMenuItem(
           value: 'edit',
           icon: Icons.edit,
@@ -701,7 +695,7 @@ class _ProjectCard extends ConsumerWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.warning, size: 14, color: AppColors.error),
+                        const Icon(Icons.warning, size: 14, color: AppColors.error),
                         const SizedBox(width: AppSpacing.xs),
                         Text(
                           'OVERDUE',
@@ -727,7 +721,7 @@ class _ProjectCard extends ConsumerWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.schedule, size: 14, color: AppColors.warning),
+                        const Icon(Icons.schedule, size: 14, color: AppColors.warning),
                         const SizedBox(width: AppSpacing.xs),
                         Text(
                           '$daysUntilDeadline days',

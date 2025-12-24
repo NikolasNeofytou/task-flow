@@ -4,21 +4,41 @@ class ProjectDto {
   const ProjectDto({
     required this.id,
     required this.name,
-    required this.status,
-    required this.tasks,
+    this.description,
+    this.color,
+    this.members,
+    this.status,
+    this.tasks,
+    this.createdAt,
+    this.updatedAt,
   });
 
   final String id;
   final String name;
-  final String status;
-  final int tasks;
+  final String? description;
+  final String? color;
+  final List<String>? members;
+  final String? status;
+  final int? tasks;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   factory ProjectDto.fromJson(Map<String, dynamic> json) {
     return ProjectDto(
       id: json['id'] as String,
       name: json['name'] as String,
-      status: json['status'] as String,
-      tasks: (json['tasks'] as num).toInt(),
+      description: json['description'] as String?,
+      color: json['color'] as String?,
+      members:
+          (json['members'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      status: json['status'] as String?,
+      tasks: json['tasks'] != null ? (json['tasks'] as num).toInt() : null,
+      createdAt: json['createdAt'] != null
+          ? DateTime.parse(json['createdAt'] as String)
+          : null,
+      updatedAt: json['updatedAt'] != null
+          ? DateTime.parse(json['updatedAt'] as String)
+          : null,
     );
   }
 
@@ -26,8 +46,8 @@ class ProjectDto {
     return Project(
       id: id,
       name: name,
-      status: _mapStatus(status),
-      tasks: tasks,
+      status: status != null ? _mapStatus(status!) : ProjectStatus.onTrack,
+      tasks: tasks ?? 0,
     );
   }
 

@@ -173,14 +173,11 @@ class HighContrastThemes {
         error: Color(0xFFFF6B6B),            // Bright red
         onError: Color(0xFF000000),
         errorContainer: Color(0xFFFF6B6B),
-        onErrorContainer: Color(0xFF000000),
-        
-        background: Color(0xFF000000),       // Pure black
-        onBackground: Color(0xFFFFFFFF),     // Pure white
+        onErrorContainer: Color(0xFF000000),     // Pure white
         
         surface: Color(0xFF000000),
         onSurface: Color(0xFFFFFFFF),
-        surfaceVariant: Color(0xFF1A1A1A),
+        surfaceContainerHighest: Color(0xFF1A1A1A),
         onSurfaceVariant: Color(0xFFFFFFFF),
         
         outline: Color(0xFFFFFFFF),

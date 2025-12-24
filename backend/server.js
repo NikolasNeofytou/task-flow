@@ -38,6 +38,8 @@ const projectRoutes = require('./routes/projects');
 const taskRoutes = require('./routes/tasks');
 const chatRoutes = require('./routes/chat');
 const notificationRoutes = require('./routes/notifications');
+const requestRoutes = require('./routes/requests');
+const commentRoutes = require('./routes/comments');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -46,6 +48,8 @@ app.use('/api/projects', projectRoutes);
 app.use('/api/tasks', taskRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/requests', requestRoutes);
+app.use('/api/comments', commentRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

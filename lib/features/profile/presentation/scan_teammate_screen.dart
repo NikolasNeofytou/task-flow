@@ -152,7 +152,7 @@ class _ScanTeammateScreenState extends ConsumerState<ScanTeammateScreen> {
                             ),
                             Text(
                               userData['email']!,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: AppColors.neutral,
                                 fontSize: 14,
                               ),

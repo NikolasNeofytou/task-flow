@@ -73,8 +73,8 @@ class ImageHero extends StatelessWidget {
 class HeroPageRoute<T> extends PageRoute<T> {
   HeroPageRoute({
     required this.builder,
-    RouteSettings? settings,
-  }) : super(settings: settings);
+    super.settings,
+  });
 
   final WidgetBuilder builder;
 

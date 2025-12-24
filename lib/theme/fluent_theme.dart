@@ -11,7 +11,7 @@ class FluentTheme {
       brightness: Brightness.light,
       
       // Color scheme based on Fluent colors
-      colorScheme: ColorScheme.light(
+      colorScheme: const ColorScheme.light(
         primary: FluentColors.primary,
         onPrimary: Colors.white,
         primaryContainer: FluentColors.primaryLight,
@@ -39,7 +39,7 @@ class FluentTheme {
         shadowColor: Colors.black.withOpacity(0.07),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FluentBorderRadius.large),
-          side: BorderSide(
+          side: const BorderSide(
             color: FluentColors.gray40,
             width: 1,
           ),
@@ -238,7 +238,7 @@ class FluentTheme {
         shadowColor: Colors.black.withOpacity(0.11),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FluentBorderRadius.large),
-          side: BorderSide(
+          side: const BorderSide(
             color: FluentColors.gray40,
             width: 1,
           ),
@@ -365,7 +365,7 @@ class FluentTheme {
       ),
       
       // Typography
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         displayLarge: FluentTypography.display,
         displayMedium: FluentTypography.titleLarge,
         displaySmall: FluentTypography.title,
@@ -392,7 +392,7 @@ class FluentTheme {
       brightness: Brightness.dark,
       
       // Dark color scheme
-      colorScheme: ColorScheme.dark(
+      colorScheme: const ColorScheme.dark(
         primary: FluentColors.primaryLight,
         onPrimary: Colors.black,
         primaryContainer: FluentColors.primary,
@@ -415,7 +415,7 @@ class FluentTheme {
       // Apply similar theme properties for dark mode
       // (abbreviated for brevity - follows same pattern as light theme)
       
-      textTheme: TextTheme(
+      textTheme: const TextTheme(
         displayLarge: FluentTypography.display,
         displayMedium: FluentTypography.titleLarge,
         displaySmall: FluentTypography.title,

@@ -13,10 +13,12 @@ class CommentsRemoteRepository implements CommentsRepository {
   @override
   Future<List<Comment>> fetchComments(String taskId) async {
     try {
-      final response = await _dio.get('/tasks/$taskId/comments');
+      final response =
+          await _dio.get('/comments', queryParameters: {'taskId': taskId});
       final data = response.data as List<dynamic>;
       return data
-          .map((json) => CommentDto.fromJson(json as Map<String, dynamic>).toDomain())
+          .map((json) =>
+              CommentDto.fromJson(json as Map<String, dynamic>).toDomain())
           .toList();
     } catch (e) {
       throw mapDioError(e);
@@ -30,10 +32,11 @@ class CommentsRemoteRepository implements CommentsRepository {
   }) async {
     try {
       final response = await _dio.post(
-        '/tasks/$taskId/comments',
-        data: {'content': content},
+        '/comments',
+        data: {'taskId': taskId, 'content': content},
       );
-      return CommentDto.fromJson(response.data as Map<String, dynamic>).toDomain();
+      return CommentDto.fromJson(response.data as Map<String, dynamic>)
+          .toDomain();
     } catch (e) {
       throw mapDioError(e);
     }

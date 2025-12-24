@@ -6,12 +6,22 @@ class NotificationDto {
     required this.title,
     required this.type,
     required this.createdAt,
+    this.requestId,
+    this.taskId,
+    this.fromUserId,
+    this.read,
+    this.actionable,
   });
 
   final String id;
   final String title;
   final String type;
   final DateTime createdAt;
+  final String? requestId;
+  final String? taskId;
+  final String? fromUserId;
+  final bool? read;
+  final bool? actionable;
 
   factory NotificationDto.fromJson(Map<String, dynamic> json) {
     return NotificationDto(
@@ -19,6 +29,11 @@ class NotificationDto {
       title: json['title'] as String,
       type: json['type'] as String,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      requestId: json['requestId'] as String?,
+      taskId: json['taskId'] as String?,
+      fromUserId: json['fromUserId'] as String?,
+      read: json['read'] as bool?,
+      actionable: json['actionable'] as bool?,
     );
   }
 
@@ -28,6 +43,10 @@ class NotificationDto {
       title: title,
       type: _mapType(type),
       createdAt: createdAt,
+      requestId: requestId,
+      taskId: taskId,
+      fromUserId: fromUserId,
+      actionable: actionable ?? false,
     );
   }
 

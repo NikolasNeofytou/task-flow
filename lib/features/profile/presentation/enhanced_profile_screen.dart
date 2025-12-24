@@ -91,7 +91,7 @@ class EnhancedProfileScreen extends ConsumerWidget {
                     color: AppColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
-                  child: Text(
+                  child: const Text(
                     'NEW',
                     style: TextStyle(
                       fontSize: 10,

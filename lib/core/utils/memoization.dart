@@ -104,7 +104,7 @@ class StringCache {
 /// Memoized list filtering
 class ListFilterCache<T> {
   final _cache = <String, List<T>>{};
-  int _maxCacheSize;
+  final int _maxCacheSize;
   
   ListFilterCache({int maxCacheSize = 50}) : _maxCacheSize = maxCacheSize;
   
