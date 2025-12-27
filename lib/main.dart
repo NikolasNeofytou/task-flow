@@ -11,6 +11,7 @@ import 'core/storage/hive_storage_service.dart';
 import 'core/services/local_notification_service.dart';
 import 'core/services/push_notification_service.dart';
 import 'theme/fluent_theme.dart';
+import 'theme/high_contrast_theme.dart';
 
 // Background message handler for Firebase
 @pragma('vm:entry-point')
@@ -175,30 +176,44 @@ class _TaskflowAppState extends ConsumerState<TaskflowApp> {
     }
 
     _handleDeepLink(uri);
-    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final router = createRouter();
 
-    // Use Fluent theme for all platforms (iOS glass theme not compatible with web)
+    // Check if high contrast mode is enabled
+    return MediaQuery(
+      data: MediaQuery.of(context),
+      child: Builder(
+        builder: (context) {
+          final isHighContrast = MediaQuery.of(context).highContrast;
 
-    return MaterialApp.router(
-      title: 'Taskflow',
-      debugShowCheckedModeBanner: false,
-      theme: FluentTheme.light(),
-      darkTheme: FluentTheme.dark(),
-      themeMode: ThemeMode.light,
-      routerConfig: router,
-      builder: (context, child) {
-        // Store navigator key for deep link navigation
-        return Navigator(
-          key: _navigatorKey,
-          onGenerateRoute: (_) => MaterialPageRoute(
-            builder: (_) => child!,
-          ),
-        );
-      },
+          return MaterialApp.router(
+            title: 'Taskflow',
+            debugShowCheckedModeBanner: false,
+            theme: isHighContrast
+                ? HighContrastTheme.buildLightTheme()
+                : FluentTheme.light(),
+            darkTheme: isHighContrast
+                ? HighContrastTheme.buildDarkTheme()
+                : FluentTheme.dark(),
+            highContrastTheme: HighContrastTheme.buildLightTheme(),
+            highContrastDarkTheme: HighContrastTheme.buildDarkTheme(),
+            themeMode: ThemeMode.light,
+            routerConfig: router,
+            builder: (context, child) {
+              // Store navigator key for deep link navigation
+              return Navigator(
+                key: _navigatorKey,
+                onGenerateRoute: (_) => MaterialPageRoute(
+                  builder: (_) => child!,
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
