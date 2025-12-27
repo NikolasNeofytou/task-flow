@@ -40,9 +40,21 @@
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <!-- taskflow:// scheme -->
+                <!-- Custom taskflow:// scheme for deep links -->
                 <data android:scheme="taskflow"/>
             </intent-filter>
+            
+            <!-- App Links for HTTPS URLs (optional - requires domain verification) -->
+            <!-- Uncomment and configure when you have a domain:
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="https"/>
+                <data android:host="taskflow.app"/>
+                <data android:pathPrefix="/invite"/>
+            </intent-filter>
+            -->
         </activity>
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
