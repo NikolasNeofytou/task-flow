@@ -1,4 +1,5 @@
 /// Unit tests for model validation and serialization
+library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:taskflow/core/models/task.dart';
 import 'package:taskflow/core/models/project.dart';

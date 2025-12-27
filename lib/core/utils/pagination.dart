@@ -1,5 +1,6 @@
 /// Pagination utilities for efficient list loading
 /// Supports page-based and cursor-based pagination
+library;
 
 /// Pagination state container
 class PaginationState<T> {

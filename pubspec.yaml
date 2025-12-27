@@ -71,6 +71,8 @@ dependencies:
   cached_network_image: ^3.3.1
   rxdart: ^0.27.7
   visibility_detector: ^0.4.0+2
+  # UX Enhancements
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   hive_generator: ^2.0.1

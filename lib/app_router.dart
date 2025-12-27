@@ -365,7 +365,7 @@ GoRouter createRouter() {
       GoRoute(
         path: '/licenses',
         name: 'licenses',
-        builder: (context, state) => LicensePage(
+        builder: (context, state) => const LicensePage(
           applicationName: 'TaskFlow',
           applicationVersion: '1.0.0',
         ),

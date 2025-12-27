@@ -1,4 +1,5 @@
 /// Unit tests for HiveStorageService
+library;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:taskflow/core/storage/hive_storage_service.dart';
@@ -223,7 +224,7 @@ void main() {
 
       // Act
       await storage.setCacheTimestamp(key, timestamp);
-      final retrieved = await storage.getCacheTimestamp(key);
+      final retrieved = storage.getCacheTimestamp(key);
 
       // Assert
       expect(retrieved, isNotNull);
@@ -239,7 +240,7 @@ void main() {
       await storage.setCacheTimestamp(key, DateTime.now());
 
       // Act
-      final isValid = await storage.isCacheValid(
+      final isValid = storage.isCacheValid(
         key,
         maxAge: const Duration(hours: 1),
       );
@@ -257,7 +258,7 @@ void main() {
       );
 
       // Act
-      final isValid = await storage.isCacheValid(
+      final isValid = storage.isCacheValid(
         key,
         maxAge: const Duration(hours: 1),
       );
@@ -268,7 +269,7 @@ void main() {
 
     test('isCacheValid returns false for missing timestamp', () async {
       // Act
-      final isValid = await storage.isCacheValid(
+      final isValid = storage.isCacheValid(
         'nonexistent_key',
         maxAge: const Duration(hours: 1),
       );

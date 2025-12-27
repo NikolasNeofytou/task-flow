@@ -1,4 +1,5 @@
 /// Unit tests for AuthService
+library;
 import 'package:dio/dio.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';

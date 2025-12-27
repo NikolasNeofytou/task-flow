@@ -6,7 +6,7 @@ import 'tokens.dart';
 class HighContrastTheme {
   /// High-contrast light theme
   static ThemeData buildLightTheme() {
-    final colorScheme = ColorScheme(
+    const colorScheme = ColorScheme(
       brightness: Brightness.light,
       // Maximum contrast colors
       primary: const Color(0xFF000080), // Dark blue
@@ -194,7 +194,7 @@ class HighContrastTheme {
 
   /// High-contrast dark theme
   static ThemeData buildDarkTheme() {
-    final colorScheme = ColorScheme(
+    const colorScheme = ColorScheme(
       brightness: Brightness.dark,
       // Maximum contrast colors for dark mode
       primary: const Color(0xFF00BFFF), // Bright blue
