@@ -12,7 +12,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: '*',
+    origin: process.env.CORS_ORIGIN || '*',
     methods: ['GET', 'POST'],
   },
 });
@@ -26,8 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Rate limiting
 const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
+  windowMs: process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000, // 15 minutes
+  max: process.env.RATE_LIMIT_MAX_REQUESTS || 100, // limit each IP to 100 requests per windowMs
 });
 app.use('/api/', limiter);
 
@@ -40,6 +40,7 @@ const chatRoutes = require('./routes/chat');
 const notificationRoutes = require('./routes/notifications');
 const requestRoutes = require('./routes/requests');
 const commentRoutes = require('./routes/comments');
+const { router: pushRoutes } = require('./routes/push');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -50,6 +51,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/notifications', pushRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

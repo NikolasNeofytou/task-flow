@@ -18,21 +18,27 @@ import '../repositories/remote/notifications_remote_repository.dart';
 import '../repositories/remote/projects_remote_repository.dart';
 import '../repositories/remote/requests_remote_repository.dart';
 import '../repositories/requests_repository.dart';
+import '../repositories/cached/cached_requests_repository.dart';
+import '../repositories/cached/cached_notifications_repository.dart';
+import '../repositories/cached/cached_comments_repository.dart';
 import '../data/mock_data.dart';
 
-// Repository providers (mock vs remote selection)
+// Repository providers (mock vs remote with caching)
 final requestsRepositoryProvider = Provider<RequestsRepository>((ref) {
   final config = ref.watch(appConfigProvider);
   if (config.useMocks) return MockRequestsRepository();
   final dio = ref.watch(dioProvider);
-  return RequestsRemoteRepository(dio);
+  final remoteRepo = RequestsRemoteRepository(dio);
+  return CachedRequestsRepository(remoteRepo);
 });
 
-final notificationsRepositoryProvider = Provider<NotificationsRepository>((ref) {
+final notificationsRepositoryProvider =
+    Provider<NotificationsRepository>((ref) {
   final config = ref.watch(appConfigProvider);
   if (config.useMocks) return MockNotificationsRepository();
   final dio = ref.watch(dioProvider);
-  return NotificationsRemoteRepository(dio);
+  final remoteRepo = NotificationsRemoteRepository(dio);
+  return CachedNotificationsRepository(remoteRepo);
 });
 
 final projectsRepositoryProvider = Provider<ProjectsRepository>((ref) {
@@ -53,7 +59,8 @@ final commentsRepositoryProvider = Provider<CommentsRepository>((ref) {
   final config = ref.watch(appConfigProvider);
   if (config.useMocks) return MockCommentsRepository();
   final dio = ref.watch(dioProvider);
-  return CommentsRemoteRepository(dio);
+  final remoteRepo = CommentsRemoteRepository(dio);
+  return CachedCommentsRepository(remoteRepo);
 });
 
 // Data providers using repositories with autoDispose for better memory management
@@ -83,12 +90,14 @@ final tasksProvider = FutureProvider.autoDispose<List<TaskItem>>(
   (ref) async {
     final projects = await ref.watch(projectsProvider.future);
     final List<TaskItem> allTasks = [];
-    
+
     for (final project in projects) {
-      final tasks = await ref.read(projectsRepositoryProvider).fetchProjectTasks(project.id);
+      final tasks = await ref
+          .read(projectsRepositoryProvider)
+          .fetchProjectTasks(project.id);
       allTasks.addAll(tasks);
     }
-    
+
     return allTasks;
   },
 );

@@ -9,6 +9,7 @@ const chatMessages = new Map();
 const notifications = new Map();
 const badges = new Map();
 const audioCalls = new Map();
+const fcmTokens = new Map(); // FCM tokens for push notifications
 
 // Initialize with some sample data
 function initializeSampleData() {
@@ -68,4 +69,5 @@ module.exports = {
   notifications,
   badges,
   audioCalls,
+  fcmTokens,
 };

@@ -4,12 +4,21 @@ import 'package:timezone/timezone.dart' as tz;
 import 'dart:io' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+/// Callback type for notification taps
+typedef NotificationTapCallback = void Function(String? payload);
+
 /// Local notification service for task reminders and app notifications
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notifications =
       FlutterLocalNotificationsPlugin();
 
   static bool _initialized = false;
+  static NotificationTapCallback? _onNotificationTap;
+
+  /// Set callback for notification taps
+  static void setNotificationTapCallback(NotificationTapCallback callback) {
+    _onNotificationTap = callback;
+  }
 
   /// Initialize the notification service
   static Future<void> initialize() async {
@@ -61,8 +70,9 @@ class LocalNotificationService {
       final androidImplementation =
           _notifications.resolvePlatformSpecificImplementation<
               AndroidFlutterLocalNotificationsPlugin>();
-      
-      final result = await androidImplementation?.requestNotificationsPermission();
+
+      final result =
+          await androidImplementation?.requestNotificationsPermission();
       return result ?? false;
     }
 
@@ -193,7 +203,8 @@ class LocalNotificationService {
   }
 
   /// Get pending notifications
-  static Future<List<PendingNotificationRequest>> getPendingNotifications() async {
+  static Future<List<PendingNotificationRequest>>
+      getPendingNotifications() async {
     if (!_initialized || kIsWeb) return [];
     return await _notifications.pendingNotificationRequests();
   }
@@ -266,12 +277,9 @@ class LocalNotificationService {
     final payload = response.payload;
     if (payload == null) return;
 
-    // Handle notification tap
-    // Parse payload and navigate to appropriate screen
-    if (payload.startsWith('task:')) {
-      final taskId = payload.substring(5);
-      // Navigate to task detail screen
-      // You'll need to implement navigation here
-    }
+    debugPrint('Notification tapped with payload: $payload');
+
+    // Call the registered callback
+    _onNotificationTap?.call(payload);
   }
 }

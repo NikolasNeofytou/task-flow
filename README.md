@@ -26,10 +26,31 @@ alright
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Flutter 3.38.5 or higher
-- Dart 3.10.4 or higher
+- **Flutter**: 3.38.5 or higher
+- **Dart**: 3.10.4 or higher
+- **Docker**: For running backend (recommended)
+- **OR Node.js**: 16+ (if not using Docker)
 - Android Studio / Xcode (for mobile)
 - Chrome (for web testing)
+
+### Backend Setup
+
+**Option 1: Docker (Recommended for Friends)**
+```bash
+# Start backend with Docker
+docker-compose up -d
+
+# Backend runs on http://localhost:3000
+```
+
+**Option 2: Manual Node.js**
+```bash
+cd backend
+npm install
+npm start
+```
+
+See [DOCKER_SETUP.md](DOCKER_SETUP.md) for complete Docker guide.
 
 ### Running the App
 
@@ -62,6 +83,8 @@ flutter run                # Android emulator (if running)
 | Document | Description |
 |----------|-------------|
 | [GETTING_STARTED.md](GETTING_STARTED.md) | Complete setup guide for new developers |
+| [DOCKER_SETUP.md](DOCKER_SETUP.md) | Docker setup for easy backend deployment |
+| [DOCKER_QUICKSTART.md](DOCKER_QUICKSTART.md) | Quick Docker commands reference |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute to the project |
 | [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) | Detailed codebase organization |
 | [STARTUP_GUIDE.md](STARTUP_GUIDE.md) | Quick reference for startup scripts |
@@ -108,6 +131,7 @@ flutter run                # Android emulator (if running)
 - **Auth**: JWT tokens
 - **Security**: Helmet, CORS, rate limiting
 - **Storage**: In-memory (easily replaceable with DB)
+- **Docker**: Containerized for easy deployment
 
 ## 📁 Project Structure
 
