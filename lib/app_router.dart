@@ -36,6 +36,9 @@ import 'features/settings/presentation/accessibility_settings_screen.dart';
 import 'features/settings/presentation/theme_customization_screen.dart';
 import 'features/settings/presentation/pattern_showcase_screen.dart';
 import 'features/settings/presentation/notification_settings_screen.dart';
+import 'features/settings/presentation/about_screen.dart';
+import 'features/settings/presentation/privacy_policy_screen.dart';
+import 'features/settings/presentation/terms_of_service_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/shell/presentation/app_shell.dart';
 import 'features/chat/presentation/enhanced_chat_screen.dart';
@@ -50,10 +53,11 @@ GoRouter createRouter() {
     return CustomTransitionPage<T>(
       child: child,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final offsetTween = Tween(begin: const Offset(0.0, 0.02), end: Offset.zero)
+        final offsetTween =
+            Tween(begin: const Offset(0.0, 0.02), end: Offset.zero)
+                .chain(CurveTween(curve: Curves.easeOut));
+        final fadeTween = Tween<double>(begin: 0.0, end: 1.0)
             .chain(CurveTween(curve: Curves.easeOut));
-        final fadeTween =
-            Tween<double>(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeOut));
         return SlideTransition(
           position: animation.drive(offsetTween),
           child: FadeTransition(
@@ -94,7 +98,8 @@ GoRouter createRouter() {
 
       // Check if onboarding is complete (only if authenticated)
       if (isAuthenticated) {
-        final onboardingComplete = await storage.read(key: 'onboarding_complete');
+        final onboardingComplete =
+            await storage.read(key: 'onboarding_complete');
         final isOnOnboardingPage = state.matchedLocation == '/onboarding';
 
         if (onboardingComplete != 'true' && !isOnOnboardingPage) {
@@ -123,7 +128,8 @@ GoRouter createRouter() {
       GoRoute(
         path: '/signup',
         name: 'signup',
-        pageBuilder: (context, state) => fadeSlide(const auth_signup.SignupScreen()),
+        pageBuilder: (context, state) =>
+            fadeSlide(const auth_signup.SignupScreen()),
       ),
 
       // Onboarding screen (shown after first login)
@@ -215,7 +221,8 @@ GoRouter createRouter() {
           GoRoute(
             path: '/profile',
             name: 'profile',
-            pageBuilder: (context, state) => fadeSlide(const EnhancedProfileScreen()),
+            pageBuilder: (context, state) =>
+                fadeSlide(const EnhancedProfileScreen()),
             routes: [
               GoRoute(
                 path: 'edit',
@@ -274,8 +281,10 @@ GoRouter createRouter() {
                 name: 'chat-thread',
                 builder: (context, state) {
                   final channelId = state.pathParameters['channelId']!;
-                  final label = state.extra is String ? state.extra as String : 'Chat';
-                  return EnhancedChatThreadScreen(channelId: channelId, label: label);
+                  final label =
+                      state.extra is String ? state.extra as String : 'Chat';
+                  return EnhancedChatThreadScreen(
+                      channelId: channelId, label: label);
                 },
               ),
             ],
@@ -337,6 +346,29 @@ GoRouter createRouter() {
         path: '/settings/patterns',
         name: 'pattern-showcase',
         builder: (context, state) => const PatternShowcaseScreen(),
+      ),
+      GoRoute(
+        path: '/about',
+        name: 'about',
+        builder: (context, state) => const AboutScreen(),
+      ),
+      GoRoute(
+        path: '/privacy',
+        name: 'privacy',
+        builder: (context, state) => const PrivacyPolicyScreen(),
+      ),
+      GoRoute(
+        path: '/terms',
+        name: 'terms',
+        builder: (context, state) => const TermsOfServiceScreen(),
+      ),
+      GoRoute(
+        path: '/licenses',
+        name: 'licenses',
+        builder: (context, state) => LicensePage(
+          applicationName: 'TaskFlow',
+          applicationVersion: '1.0.0',
+        ),
       ),
       GoRoute(
         path: '/testing/qr',

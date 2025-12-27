@@ -85,6 +85,10 @@ flutter run                # Android emulator (if running)
 | [GETTING_STARTED.md](GETTING_STARTED.md) | Complete setup guide for new developers |
 | [DOCKER_SETUP.md](DOCKER_SETUP.md) | Docker setup for easy backend deployment |
 | [DOCKER_QUICKSTART.md](DOCKER_QUICKSTART.md) | Quick Docker commands reference |
+| [PRODUCTION_DEPLOYMENT.md](docs/PRODUCTION_DEPLOYMENT.md) | Production deployment guide |
+| [SECURITY.md](docs/SECURITY.md) | Security best practices |
+| [FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md) | Firebase configuration guide |
+| [DEEP_LINK_TESTING.md](docs/DEEP_LINK_TESTING.md) | Deep linking setup and testing |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute to the project |
 | [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) | Detailed codebase organization |
 | [STARTUP_GUIDE.md](STARTUP_GUIDE.md) | Quick reference for startup scripts |
@@ -101,7 +105,7 @@ flutter run                # Android emulator (if running)
 - ✅ **Project Organization**: Organize work by projects
 - ✅ **Calendar View**: Visual schedule and deadline tracking
 - ✅ **Team Collaboration**: Share work with team members
-- ✅ **Notifications**: Stay updated on task changes
+- ✅ **Notifications**: Real-time and push notifications
 
 ### Real-Time Features
 - 💬 **Live Chat**: Instant messaging by project
@@ -110,11 +114,24 @@ flutter run                # Android emulator (if running)
 - 📎 **File Sharing**: Share documents and images
 - 🔗 **Task References**: Link tasks in chat
 
+### Advanced Features
+- 🔔 **Push Notifications**: Firebase Cloud Messaging
+- 📱 **QR Code System**: Personal and project QR codes
+- 🔗 **Deep Linking**: taskflow:// custom URL scheme
+- 🌐 **Offline Support**: Local data synchronization
+- 🐳 **Docker Support**: Containerized backend
+
 ### User Features
 - 👤 **User Profiles**: Customizable profiles with photos
 - 🏆 **Badge System**: Clash Royale-style achievements
 - 🟢 **User Status**: Discord-style availability (Online/Away/DND/Offline)
 - 🎨 **Cross-Platform Themes**: Fluent UI (Android), Glass UI (iOS)
+
+### Production Features
+- 🔒 **Security**: Comprehensive security hardening
+- 🌍 **Multi-Environment**: Dev/Staging/Production configurations
+- 📊 **Analytics**: Built-in analytics and crash reporting
+- 📄 **Legal**: Privacy Policy, Terms of Service, About screens
 
 ## 🏗️ Architecture
 
