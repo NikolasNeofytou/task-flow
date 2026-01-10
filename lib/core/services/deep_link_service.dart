@@ -47,6 +47,12 @@ class DeepLinkService {
   DeepLinkData? parseDeepLink(Uri uri) {
     debugPrint('🔍 Parsing deep link: $uri');
 
+    // Ignore localhost URLs during development
+    if (uri.scheme == 'http' && uri.host == 'localhost') {
+      debugPrint('🔧 Ignoring localhost URL: $uri');
+      return null;
+    }
+
     // Check scheme
     if (uri.scheme != 'taskflow') {
       debugPrint('❌ Invalid scheme: ${uri.scheme}');
@@ -181,10 +187,10 @@ class DeepLinkService {
 
 /// Type of deep link
 enum DeepLinkType {
-  invite,        // taskflow://invite/{projectId}/{token}
-  task,          // taskflow://task/{taskId}
-  project,       // taskflow://project/{projectId}
-  notification,  // taskflow://notification/{notificationId}
+  invite, // taskflow://invite/{projectId}/{token}
+  task, // taskflow://task/{taskId}
+  project, // taskflow://project/{projectId}
+  notification, // taskflow://notification/{notificationId}
 }
 
 /// Parsed deep link data

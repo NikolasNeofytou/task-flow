@@ -64,7 +64,7 @@ dependencies:
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   connectivity_plus: ^5.0.2
-  firebase_messaging: ^14.7.10
+  # firebase_messaging: ^14.7.10  # Temporarily disabled for web compatibility
   flutter_local_notifications: ^16.3.2
   workmanager: ^0.5.2
   # Performance Optimization

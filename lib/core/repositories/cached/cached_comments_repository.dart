@@ -1,6 +1,6 @@
-import '../models/comment.dart';
-import '../repositories/comments_repository.dart';
-import '../storage/hive_storage_service.dart';
+import '../../models/comment.dart';
+import '../comments_repository.dart';
+import '../../storage/hive_storage_service.dart';
 
 /// Offline-first repository for comments
 class CachedCommentsRepository implements CommentsRepository {

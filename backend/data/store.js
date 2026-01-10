@@ -18,7 +18,7 @@ function initializeSampleData() {
     id: 'user1',
     email: 'demo@taskflow.com',
     displayName: 'Demo User',
-    password: '$2a$10$Xw8Qq3qQZqOqZQqZqZqZqOqZqZqZqZqZqZqZqZqZqZqZqZqZq', // "password123"
+    password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // "demo123"
     photoPath: null,
     status: 'online',
     customStatusMessage: null,

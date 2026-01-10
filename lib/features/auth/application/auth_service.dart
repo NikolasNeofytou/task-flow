@@ -31,7 +31,8 @@ class AuthService {
         throw ApiException('No data received from server');
       }
 
-      final authResponse = AuthResponse.fromJson(response.data as Map<String, dynamic>);
+      final authResponse =
+          AuthResponse.fromJson(response.data as Map<String, dynamic>);
 
       // Store token and user data
       await _saveAuthData(authResponse);
@@ -57,7 +58,8 @@ class AuthService {
         throw ApiException('No data received from server');
       }
 
-      final authResponse = AuthResponse.fromJson(response.data as Map<String, dynamic>);
+      final authResponse =
+          AuthResponse.fromJson(response.data as Map<String, dynamic>);
 
       // Store token and user data
       await _saveAuthData(authResponse);
@@ -142,6 +144,11 @@ class AuthService {
       key: _userKey,
       value: _userToString(authResponse.user),
     );
+
+    // For demo user, automatically mark onboarding as complete
+    if (authResponse.user.email == 'demo@taskflow.com') {
+      await _secureStorage.write(key: 'onboarding_complete', value: 'true');
+    }
   }
 
   /// Convert user to string for storage (simple format)

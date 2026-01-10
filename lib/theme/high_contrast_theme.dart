@@ -9,17 +9,17 @@ class HighContrastTheme {
     const colorScheme = ColorScheme(
       brightness: Brightness.light,
       // Maximum contrast colors
-      primary: const Color(0xFF000080), // Dark blue
+      primary: Color(0xFF000080), // Dark blue
       onPrimary: Colors.white,
-      secondary: const Color(0xFF006400), // Dark green
+      secondary: Color(0xFF006400), // Dark green
       onSecondary: Colors.white,
-      error: const Color(0xFF8B0000), // Dark red
+      error: Color(0xFF8B0000), // Dark red
       onError: Colors.white,
       surface: Colors.white,
       onSurface: Colors.black,
-      surfaceContainerHighest: const Color(0xFFF5F5F5),
+      surfaceContainerHighest: Color(0xFFF5F5F5),
       outline: Colors.black,
-      outlineVariant: const Color(0xFF424242),
+      outlineVariant: Color(0xFF424242),
     );
 
     return ThemeData(
@@ -197,17 +197,17 @@ class HighContrastTheme {
     const colorScheme = ColorScheme(
       brightness: Brightness.dark,
       // Maximum contrast colors for dark mode
-      primary: const Color(0xFF00BFFF), // Bright blue
+      primary: Color(0xFF00BFFF), // Bright blue
       onPrimary: Colors.black,
-      secondary: const Color(0xFF00FF7F), // Bright green
+      secondary: Color(0xFF00FF7F), // Bright green
       onSecondary: Colors.black,
-      error: const Color(0xFFFF4444), // Bright red
+      error: Color(0xFFFF4444), // Bright red
       onError: Colors.black,
       surface: Colors.black,
       onSurface: Colors.white,
-      surfaceContainerHighest: const Color(0xFF1A1A1A),
+      surfaceContainerHighest: Color(0xFF1A1A1A),
       outline: Colors.white,
-      outlineVariant: const Color(0xFFCCCCCC),
+      outlineVariant: Color(0xFFCCCCCC),
     );
 
     return ThemeData(

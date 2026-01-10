@@ -33,6 +33,16 @@ class AudioService {
     if (_initialized) return;
 
     try {
+      // Disable audio for web compatibility
+      if (kIsWeb) {
+        if (kDebugMode) {
+          print('AudioService: Disabled for web compatibility');
+        }
+        _isEnabled = false;
+        _initialized = true;
+        return;
+      }
+
       await _player.setVolume(_volume);
       await _player.setReleaseMode(ReleaseMode.stop);
       if (kDebugMode) {
@@ -42,6 +52,7 @@ class AudioService {
       if (kDebugMode) {
         print('AudioService: Error initializing: $e');
       }
+      _isEnabled = false; // Disable on error
     }
 
     _initialized = true;
@@ -73,7 +84,7 @@ class AudioService {
     try {
       // Play the sound effect
       await _player.play(AssetSource(soundPath));
-      
+
       if (kDebugMode) {
         print('AudioService: Playing sound: $soundPath');
       }

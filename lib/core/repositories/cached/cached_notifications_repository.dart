@@ -1,6 +1,6 @@
-import '../models/app_notification.dart';
-import '../repositories/notifications_repository.dart';
-import '../storage/hive_storage_service.dart';
+import '../../models/app_notification.dart';
+import '../notifications_repository.dart';
+import '../../storage/hive_storage_service.dart';
 
 /// Offline-first repository for notifications
 class CachedNotificationsRepository implements NotificationsRepository {

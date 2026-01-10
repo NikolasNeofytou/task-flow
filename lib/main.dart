@@ -9,15 +9,15 @@ import 'core/services/deep_link_service.dart';
 import 'core/services/hive_service.dart';
 import 'core/storage/hive_storage_service.dart';
 import 'core/services/local_notification_service.dart';
-import 'core/services/push_notification_service.dart';
 import 'theme/fluent_theme.dart';
 import 'theme/high_contrast_theme.dart';
+import 'features/settings/presentation/theme_customization_screen.dart';
 
-// Background message handler for Firebase
-@pragma('vm:entry-point')
-Future<void> _firebaseMessagingBackgroundHandler(message) async {
-  await firebaseMessagingBackgroundHandler(message);
-}
+// Background message handler for Firebase - Disabled for web compatibility
+// @pragma('vm:entry-point')
+// Future<void> _firebaseMessagingBackgroundHandler(message) async {
+//   await firebaseMessagingBackgroundHandler(message);
+// }
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -181,6 +181,7 @@ class _TaskflowAppState extends ConsumerState<TaskflowApp> {
   @override
   Widget build(BuildContext context) {
     final router = createRouter();
+    final themeCustomization = ref.watch(themeCustomizationProvider);
 
     // Check if high contrast mode is enabled
     return MediaQuery(
@@ -200,7 +201,7 @@ class _TaskflowAppState extends ConsumerState<TaskflowApp> {
                 : FluentTheme.dark(),
             highContrastTheme: HighContrastTheme.buildLightTheme(),
             highContrastDarkTheme: HighContrastTheme.buildDarkTheme(),
-            themeMode: ThemeMode.light,
+            themeMode: themeCustomization.themeMode,
             routerConfig: router,
             builder: (context, child) {
               // Store navigator key for deep link navigation

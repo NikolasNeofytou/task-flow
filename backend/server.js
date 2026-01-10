@@ -41,6 +41,7 @@ const notificationRoutes = require('./routes/notifications');
 const requestRoutes = require('./routes/requests');
 const commentRoutes = require('./routes/comments');
 const { router: pushRoutes } = require('./routes/push');
+const inviteRoutes = require('./routes/invites');
 
 // Use routes
 app.use('/api/auth', authRoutes);
@@ -52,6 +53,7 @@ app.use('/api/notifications', notificationRoutes);
 app.use('/api/requests', requestRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api/notifications', pushRoutes);
+app.use('/api/invites', inviteRoutes);
 
 // Health check
 app.get('/health', (req, res) => {

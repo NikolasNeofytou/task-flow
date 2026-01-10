@@ -21,7 +21,6 @@ import 'features/profile/presentation/unified_qr_screen.dart';
 import 'features/profile/presentation/qr_analytics_dashboard.dart';
 import 'features/profile/presentation/scan_teammate_screen.dart';
 import 'features/profile/presentation/team_screen.dart';
-import 'features/profile/presentation/signup_screen.dart';
 import 'features/invite/presentation/qr_management_screen.dart';
 import 'features/testing/presentation/qr_testing_screen.dart';
 // import 'features/invite/presentation/unified_qr_screen.dart'; // TODO: Fix and re-enable
@@ -91,8 +90,13 @@ GoRouter createRouter() {
         return '/login';
       }
 
-      // If authenticated and on auth page, redirect to calendar
-      if (isAuthenticated && isOnAuthPage) {
+      // Allow access to signup page even if authenticated (for testing/demo purposes)
+      if (state.matchedLocation == '/signup') {
+        return null; // Allow access
+      }
+
+      // If authenticated and on login page, redirect to calendar
+      if (isAuthenticated && state.matchedLocation == '/login') {
         return '/calendar';
       }
 
@@ -374,16 +378,6 @@ GoRouter createRouter() {
         path: '/testing/qr',
         name: 'qr-testing',
         builder: (context, state) => const QRTestingScreen(),
-      ),
-      GoRoute(
-        path: '/onboarding',
-        name: 'onboarding',
-        builder: (context, state) => const OnboardingScreen(),
-      ),
-      GoRoute(
-        path: '/signup',
-        name: 'signup',
-        builder: (context, state) => const SignupScreen(),
       ),
       // Deep link routes (outside shell)
       GoRoute(

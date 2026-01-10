@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../theme/tokens.dart';
 import '../../../theme/gradients.dart';
 import '../../../design_system/animations/micro_interactions.dart';
@@ -15,40 +16,44 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
-  
+
   final List<OnboardingPage> _pages = [
     const OnboardingPage(
       icon: Icons.task_alt,
       title: 'Organize Your Tasks',
-      description: 'Create, manage, and complete tasks with ease. Stay on top of your projects with our intuitive task management system.',
+      description:
+          'Create, manage, and complete tasks with ease. Stay on top of your projects with our intuitive task management system.',
       gradient: AppGradients.primary,
     ),
     const OnboardingPage(
       icon: Icons.people_outline,
       title: 'Collaborate Seamlessly',
-      description: 'Work together with your team. Share projects, assign tasks, and track progress in real-time.',
+      description:
+          'Work together with your team. Share projects, assign tasks, and track progress in real-time.',
       gradient: AppGradients.success,
     ),
     const OnboardingPage(
       icon: Icons.calendar_today,
       title: 'Plan Your Schedule',
-      description: 'Visualize your tasks in a beautiful calendar view. Never miss a deadline with smart reminders.',
+      description:
+          'Visualize your tasks in a beautiful calendar view. Never miss a deadline with smart reminders.',
       gradient: AppGradients.warning,
     ),
     const OnboardingPage(
       icon: Icons.accessibility_new,
       title: 'Built for Everyone',
-      description: 'High contrast themes, text scaling, and screen reader support. We believe productivity is for everyone.',
+      description:
+          'High contrast themes, text scaling, and screen reader support. We believe productivity is for everyone.',
       gradient: AppGradients.info,
     ),
   ];
-  
+
   @override
   void dispose() {
     _pageController.dispose();
     super.dispose();
   }
-  
+
   void _nextPage() {
     if (_currentPage < _pages.length - 1) {
       _pageController.nextPage(
@@ -59,17 +64,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       _completeOnboarding();
     }
   }
-  
+
   void _skipOnboarding() {
     _completeOnboarding();
   }
-  
-  void _completeOnboarding() {
+
+  void _completeOnboarding() async {
     // Save onboarding completion flag
-    // In production, use SharedPreferences or similar
-    context.go('/calendar');
+    const storage = FlutterSecureStorage();
+    await storage.write(key: 'onboarding_complete', value: 'true');
+
+    if (mounted) {
+      context.go('/calendar');
+    }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,14 +95,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Text(
                     'Skip',
                     style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                          color: Theme.of(context).colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ),
               ),
             ),
-            
+
             // Page view
             Expanded(
               child: PageView.builder(
@@ -109,7 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 },
               ),
             ),
-            
+
             // Page indicator
             Padding(
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
@@ -125,14 +134,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     decoration: BoxDecoration(
                       color: _currentPage == index
                           ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.surfaceContainerHighest,
+                          : Theme.of(context)
+                              .colorScheme
+                              .surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
                 ),
               ),
             ),
-            
+
             // Next/Get Started button
             Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
@@ -141,19 +152,22 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: PressableScale(
                   onTap: _nextPage,
                   child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
-                  decoration: BoxDecoration(
-                    gradient: _pages[_currentPage].gradient,
-                    borderRadius: BorderRadius.circular(AppRadii.lg),
-                    boxShadow: AppShadows.soft,
-                  ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                    decoration: BoxDecoration(
+                      gradient: _pages[_currentPage].gradient,
+                      borderRadius: BorderRadius.circular(AppRadii.lg),
+                      boxShadow: AppShadows.soft,
+                    ),
                     child: Text(
-                      _currentPage == _pages.length - 1 ? 'Get Started' : 'Next',
+                      _currentPage == _pages.length - 1
+                          ? 'Get Started'
+                          : 'Next',
                       textAlign: TextAlign.center,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                   ),
                 ),
@@ -171,7 +185,7 @@ class OnboardingPage {
   final String title;
   final String description;
   final Gradient gradient;
-  
+
   const OnboardingPage({
     required this.icon,
     required this.title,
@@ -182,9 +196,9 @@ class OnboardingPage {
 
 class _OnboardingPageWidget extends StatelessWidget {
   final OnboardingPage page;
-  
+
   const _OnboardingPageWidget({required this.page});
-  
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -207,28 +221,28 @@ class _OnboardingPageWidget extends StatelessWidget {
               color: Colors.white,
             ),
           ),
-          
+
           const SizedBox(height: AppSpacing.xl),
-          
+
           // Title
           Text(
             page.title,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+                  fontWeight: FontWeight.bold,
+                ),
           ),
-          
+
           const SizedBox(height: AppSpacing.md),
-          
+
           // Description
           Text(
             page.description,
             textAlign: TextAlign.center,
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-              height: 1.5,
-            ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  height: 1.5,
+                ),
           ),
         ],
       ),
