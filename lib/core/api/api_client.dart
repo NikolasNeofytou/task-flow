@@ -153,7 +153,8 @@ class _LoggingInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    print('📥 RESPONSE[${response.statusCode}] => ${response.requestOptions.uri}');
+    print(
+        '📥 RESPONSE[${response.statusCode}] => ${response.requestOptions.uri}');
     print('Data: ${response.data}');
     handler.next(response);
   }
@@ -205,7 +206,6 @@ class _ErrorInterceptor extends Interceptor {
         return 'Certificate verification failed.';
 
       case DioExceptionType.unknown:
-      default:
         if (error.message?.contains('SocketException') ?? false) {
           return 'No internet connection.';
         }

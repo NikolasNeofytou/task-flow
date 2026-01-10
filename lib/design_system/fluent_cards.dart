@@ -275,7 +275,7 @@ class FluentInfoCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(FluentSpacing.md),
               decoration: BoxDecoration(
-                color: accentColor.withOpacity(0.1),
+                color: accentColor.withValues(alpha: 0.1),
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(FluentBorderRadius.large - 2),
                   topRight: Radius.circular(FluentBorderRadius.large - 2),
@@ -432,7 +432,7 @@ class _FluentChipState extends State<FluentChip> {
   Widget build(BuildContext context) {
     final effectiveColor = widget.color ?? FluentColors.primary;
     final backgroundColor = widget.selected
-        ? effectiveColor.withOpacity(0.1)
+        ? effectiveColor.withValues(alpha: 0.1)
         : FluentColors.gray30;
 
     return MouseRegion(
@@ -444,7 +444,7 @@ class _FluentChipState extends State<FluentChip> {
         decoration: BoxDecoration(
           color: _isHovered && widget.onTap != null
               ? (widget.selected
-                  ? effectiveColor.withOpacity(0.15)
+                  ? effectiveColor.withValues(alpha: 0.15)
                   : FluentColors.gray40)
               : backgroundColor,
           borderRadius: BorderRadius.circular(FluentBorderRadius.xLarge),

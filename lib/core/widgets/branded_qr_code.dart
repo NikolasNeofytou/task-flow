@@ -69,7 +69,7 @@ class _BrandedQRCodeState extends State<BrandedQRCode> {
             color: bgColor,
             borderRadius: BorderRadius.circular(widget.borderRadius),
             border: Border.all(
-              color: theme.colorScheme.outline.withOpacity(0.2),
+              color: theme.colorScheme.outline.withValues(alpha: 0.2),
               width: 2,
             ),
           ),

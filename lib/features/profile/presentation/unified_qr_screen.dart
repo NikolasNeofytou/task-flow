@@ -133,7 +133,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
         borderRadius: BorderRadius.circular(AppRadii.pill),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 8,
             offset: const Offset(0, 2),
           ),
@@ -213,7 +213,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
       children: [
         // Instructions
         Card(
-          color: AppColors.primary.withOpacity(0.1),
+          color: AppColors.primary.withValues(alpha: 0.1),
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
             child: Row(
@@ -249,7 +249,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                       CircleAvatar(
                         radius: 40,
                         backgroundColor:
-                            _selectedStyle.foregroundColor.withOpacity(0.1),
+                            _selectedStyle.foregroundColor.withValues(alpha: 0.1),
                         child: Text(
                           _demoName.substring(0, 2).toUpperCase(),
                           style: TextStyle(
@@ -273,7 +273,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                         style:
                             Theme.of(context).textTheme.bodyMedium?.copyWith(
                                   color: _selectedStyle.foregroundColor
-                                      .withOpacity(0.7),
+                                      .withValues(alpha: 0.7),
                                 ),
                       ),
                       const SizedBox(height: AppSpacing.xl),
@@ -292,14 +292,14 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                       Container(
                         padding: const EdgeInsets.all(AppSpacing.sm),
                         decoration: BoxDecoration(
-                          color: _selectedStyle.foregroundColor.withOpacity(0.1),
+                          color: _selectedStyle.foregroundColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(AppRadii.sm),
                         ),
                         child: Text(
                           'Scan to connect',
                           style: TextStyle(
                             fontSize: 12,
-                            color: _selectedStyle.foregroundColor.withOpacity(0.7),
+                            color: _selectedStyle.foregroundColor.withValues(alpha: 0.7),
                           ),
                         ),
                       ),
@@ -364,7 +364,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                                 boxShadow: isSelected
                                     ? [
                                         BoxShadow(
-                                          color: AppColors.primary.withOpacity(0.3),
+                                          color: AppColors.primary.withValues(alpha: 0.3),
                                           blurRadius: 8,
                                           offset: const Offset(0, 2),
                                         ),
@@ -474,7 +474,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
               Container(
                 padding: const EdgeInsets.all(AppSpacing.sm),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.9),
+                  color: Colors.white.withValues(alpha: 0.9),
                   borderRadius: BorderRadius.circular(AppRadii.pill),
                 ),
                 child: const Icon(
@@ -498,7 +498,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                 margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.7),
+                  color: Colors.black.withValues(alpha: 0.7),
                   borderRadius: BorderRadius.circular(AppRadii.md),
                 ),
                 child: const Column(
@@ -534,7 +534,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
               // Flash toggle
               FloatingActionButton(
                 onPressed: _toggleFlash,
-                backgroundColor: Colors.black.withOpacity(0.7),
+                backgroundColor: Colors.black.withValues(alpha: 0.7),
                 child: Icon(
                   _isFlashOn ? Icons.flash_on : Icons.flash_off,
                   color: Colors.white,
@@ -850,7 +850,7 @@ class ScannerOverlayPainter extends CustomPainter {
 
     // Semi-transparent overlay
     final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
+      ..color = Colors.black.withValues(alpha: 0.5)
       ..style = PaintingStyle.fill;
 
     // Create path for the overlay with hole in the middle

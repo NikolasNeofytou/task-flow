@@ -81,7 +81,6 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final currentLength = _controller.text.length;
     final hasError = _errorText != null && _errorText!.isNotEmpty;
 
     return Column(
@@ -96,7 +95,7 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> {
               boxShadow: _isFocused && !hasError
                   ? [
                       BoxShadow(
-                        color: AppColors.primary.withOpacity(0.2),
+                        color: AppColors.primary.withValues(alpha: 0.2),
                         blurRadius: 8,
                         offset: const Offset(0, 2),
                       ),
@@ -117,7 +116,7 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> {
                   borderSide: BorderSide(
                     color: hasError
                         ? theme.colorScheme.error
-                        : AppColors.neutral.withOpacity(0.3),
+                        : AppColors.neutral.withValues(alpha: 0.3),
                   ),
                 ),
                 enabledBorder: OutlineInputBorder(
@@ -125,7 +124,7 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> {
                   borderSide: BorderSide(
                     color: hasError
                         ? theme.colorScheme.error
-                        : AppColors.neutral.withOpacity(0.3),
+                        : AppColors.neutral.withValues(alpha: 0.3),
                   ),
                 ),
                 focusedBorder: OutlineInputBorder(
@@ -152,7 +151,7 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> {
                 filled: true,
                 fillColor: widget.enabled
                     ? Colors.white
-                    : AppColors.surface.withOpacity(0.3),
+                    : AppColors.surface.withValues(alpha: 0.3),
               ),
               maxLength: widget.maxLength,
               maxLines: widget.maxLines,
@@ -163,24 +162,25 @@ class _EnhancedTextFieldState extends State<EnhancedTextField> {
               autofocus: widget.autofocus,
               enabled: widget.enabled,
               obscureText: widget.obscureText,
-              buildCounter: widget.showCharacterCount && widget.maxLength != null
-                  ? (context,
-                      {required currentLength,
-                      required isFocused,
-                      maxLength}) {
-                      return Padding(
-                        padding: const EdgeInsets.only(top: AppSpacing.xs),
-                        child: Text(
-                          '$currentLength / $maxLength',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                            color: currentLength > (maxLength ?? 0)
-                                ? theme.colorScheme.error
-                                : AppColors.neutral,
-                          ),
-                        ),
-                      );
-                    }
-                  : null,
+              buildCounter:
+                  widget.showCharacterCount && widget.maxLength != null
+                      ? (context,
+                          {required currentLength,
+                          required isFocused,
+                          maxLength}) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: AppSpacing.xs),
+                            child: Text(
+                              '$currentLength / $maxLength',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: currentLength > (maxLength ?? 0)
+                                    ? theme.colorScheme.error
+                                    : AppColors.neutral,
+                              ),
+                            ),
+                          );
+                        }
+                      : null,
             ),
           ),
         ),

@@ -35,7 +35,6 @@ class _AsyncButtonState extends State<AsyncButton> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
     final isOutline = widget.variant == _AsyncVariant.outline;
     final child = _busy
         ? const SizedBox(

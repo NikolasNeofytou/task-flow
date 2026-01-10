@@ -305,7 +305,7 @@ class _AccessibleCardState extends State<AccessibleCard> {
               color: _isFocused 
                 ? Theme.of(context).colorScheme.primary 
                 : (widget.isSelected 
-                  ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                  ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.5)
                   : Colors.transparent),
               width: _isFocused ? 3 : 2,
             ),
@@ -389,7 +389,7 @@ class _AccessibleListTileState extends State<AccessibleListTile> {
               width: 3,
             ) : null,
             color: widget.isSelected 
-              ? Theme.of(context).colorScheme.primaryContainer.withOpacity(0.3)
+              ? Theme.of(context).colorScheme.primaryContainer.withValues(alpha: 0.3)
               : null,
           ),
           child: ListTile(

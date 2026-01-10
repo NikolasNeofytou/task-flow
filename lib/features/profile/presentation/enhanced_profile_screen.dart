@@ -88,7 +88,7 @@ class EnhancedProfileScreen extends ConsumerWidget {
                     vertical: AppSpacing.xs,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
                   child: const Text(
@@ -259,7 +259,7 @@ class _ProfileHeader extends ConsumerWidget {
                 height: 80,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primary.withOpacity(0.1),
+                  color: AppColors.primary.withValues(alpha: 0.1),
                   border: Border.all(color: AppColors.primary, width: 2),
                 ),
                 child: profile.photoPath != null
@@ -489,7 +489,7 @@ class _SelectedBadgeShowcase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: badge.rarityColor.withOpacity(0.1),
+      color: badge.rarityColor.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Row(
@@ -497,7 +497,7 @@ class _SelectedBadgeShowcase extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(AppSpacing.md),
               decoration: BoxDecoration(
-                color: badge.rarityColor.withOpacity(0.2),
+                color: badge.rarityColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(AppRadii.md),
               ),
               child: Icon(badge.icon, size: 32, color: badge.rarityColor),
@@ -578,7 +578,7 @@ class _BadgesSheet extends ConsumerWidget {
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -674,14 +674,14 @@ class _BadgeTile extends StatelessWidget {
     final isLocked = !badge.isUnlocked;
     
     return Card(
-      color: isSelected ? badge.rarityColor.withOpacity(0.1) : null,
+      color: isSelected ? badge.rarityColor.withValues(alpha: 0.1) : null,
       child: ListTile(
         leading: Container(
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(
             color: isLocked
-                ? Colors.grey.withOpacity(0.1)
-                : badge.rarityColor.withOpacity(0.2),
+                ? Colors.grey.withValues(alpha: 0.1)
+                : badge.rarityColor.withValues(alpha: 0.2),
             borderRadius: BorderRadius.circular(AppRadii.sm),
           ),
           child: Icon(
@@ -730,7 +730,7 @@ class _BadgeTile extends StatelessWidget {
               const SizedBox(height: 4),
               LinearProgressIndicator(
                 value: badge.progressPercentage,
-                backgroundColor: Colors.grey.withOpacity(0.2),
+                backgroundColor: Colors.grey.withValues(alpha: 0.2),
                 valueColor: AlwaysStoppedAnimation(badge.rarityColor),
               ),
               const SizedBox(height: 2),

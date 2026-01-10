@@ -13,12 +13,13 @@ import '../widgets/chat_files_gallery.dart';
 import 'audio_call_screen.dart';
 
 /// Enhanced chat controller with support for voice, files, and references
-final chatThreadsProvider =
-    StateNotifierProvider<EnhancedChatController, Map<String, List<ChatMessage>>>(
+final chatThreadsProvider = StateNotifierProvider<EnhancedChatController,
+    Map<String, List<ChatMessage>>>(
   (ref) => EnhancedChatController(ref.read(analyticsProvider)),
 );
 
-class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>>> {
+class EnhancedChatController
+    extends StateNotifier<Map<String, List<ChatMessage>>> {
   EnhancedChatController(this._analytics)
       : super({
           'all': [
@@ -27,54 +28,65 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
               id: '1',
               author: 'Hamlet',
               authorRole: UserRole.projectManager,
-              timestamp: DateTime.now().subtract(const Duration(hours: 28)), // Yesterday morning
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 28)), // Yesterday morning
               isMe: false,
               type: MessageType.text,
-              text: 'To be or not to be... ready for this sprint? That is the question.',
+              text:
+                  'To be or not to be... ready for this sprint? That is the question.',
             ),
             ChatMessage(
               id: '2',
               author: 'Romeo',
               authorRole: UserRole.developer,
-              timestamp: DateTime.now().subtract(const Duration(hours: 27, minutes: 55)),
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 27, minutes: 55)),
               isMe: false,
               type: MessageType.text,
-              text: 'But soft! What code through yonder window breaks? Let us begin!',
+              text:
+                  'But soft! What code through yonder window breaks? Let us begin!',
             ),
             ChatMessage(
               id: '3',
               author: 'Lady Macbeth',
               authorRole: UserRole.teamLead,
-              timestamp: DateTime.now().subtract(const Duration(hours: 27, minutes: 30)),
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 27, minutes: 30)),
               isMe: false,
               type: MessageType.text,
-              text: 'Out, damned bugs! Out, I say! We shall have a spotless release.',
+              text:
+                  'Out, damned bugs! Out, I say! We shall have a spotless release.',
             ),
             // Yesterday afternoon - different phase
             ChatMessage(
               id: '4',
               author: 'You',
               authorRole: UserRole.designer,
-              timestamp: DateTime.now().subtract(const Duration(hours: 21)), // Yesterday afternoon
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 21)), // Yesterday afternoon
               isMe: true,
               type: MessageType.text,
-              text: 'All the world\'s a stage... and I\'ve just finished the design mockups! 🎨',
+              text:
+                  'All the world\'s a stage... and I\'ve just finished the design mockups! 🎨',
             ),
             ChatMessage(
               id: '5',
               author: 'Puck',
               authorRole: UserRole.tester,
-              timestamp: DateTime.now().subtract(const Duration(hours: 20, minutes: 45)),
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 20, minutes: 45)),
               isMe: false,
               type: MessageType.text,
-              text: 'Lord, what fools these mortals be! Found 3 bugs in the mischievous code.',
+              text:
+                  'Lord, what fools these mortals be! Found 3 bugs in the mischievous code.',
             ),
             // Today morning
             ChatMessage(
               id: '6',
               author: 'Julius Caesar',
               authorRole: UserRole.stakeholder,
-              timestamp: DateTime.now().subtract(const Duration(hours: 4)), // Today morning
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 4)), // Today morning
               isMe: false,
               type: MessageType.text,
               text: 'Et tu, Brute? Great work on the project, friends!',
@@ -83,10 +95,12 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
               id: '7',
               author: 'Juliet',
               authorRole: UserRole.analyst,
-              timestamp: DateTime.now().subtract(const Duration(hours: 3, minutes: 30)),
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 3, minutes: 30)),
               isMe: false,
               type: MessageType.text,
-              text: 'What\'s in a name? That which we call a bug by any other name would still need fixing.',
+              text:
+                  'What\'s in a name? That which we call a bug by any other name would still need fixing.',
             ),
             // Today afternoon - after 30+ min gap
             ChatMessage(
@@ -96,16 +110,19 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
               timestamp: DateTime.now().subtract(const Duration(hours: 2)),
               isMe: false,
               type: MessageType.text,
-              text: 'We are such stuff as code is made on... Let\'s finalize Project Tempest!',
+              text:
+                  'We are such stuff as code is made on... Let\'s finalize Project Tempest!',
             ),
             ChatMessage(
               id: '9',
               author: 'Ophelia',
               authorRole: UserRole.designer,
-              timestamp: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
+              timestamp: DateTime.now()
+                  .subtract(const Duration(hours: 1, minutes: 45)),
               isMe: false,
               type: MessageType.text,
-              text: 'There\'s rosemary, that\'s for remembrance... remember to update the style guide!',
+              text:
+                  'There\'s rosemary, that\'s for remembrance... remember to update the style guide!',
             ),
             ChatMessage(
               id: '10',
@@ -123,7 +140,8 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
               timestamp: DateTime.now().subtract(const Duration(minutes: 45)),
               isMe: false,
               type: MessageType.text,
-              text: 'How sharper than a serpent\'s tooth it is to have a missed deadline! Please proceed with haste.',
+              text:
+                  'How sharper than a serpent\'s tooth it is to have a missed deadline! Please proceed with haste.',
             ),
             ChatMessage(
               id: '12',
@@ -132,7 +150,8 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
               timestamp: DateTime.now().subtract(const Duration(minutes: 30)),
               isMe: false,
               type: MessageType.text,
-              text: 'The quality of mercy is not strained... but our code quality must be! Running tests now.',
+              text:
+                  'The quality of mercy is not strained... but our code quality must be! Running tests now.',
             ),
           ],
         });
@@ -144,7 +163,8 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
     if (text.trim().isEmpty) return;
 
     final hasReferences = FileReferenceParser.hasReferences(text);
-    final references = hasReferences ? FileReferenceParser.parse(text) : <FileReference>[];
+    final references =
+        hasReferences ? FileReferenceParser.parse(text) : <FileReference>[];
 
     final msg = ChatMessage(
       id: (_messageIdCounter++).toString(),
@@ -163,7 +183,8 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
       channelId: [...list, msg],
     };
 
-    _analytics.logEvent('chat_send_text', parameters: {'length': text.trim().length});
+    _analytics
+        .logEvent('chat_send_text', parameters: {'length': text.trim().length});
   }
 
   void sendVoiceMessage(String channelId, String voicePath, Duration duration) {
@@ -184,7 +205,8 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
       channelId: [...list, msg],
     };
 
-    _analytics.logEvent('chat_send_voice', parameters: {'duration': duration.inSeconds});
+    _analytics.logEvent('chat_send_voice',
+        parameters: {'duration': duration.inSeconds});
   }
 
   void sendFileMessage(
@@ -217,20 +239,21 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
   }
 
   /// Mark a message as viewed by adding viewer information
-  void markMessageAsViewed(String channelId, String messageId, String viewerName) {
+  void markMessageAsViewed(
+      String channelId, String messageId, String viewerName) {
     final messages = state[channelId] ?? [];
     final updatedMessages = messages.map((msg) {
       if (msg.id == messageId && !msg.isMe) {
         // Check if current user hasn't already viewed this message
         final alreadyViewed = msg.viewedBy.any((v) => v.userName == viewerName);
-        
+
         if (!alreadyViewed) {
           final newViewer = MessageViewer(
             userId: 'current-user-id', // In real app, get from auth
             userName: viewerName,
             viewedAt: DateTime.now(),
           );
-          
+
           return msg.copyWith(
             viewedBy: [...msg.viewedBy, newViewer],
           );
@@ -246,13 +269,15 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
   }
 
   /// Update viewer information from socket event
-  void updateMessageViewer(String channelId, String messageId, MessageViewer viewer) {
+  void updateMessageViewer(
+      String channelId, String messageId, MessageViewer viewer) {
     final messages = state[channelId] ?? [];
     final updatedMessages = messages.map((msg) {
       if (msg.id == messageId) {
         // Check if viewer not already in list
-        final alreadyViewed = msg.viewedBy.any((v) => v.userId == viewer.userId);
-        
+        final alreadyViewed =
+            msg.viewedBy.any((v) => v.userId == viewer.userId);
+
         if (!alreadyViewed) {
           return msg.copyWith(
             viewedBy: [...msg.viewedBy, viewer],
@@ -309,7 +334,8 @@ class EnhancedChatController extends StateNotifier<Map<String, List<ChatMessage>
       channelId: updatedMessages,
     };
 
-    _analytics.logEvent('chat_unpin_message', parameters: {'channel': channelId});
+    _analytics
+        .logEvent('chat_unpin_message', parameters: {'channel': channelId});
   }
 
   /// Get all pinned messages for a channel
@@ -379,9 +405,10 @@ class EnhancedChatScreen extends ConsumerWidget {
               itemCount: channels.length,
               itemBuilder: (context, index) {
                 final channel = channels[index];
-                final last = channel.messages.isNotEmpty ? channel.messages.last : null;
+                final last =
+                    channel.messages.isNotEmpty ? channel.messages.last : null;
                 final isFirst = index == 0;
-                
+
                 return _ChatChannelCard(
                   channel: channel,
                   lastMessage: last,
@@ -415,10 +442,12 @@ class EnhancedChatThreadScreen extends ConsumerStatefulWidget {
   final String label;
 
   @override
-  ConsumerState<EnhancedChatThreadScreen> createState() => _EnhancedChatThreadScreenState();
+  ConsumerState<EnhancedChatThreadScreen> createState() =>
+      _EnhancedChatThreadScreenState();
 }
 
-class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScreen> {
+class _EnhancedChatThreadScreenState
+    extends ConsumerState<EnhancedChatThreadScreen> {
   final _controller = TextEditingController();
   bool _sending = false;
   bool _isRecordingVoice = false;
@@ -553,13 +582,13 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
 
   int _getItemCount(List<ChatMessage> messages) {
     if (messages.isEmpty) return 0;
-    
+
     int count = messages.length;
     // Add milestones
     for (int i = 0; i < messages.length; i++) {
       final currentMsg = messages[i];
       final previousMsg = i > 0 ? messages[i - 1] : null;
-      
+
       if (TimestampFormatter.shouldShowMilestone(
         previousMsg?.timestamp,
         currentMsg.timestamp,
@@ -570,14 +599,15 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
     return count;
   }
 
-  Widget _buildChatItem(BuildContext context, List<ChatMessage> messages, int visualIndex) {
+  Widget _buildChatItem(
+      BuildContext context, List<ChatMessage> messages, int visualIndex) {
     // Convert visual index to actual message structure
     int currentVisualIndex = 0;
-    
+
     for (int i = 0; i < messages.length; i++) {
       final currentMsg = messages[i];
       final previousMsg = i > 0 ? messages[i - 1] : null;
-      
+
       // Check if milestone should be shown before this message
       if (TimestampFormatter.shouldShowMilestone(
         previousMsg?.timestamp,
@@ -589,7 +619,7 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
         }
         currentVisualIndex++;
       }
-      
+
       // Check if this is the message at visualIndex
       if (currentVisualIndex == _getItemCount(messages) - 1 - visualIndex) {
         return Column(
@@ -604,7 +634,7 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
       }
       currentVisualIndex++;
     }
-    
+
     return const SizedBox.shrink();
   }
 
@@ -651,7 +681,8 @@ class _EnhancedChatThreadScreenState extends ConsumerState<EnhancedChatThreadScr
           const SizedBox(width: AppSpacing.sm),
           // Send button
           FilledButton(
-            onPressed: _currentText.trim().isNotEmpty && !_sending ? _sendText : null,
+            onPressed:
+                _currentText.trim().isNotEmpty && !_sending ? _sendText : null,
             child: _sending
                 ? const SizedBox(
                     width: 18,
@@ -679,7 +710,8 @@ class _EnhancedChatMessage extends ConsumerStatefulWidget {
   final String channelId;
 
   @override
-  ConsumerState<_EnhancedChatMessage> createState() => _EnhancedChatMessageState();
+  ConsumerState<_EnhancedChatMessage> createState() =>
+      _EnhancedChatMessageState();
 }
 
 class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
@@ -706,7 +738,8 @@ class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final alignment = widget.message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
+    final alignment =
+        widget.message.isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final bg = widget.message.isMe
         ? AppColors.primary
         : colorScheme.surfaceContainerHighest;
@@ -758,7 +791,7 @@ class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
                       vertical: AppSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: colorScheme.primary.withOpacity(0.1),
+                      color: colorScheme.primary.withValues(alpha: 0.1),
                       borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(AppRadii.md),
                         topRight: Radius.circular(AppRadii.md),
@@ -775,10 +808,11 @@ class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
                         const SizedBox(width: 4),
                         Text(
                           'Pinned',
-                          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                color: colorScheme.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
+                          style:
+                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    color: colorScheme.primary,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                         ),
                       ],
                     ),
@@ -786,12 +820,8 @@ class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
                 _buildMessageContent(),
                 // Timestamp and viewer info
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.md, 
-                    AppSpacing.xs, 
-                    AppSpacing.md, 
-                    AppSpacing.sm
-                  ),
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.md,
+                      AppSpacing.xs, AppSpacing.md, AppSpacing.sm),
                   child: _buildMessageFooter(context),
                 ),
               ],
@@ -811,9 +841,12 @@ class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
           children: [
             ListTile(
               leading: Icon(
-                widget.message.isPinned ? Icons.push_pin_outlined : Icons.push_pin,
+                widget.message.isPinned
+                    ? Icons.push_pin_outlined
+                    : Icons.push_pin,
               ),
-              title: Text(widget.message.isPinned ? 'Unpin Message' : 'Pin Message'),
+              title: Text(
+                  widget.message.isPinned ? 'Unpin Message' : 'Pin Message'),
               onTap: () {
                 Navigator.pop(context);
                 if (widget.message.isPinned) {
@@ -838,8 +871,8 @@ class _EnhancedChatMessageState extends ConsumerState<_EnhancedChatMessage> {
 
   Widget _buildMessageFooter(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textColor = widget.message.isMe 
-        ? Colors.white.withOpacity(0.7)
+    final textColor = widget.message.isMe
+        ? Colors.white.withValues(alpha: 0.7)
         : colorScheme.onSurfaceVariant;
 
     return Row(
@@ -1045,7 +1078,7 @@ class _ChatMilestone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSpacing.lg),
       child: Row(
@@ -1104,17 +1137,17 @@ class _RoleBadge extends StatelessWidget {
     // Parse hex color
     final hexColor = role.colorHex.replaceAll('#', '');
     final color = Color(int.parse('FF$hexColor', radix: 16));
-    
+
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: 6,
         vertical: 2,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
-          color: color.withOpacity(0.4),
+          color: color.withValues(alpha: 0.4),
           width: 1,
         ),
       ),
@@ -1147,7 +1180,7 @@ class _PinnedMessagesSection extends ConsumerWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: colorScheme.primaryContainer.withOpacity(0.3),
+        color: colorScheme.primaryContainer.withValues(alpha: 0.3),
         border: Border(
           bottom: BorderSide(
             color: colorScheme.outlineVariant,
@@ -1228,7 +1261,7 @@ class _PinnedMessageCard extends ConsumerWidget {
         color: colorScheme.surface,
         borderRadius: BorderRadius.circular(AppRadii.md),
         border: Border.all(
-          color: colorScheme.primary.withOpacity(0.5),
+          color: colorScheme.primary.withValues(alpha: 0.5),
           width: 2,
         ),
       ),
@@ -1258,7 +1291,10 @@ class _PinnedMessageCard extends ConsumerWidget {
                             children: [
                               Text(
                                 message.author,
-                                style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelSmall
+                                    ?.copyWith(
                                       fontWeight: FontWeight.w600,
                                     ),
                               ),
@@ -1269,8 +1305,12 @@ class _PinnedMessageCard extends ConsumerWidget {
                             ],
                           ),
                           Text(
-                            TimestampFormatter.formatRelative(message.timestamp),
-                            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            TimestampFormatter.formatRelative(
+                                message.timestamp),
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall
+                                ?.copyWith(
                                   color: colorScheme.onSurfaceVariant,
                                   fontSize: 9,
                                 ),
@@ -1352,11 +1392,13 @@ class _ChatChannelCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     // Generate colors based on channel name
     final colors = _getChannelColors(channel.label);
-    const hasUnread = false; // TODO: Implement unread logic
-    
+    // Check if this channel has unread messages
+    // For now, use a simple mock value since unreadCount might not be implemented
+    final hasUnread = false; // TODO: Implement proper unread count
+
     return Card(
       margin: EdgeInsets.only(
         bottom: AppSpacing.md,
@@ -1387,7 +1429,7 @@ class _ChatChannelCard extends StatelessWidget {
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: colors.first.withOpacity(0.3),
+                      color: colors.first.withValues(alpha: 0.3),
                       blurRadius: 8,
                       offset: const Offset(0, 4),
                     ),
@@ -1395,8 +1437,8 @@ class _ChatChannelCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    channel.label.isNotEmpty 
-                        ? channel.label.substring(0, 1).toUpperCase() 
+                    channel.label.isNotEmpty
+                        ? channel.label.substring(0, 1).toUpperCase()
                         : '?',
                     style: theme.textTheme.headlineSmall?.copyWith(
                       color: Colors.white,
@@ -1406,7 +1448,7 @@ class _ChatChannelCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: AppSpacing.md),
-              
+
               // Content
               Expanded(
                 child: Column(
@@ -1419,7 +1461,8 @@ class _ChatChannelCard extends StatelessWidget {
                           child: Text(
                             channel.label,
                             style: theme.textTheme.titleMedium?.copyWith(
-                              fontWeight: hasUnread ? FontWeight.bold : FontWeight.w600,
+                              fontWeight:
+                                  hasUnread ? FontWeight.bold : FontWeight.w600,
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -1431,16 +1474,18 @@ class _ChatChannelCard extends StatelessWidget {
                           Text(
                             _formatTimestamp(lastMessage!.timestamp),
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: hasUnread 
-                                  ? colorScheme.primary 
+                              color: hasUnread
+                                  ? colorScheme.primary
                                   : colorScheme.onSurfaceVariant,
-                              fontWeight: hasUnread ? FontWeight.w600 : FontWeight.normal,
+                              fontWeight: hasUnread
+                                  ? FontWeight.w600
+                                  : FontWeight.normal,
                             ),
                           ),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.xs),
-                    
+
                     // Message preview row
                     Row(
                       children: [
@@ -1449,26 +1494,29 @@ class _ChatChannelCard extends StatelessWidget {
                           Icon(
                             _getMessageIcon(lastMessage!.type),
                             size: 16,
-                            color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+                            color:
+                                colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                           ),
                         if (lastMessage != null)
                           const SizedBox(width: AppSpacing.xs),
-                        
+
                         // Preview text
                         Expanded(
                           child: Text(
                             _getMessagePreview(),
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: hasUnread 
-                                  ? colorScheme.onSurface 
+                              color: hasUnread
+                                  ? colorScheme.onSurface
                                   : colorScheme.onSurfaceVariant,
-                              fontWeight: hasUnread ? FontWeight.w500 : FontWeight.normal,
+                              fontWeight: hasUnread
+                                  ? FontWeight.w500
+                                  : FontWeight.normal,
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        
+
                         // Unread badge (TODO: Will be shown when unread logic is implemented)
                         // if (hasUnread && unreadCount > 0)
                         //   const SizedBox(width: AppSpacing.sm),
@@ -1507,7 +1555,7 @@ class _ChatChannelCard extends StatelessWidget {
     // Generate gradient colors based on channel name
     final hash = label.hashCode;
     final hue = (hash % 360).toDouble();
-    
+
     return [
       HSLColor.fromAHSL(1.0, hue, 0.7, 0.5).toColor(),
       HSLColor.fromAHSL(1.0, (hue + 30) % 360, 0.7, 0.6).toColor(),
@@ -1529,7 +1577,7 @@ class _ChatChannelCard extends StatelessWidget {
   String _formatTimestamp(DateTime timestamp) {
     final now = DateTime.now();
     final difference = now.difference(timestamp);
-    
+
     if (difference.inDays == 0) {
       // Today - show time
       final hour = timestamp.hour.toString().padLeft(2, '0');
@@ -1549,9 +1597,9 @@ class _ChatChannelCard extends StatelessWidget {
 
   String _getMessagePreview() {
     if (lastMessage == null) return 'No messages yet';
-    
+
     final prefix = lastMessage!.isMe ? 'You: ' : '${lastMessage!.author}: ';
-    
+
     switch (lastMessage!.type) {
       case MessageType.text:
       case MessageType.textWithReferences:
@@ -1570,7 +1618,7 @@ class _EmptyChatState extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xxl),
@@ -1585,8 +1633,8 @@ class _EmptyChatState extends StatelessWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    colorScheme.primary.withOpacity(0.2),
-                    colorScheme.secondary.withOpacity(0.2),
+                    colorScheme.primary.withValues(alpha: 0.2),
+                    colorScheme.secondary.withValues(alpha: 0.2),
                   ],
                 ),
                 shape: BoxShape.circle,
@@ -1626,4 +1674,3 @@ class _EmptyChatState extends StatelessWidget {
     );
   }
 }
-

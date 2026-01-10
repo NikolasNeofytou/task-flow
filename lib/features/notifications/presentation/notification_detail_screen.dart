@@ -42,7 +42,7 @@ class NotificationDetailScreen extends ConsumerWidget {
                   Row(
                     children: [
                       CircleAvatar(
-                        backgroundColor: _typeColor(resolved.type).withOpacity(0.15),
+                        backgroundColor: _typeColor(resolved.type).withValues(alpha: 0.15),
                         child: Icon(_typeIcon(resolved.type), color: _typeColor(resolved.type)),
                       ),
                       const SizedBox(width: AppSpacing.md),

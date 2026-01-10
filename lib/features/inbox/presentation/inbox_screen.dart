@@ -240,7 +240,7 @@ class _NotificationTile extends StatelessWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: color.withOpacity(0.15),
+            backgroundColor: color.withValues(alpha: 0.15),
             child: Icon(icon, color: color),
           ),
           const SizedBox(width: AppSpacing.md),

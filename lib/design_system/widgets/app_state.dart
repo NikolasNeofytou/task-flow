@@ -59,7 +59,7 @@ class _StateBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.onSurface.withOpacity(0.85);
+    final color = Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.85);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,

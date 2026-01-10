@@ -170,7 +170,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
             // Helper text
             Card(
-              color: AppColors.primary.withOpacity(0.1),
+              color: AppColors.primary.withValues(alpha: 0.1),
               child: Padding(
                 padding: const EdgeInsets.all(AppSpacing.md),
                 child: Row(

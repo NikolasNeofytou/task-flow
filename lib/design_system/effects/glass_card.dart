@@ -37,13 +37,13 @@ class GlassCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                effectiveTint.withOpacity(0.25),
-                effectiveTint.withOpacity(0.15),
+                effectiveTint.withValues(alpha: 0.25),
+                effectiveTint.withValues(alpha: 0.15),
               ],
             ),
             borderRadius: effectiveBorderRadius,
             border: Border.all(
-              color: effectiveTint.withOpacity(0.3),
+              color: effectiveTint.withValues(alpha: 0.3),
               width: 1.5,
             ),
           ),
@@ -92,18 +92,18 @@ class FrostedGlassCard extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                (tintColor ?? Colors.white).withOpacity(0.4),
-                (tintColor ?? Colors.white).withOpacity(0.2),
+                (tintColor ?? Colors.white).withValues(alpha: 0.4),
+                (tintColor ?? Colors.white).withValues(alpha: 0.2),
               ],
             ),
             borderRadius: BorderRadius.circular(AppRadii.lg),
             border: Border.all(
-              color: Colors.white.withOpacity(0.5),
+              color: Colors.white.withValues(alpha: 0.5),
               width: 2,
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 blurRadius: 20,
                 offset: const Offset(0, 10),
               ),

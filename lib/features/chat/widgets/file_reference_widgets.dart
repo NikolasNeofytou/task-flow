@@ -107,7 +107,7 @@ class FileReferenceChip extends StatelessWidget {
 
     return Material(
       color: isMe
-          ? Colors.white.withOpacity(0.2)
+          ? Colors.white.withValues(alpha: 0.2)
           : colorScheme.surfaceContainerHigh,
       borderRadius: BorderRadius.circular(AppRadii.sm),
       child: InkWell(
@@ -143,7 +143,7 @@ class FileReferenceChip extends StatelessWidget {
                 Icons.open_in_new,
                 size: 12,
                 color: isMe
-                    ? Colors.white.withOpacity(0.7)
+                    ? Colors.white.withValues(alpha: 0.7)
                     : colorScheme.onSurfaceVariant,
               ),
             ],

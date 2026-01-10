@@ -86,7 +86,7 @@ class _EnhancedPersonalQRScreenState extends ConsumerState<EnhancedPersonalQRScr
                       // Profile info
                       CircleAvatar(
                         radius: 40,
-                        backgroundColor: _selectedStyle.foregroundColor.withOpacity(0.1),
+                        backgroundColor: _selectedStyle.foregroundColor.withValues(alpha: 0.1),
                         child: Text(
                           profile.displayName.substring(0, 2).toUpperCase(),
                           style: TextStyle(
@@ -107,7 +107,7 @@ class _EnhancedPersonalQRScreenState extends ConsumerState<EnhancedPersonalQRScr
                       Text(
                         profile.email,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: _selectedStyle.foregroundColor.withOpacity(0.7),
+                              color: _selectedStyle.foregroundColor.withValues(alpha: 0.7),
                             ),
                       ),
                       const SizedBox(height: AppSpacing.xl),
@@ -129,7 +129,7 @@ class _EnhancedPersonalQRScreenState extends ConsumerState<EnhancedPersonalQRScr
                           vertical: AppSpacing.sm,
                         ),
                         decoration: BoxDecoration(
-                          color: profile.statusColor.withOpacity(0.1),
+                          color: profile.statusColor.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(AppRadii.pill),
                         ),
                         child: Row(
@@ -262,7 +262,7 @@ class _EnhancedPersonalQRScreenState extends ConsumerState<EnhancedPersonalQRScr
 
           // Instructions
           Card(
-            color: AppColors.primary.withOpacity(0.05),
+            color: AppColors.primary.withValues(alpha: 0.05),
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(

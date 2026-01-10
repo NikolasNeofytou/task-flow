@@ -711,7 +711,7 @@ class _CalendarDay extends StatelessWidget {
     }
     
     if (!isCurrentMonth) {
-      textColor = colorScheme.onSurfaceVariant.withOpacity(0.4);
+      textColor = colorScheme.onSurfaceVariant.withValues(alpha: 0.4);
     }
     
     return InkWell(
@@ -843,8 +843,8 @@ class _CalendarItem extends StatelessWidget {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        color.withOpacity(0.18),
-        colorScheme.surfaceContainerHighest.withOpacity(0.9),
+        color.withValues(alpha: 0.18),
+        colorScheme.surfaceContainerHighest.withValues(alpha: 0.9),
       ],
     );
 
@@ -860,8 +860,8 @@ class _CalendarItem extends StatelessWidget {
               shape: BoxShape.circle,
               gradient: LinearGradient(
                 colors: [
-                  color.withOpacity(0.75),
-                  color.withOpacity(0.5),
+                  color.withValues(alpha: 0.75),
+                  color.withValues(alpha: 0.5),
                 ],
               ),
             ),
@@ -892,7 +892,7 @@ class _CalendarItem extends StatelessWidget {
                         vertical: 2,
                       ),
                       decoration: BoxDecoration(
-                        color: color.withOpacity(0.2),
+                        color: color.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
@@ -1068,8 +1068,8 @@ class _WeekView extends StatelessWidget {
                         : isToday
                             ? LinearGradient(
                                 colors: [
-                                  AppColors.primary.withOpacity(0.2),
-                                  AppColors.primary.withOpacity(0.1),
+                                  AppColors.primary.withValues(alpha: 0.2),
+                                  AppColors.primary.withValues(alpha: 0.1),
                                 ],
                               )
                             : null,
@@ -1110,8 +1110,8 @@ class _WeekView extends StatelessWidget {
                           ),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.white.withOpacity(0.3)
-                                : AppColors.primary.withOpacity(0.2),
+                                ? Colors.white.withValues(alpha: 0.3)
+                                : AppColors.primary.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -1247,7 +1247,7 @@ class _DayView extends StatelessWidget {
                   vertical: AppSpacing.sm,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(AppRadii.pill),
                 ),
                 child: Text(
@@ -1291,8 +1291,8 @@ class _DayView extends StatelessWidget {
               child: AnimatedCard(
                 backgroundGradient: LinearGradient(
                   colors: [
-                    projectColor.withOpacity(0.15),
-                    Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.9),
+                    projectColor.withValues(alpha: 0.15),
+                    Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.9),
                   ],
                 ),
                 onTap: () => context.push('/projects/${project.id}'),
@@ -1305,8 +1305,8 @@ class _DayView extends StatelessWidget {
                         shape: BoxShape.circle,
                         gradient: LinearGradient(
                           colors: [
-                            projectColor.withOpacity(0.75),
-                            projectColor.withOpacity(0.5),
+                            projectColor.withValues(alpha: 0.75),
+                            projectColor.withValues(alpha: 0.5),
                           ],
                         ),
                       ),

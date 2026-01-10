@@ -328,7 +328,7 @@ class _StatsRow extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(AppRadii.md),
-            border: Border.all(color: Theme.of(context).colorScheme.outline.withOpacity(0.2)),
+            border: Border.all(color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -514,17 +514,17 @@ class _StatusColumn extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(AppSpacing.lg),
               decoration: BoxDecoration(
-                color: AppColors.surface.withOpacity(0.3),
+                color: AppColors.surface.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(AppRadii.md),
                 border: Border.all(
-                  color: color.withOpacity(0.3),
+                  color: color.withValues(alpha: 0.3),
                   style: BorderStyle.solid,
                   width: 2,
                 ),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.inbox_outlined, color: color.withOpacity(0.5)),
+                  Icon(Icons.inbox_outlined, color: color.withValues(alpha: 0.5)),
                   const SizedBox(width: AppSpacing.md),
                   Expanded(
                     child: Text(
@@ -688,7 +688,7 @@ class _ProjectCard extends ConsumerWidget {
                       vertical: AppSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.error.withOpacity(0.1),
+                      color: AppColors.error.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadii.sm),
                       border: Border.all(color: AppColors.error),
                     ),
@@ -714,7 +714,7 @@ class _ProjectCard extends ConsumerWidget {
                       vertical: AppSpacing.xs,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.warning.withOpacity(0.1),
+                      color: AppColors.warning.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadii.sm),
                       border: Border.all(color: AppColors.warning),
                     ),
@@ -898,7 +898,7 @@ class _RoadmapList extends StatelessWidget {
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall
-                                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6)),
+                                  ?.copyWith(color: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6)),
                             ),
                           ],
                         ),

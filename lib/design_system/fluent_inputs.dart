@@ -521,7 +521,7 @@ class _FluentSliderState extends State<FluentSlider> {
               activeTrackColor: FluentColors.primary,
               inactiveTrackColor: FluentColors.gray50,
               thumbColor: Colors.white,
-              overlayColor: FluentColors.primary.withOpacity(0.1),
+              overlayColor: FluentColors.primary.withValues(alpha: 0.1),
               trackHeight: 4,
               thumbShape: RoundSliderThumbShape(
                 enabledThumbRadius: _isHovered ? 8 : 6,

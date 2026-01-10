@@ -135,8 +135,8 @@ class AppGradients {
       begin: begin,
       end: end,
       colors: [
-        color.withOpacity(startOpacity),
-        color.withOpacity(endOpacity),
+        color.withValues(alpha: startOpacity),
+        color.withValues(alpha: endOpacity),
       ],
     );
   }
@@ -147,8 +147,8 @@ class AppGradients {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        baseColor.withOpacity(0.08),
-        baseColor.withOpacity(0.04),
+        baseColor.withValues(alpha: 0.08),
+        baseColor.withValues(alpha: 0.04),
       ],
     );
   }
@@ -159,8 +159,8 @@ class AppGradients {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: [
-        tint.withOpacity(0.2),
-        tint.withOpacity(0.1),
+        tint.withValues(alpha: 0.2),
+        tint.withValues(alpha: 0.1),
       ],
     );
   }
@@ -171,9 +171,9 @@ class AppGradients {
       center: Alignment.center,
       radius: 1.0,
       colors: [
-        color.withOpacity(0.3),
-        color.withOpacity(0.1),
-        color.withOpacity(0.0),
+        color.withValues(alpha: 0.3),
+        color.withValues(alpha: 0.1),
+        color.withValues(alpha: 0.0),
       ],
       stops: const [0.0, 0.5, 1.0],
     );

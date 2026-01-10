@@ -10,8 +10,8 @@ import 'package:taskflow/features/schedule/presentation/calendar_screen.dart';
 import 'package:taskflow/design_system/widgets/app_scaffold.dart';
 
 Future<void> _pumpGolden(WidgetTester tester, Widget child) async {
-  tester.binding.window.physicalSizeTestValue = const Size(450, 900);
-  tester.binding.window.devicePixelRatioTestValue = 1.0;
+  tester.view.physicalSize = const Size(450, 900);
+  tester.view.devicePixelRatio = 1.0;
   await tester.pumpWidget(
     ProviderScope(
       child: MaterialApp(

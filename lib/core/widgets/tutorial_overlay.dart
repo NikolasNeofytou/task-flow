@@ -67,7 +67,7 @@ class _FeatureTutorialOverlayState extends State<FeatureTutorialOverlay> {
           // Semi-transparent overlay
           Positioned.fill(
             child: Container(
-              color: Colors.black.withOpacity(0.7),
+              color: Colors.black.withValues(alpha: 0.7),
             ),
           ),
           // Tutorial spotlight
@@ -228,7 +228,7 @@ class SpotlightPainter extends CustomPainter {
       ..addOval(Rect.fromCircle(center: center, radius: radius))
       ..fillType = PathFillType.evenOdd;
 
-    canvas.drawPath(path, Paint()..color = Colors.black.withOpacity(0.7));
+    canvas.drawPath(path, Paint()..color = Colors.black.withValues(alpha: 0.7));
   }
 
   @override

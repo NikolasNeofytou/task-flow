@@ -35,7 +35,7 @@ ThemeData buildLightTheme() {
         textStyle: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onPrimary),
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
-        shadowColor: colorScheme.primary.withOpacity(0.25),
+        shadowColor: colorScheme.primary.withValues(alpha: 0.25),
         elevation: 0,
       ),
     ),
@@ -43,7 +43,7 @@ ThemeData buildLightTheme() {
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         shape: const StadiumBorder(),
-        side: BorderSide(color: colorScheme.primary.withOpacity(0.6), width: 1.2),
+        side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.6), width: 1.2),
         foregroundColor: colorScheme.primary,
         textStyle: AppTextStyles.bodyLarge.copyWith(color: colorScheme.primary),
       ),
@@ -56,7 +56,7 @@ ThemeData buildLightTheme() {
     ),
     chipTheme: ChipThemeData(
       backgroundColor: colorScheme.surfaceContainerHighest,
-      selectedColor: colorScheme.primary.withOpacity(0.15),
+      selectedColor: colorScheme.primary.withValues(alpha: 0.15),
       labelStyle: TextStyle(color: colorScheme.onSurface),
       secondaryLabelStyle: TextStyle(color: colorScheme.onSecondary),
       side: BorderSide(color: colorScheme.outline),
@@ -67,7 +67,7 @@ ThemeData buildLightTheme() {
       actionTextColor: colorScheme.primary,
     ),
     navigationBarTheme: NavigationBarThemeData(
-      indicatorColor: colorScheme.primary.withOpacity(0.12),
+      indicatorColor: colorScheme.primary.withValues(alpha: 0.12),
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       backgroundColor: Colors.white,
     ),
@@ -138,7 +138,7 @@ ThemeData buildDarkTheme() {
     surfaceContainerHighest: const Color(0xFF2A2A35),
     tertiary: AppColors.info,
     onTertiary: Colors.white,
-    outline: Colors.white.withOpacity(0.25),
+    outline: Colors.white.withValues(alpha: 0.25),
   );
 
   final textTheme = AppTextStyles.textTheme(colorScheme.onSurface);
@@ -156,7 +156,7 @@ ThemeData buildDarkTheme() {
         textStyle: AppTextStyles.bodyLarge.copyWith(color: colorScheme.onPrimary),
         backgroundColor: colorScheme.primary,
         foregroundColor: colorScheme.onPrimary,
-        shadowColor: Colors.black.withOpacity(0.35),
+        shadowColor: Colors.black.withValues(alpha: 0.35),
         elevation: 0,
       ),
     ),
@@ -164,7 +164,7 @@ ThemeData buildDarkTheme() {
       style: OutlinedButton.styleFrom(
         padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
         shape: const StadiumBorder(),
-        side: BorderSide(color: colorScheme.primary.withOpacity(0.7), width: 1.2),
+        side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.7), width: 1.2),
         foregroundColor: colorScheme.primary,
         textStyle: AppTextStyles.bodyLarge.copyWith(color: colorScheme.primary),
       ),
@@ -177,7 +177,7 @@ ThemeData buildDarkTheme() {
     ),
     chipTheme: ChipThemeData(
       backgroundColor: colorScheme.surfaceContainerHighest,
-      selectedColor: colorScheme.primary.withOpacity(0.18),
+      selectedColor: colorScheme.primary.withValues(alpha: 0.18),
       labelStyle: TextStyle(color: colorScheme.onSurface),
       secondaryLabelStyle: TextStyle(color: colorScheme.onSecondary),
       side: BorderSide(color: colorScheme.outline),
@@ -188,7 +188,7 @@ ThemeData buildDarkTheme() {
       actionTextColor: colorScheme.primary,
     ),
     navigationBarTheme: NavigationBarThemeData(
-      indicatorColor: colorScheme.primary.withOpacity(0.14),
+      indicatorColor: colorScheme.primary.withValues(alpha: 0.14),
       labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       backgroundColor: const Color(0xFF141722),
     ),

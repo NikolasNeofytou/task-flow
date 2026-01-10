@@ -218,13 +218,13 @@ class _FileCard extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
         color: isMe
-            ? Colors.white.withOpacity(0.1)
+            ? Colors.white.withValues(alpha: 0.1)
             : colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(AppRadii.md),
         border: Border.all(
           color: isMe
-              ? Colors.white.withOpacity(0.2)
-              : colorScheme.outline.withOpacity(0.2),
+              ? Colors.white.withValues(alpha: 0.2)
+              : colorScheme.outline.withValues(alpha: 0.2),
         ),
       ),
       child: Row(
@@ -234,7 +234,7 @@ class _FileCard extends StatelessWidget {
             width: 48,
             height: 48,
             decoration: BoxDecoration(
-              color: iconColor.withOpacity(0.15),
+              color: iconColor.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(AppRadii.sm),
             ),
             child: Icon(
@@ -263,7 +263,7 @@ class _FileCard extends StatelessWidget {
                   FileSizeFormatter.format(fileSize),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: isMe
-                            ? Colors.white.withOpacity(0.7)
+                            ? Colors.white.withValues(alpha: 0.7)
                             : colorScheme.onSurfaceVariant,
                       ),
                 ),
@@ -275,7 +275,7 @@ class _FileCard extends StatelessWidget {
             Icons.download,
             size: 20,
             color: isMe
-                ? Colors.white.withOpacity(0.7)
+                ? Colors.white.withValues(alpha: 0.7)
                 : colorScheme.onSurfaceVariant,
           ),
         ],
@@ -385,7 +385,7 @@ class _AttachmentOption extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.15),
+                  color: iconColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(AppRadii.sm),
                 ),
                 child: Icon(icon, color: iconColor),

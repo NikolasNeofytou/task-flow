@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../widgets/error_display.dart';
 
@@ -15,9 +15,15 @@ extension AsyncValueUI on AsyncValue {
       data: data,
       loading: () =>
           loading?.call() ?? const Center(child: CircularProgressIndicator()),
-      error: (err, stack) =>
-          error?.call(err, onRetry) ??
-          ErrorDisplay(error: err, onRetry: onRetry),
+      error: (err, stack) {
+        if (error != null) {
+          error!(err, onRetry);
+        } else {
+          // Default error handling
+          showErrorSnackbar(context, message: err.toString(), onRetry: onRetry);
+        }
+        return const SizedBox.shrink();
+      },
     );
   }
 

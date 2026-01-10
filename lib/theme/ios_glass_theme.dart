@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 
 /// iOS 18 Glass Design Theme
 /// Features glassmorphism, dynamic island aesthetics, and modern iOS design
-class iOSGlassTheme {
-  iOSGlassTheme._();
+class IOSGlassTheme {
+  IOSGlassTheme._();
 
   // iOS 18 Color Palette
   static const _systemBlue = Color(0xFF007AFF);
   static const _systemGray5 = Color(0xFFE5E5EA);
   static const _systemGray6 = Color(0xFFF2F2F7);
-  
+
   static ThemeData light() {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
-      
+
       // iOS-inspired color scheme
       colorScheme: const ColorScheme.light(
         primary: _systemBlue,
@@ -28,9 +28,9 @@ class iOSGlassTheme {
         error: Color(0xFFFF3B30),
         onError: Colors.white,
       ),
-      
+
       scaffoldBackgroundColor: _systemGray6,
-      
+
       // iOS-style app bar
       appBarTheme: const AppBarTheme(
         elevation: 0,
@@ -39,7 +39,7 @@ class iOSGlassTheme {
         foregroundColor: Colors.black,
         scrolledUnderElevation: 0,
       ),
-      
+
       // iOS-style cards with glass effect
       cardTheme: CardThemeData(
         elevation: 0,
@@ -48,15 +48,15 @@ class iOSGlassTheme {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      
+
       // iOS navigation bar
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
-        backgroundColor: Colors.white.withOpacity(0.8),
+        backgroundColor: Colors.white.withValues(alpha: 0.8),
         indicatorColor: _systemGray5,
         height: 65,
       ),
-      
+
       // iOS buttons
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -69,7 +69,7 @@ class iOSGlassTheme {
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
         ),
       ),
-      
+
       // iOS text styles
       textTheme: const TextTheme(
         displayLarge: TextStyle(
@@ -98,7 +98,7 @@ class iOSGlassTheme {
           fontWeight: FontWeight.w600,
         ),
       ),
-      
+
       // iOS input decoration
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
@@ -114,12 +114,11 @@ class iOSGlassTheme {
       ),
     );
   }
-  
+
   static ThemeData dark() {
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
-      
       colorScheme: const ColorScheme.dark(
         primary: Color(0xFF0A84FF),
         onPrimary: Colors.white,
@@ -130,9 +129,7 @@ class iOSGlassTheme {
         error: Color(0xFFFF453A),
         onError: Colors.white,
       ),
-      
       scaffoldBackgroundColor: Colors.black,
-      
       appBarTheme: const AppBarTheme(
         elevation: 0,
         centerTitle: true,
@@ -140,7 +137,6 @@ class iOSGlassTheme {
         foregroundColor: Colors.white,
         scrolledUnderElevation: 0,
       ),
-      
       cardTheme: CardThemeData(
         elevation: 0,
         clipBehavior: Clip.antiAlias,
@@ -148,10 +144,9 @@ class iOSGlassTheme {
           borderRadius: BorderRadius.circular(16),
         ),
       ),
-      
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
-        backgroundColor: const Color(0xFF1C1C1E).withOpacity(0.9),
+        backgroundColor: const Color(0xFF1C1C1E).withValues(alpha: 0.9),
         indicatorColor: const Color(0xFF2C2C2E),
         height: 65,
       ),
@@ -161,7 +156,7 @@ class iOSGlassTheme {
 
 /// iOS Glass Effect Widget
 /// Creates a frosted glass blur effect like iOS 18
-class iOSGlassContainer extends StatelessWidget {
+class IOSGlassContainer extends StatelessWidget {
   final Widget child;
   final double blur;
   final double opacity;
@@ -170,7 +165,7 @@ class iOSGlassContainer extends StatelessWidget {
   final EdgeInsets? padding;
   final Border? border;
 
-  const iOSGlassContainer({
+  const IOSGlassContainer({
     super.key,
     required this.child,
     this.blur = 20.0,
@@ -184,9 +179,9 @@ class iOSGlassContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final effectiveColor = color ?? 
-        (isDark ? Colors.black : Colors.white).withOpacity(opacity);
-    
+    final effectiveColor = color ??
+        (isDark ? Colors.black : Colors.white).withValues(alpha: opacity);
+
     return ClipRRect(
       borderRadius: borderRadius ?? BorderRadius.circular(16),
       child: BackdropFilter(
@@ -195,10 +190,11 @@ class iOSGlassContainer extends StatelessWidget {
           decoration: BoxDecoration(
             color: effectiveColor,
             borderRadius: borderRadius ?? BorderRadius.circular(16),
-            border: border ?? Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1.5,
-            ),
+            border: border ??
+                Border.all(
+                  color: Colors.white.withValues(alpha: 0.2),
+                  width: 1.5,
+                ),
           ),
           padding: padding,
           child: child,
@@ -209,12 +205,12 @@ class iOSGlassContainer extends StatelessWidget {
 }
 
 /// iOS Card with Glass Effect
-class iOSGlassCard extends StatelessWidget {
+class IOSGlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsets? padding;
   final VoidCallback? onTap;
 
-  const iOSGlassCard({
+  const IOSGlassCard({
     super.key,
     required this.child,
     this.padding,
@@ -225,7 +221,7 @@ class iOSGlassCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: iOSGlassContainer(
+      child: IOSGlassContainer(
         blur: 20,
         opacity: 0.7,
         padding: padding ?? const EdgeInsets.all(16),
@@ -236,14 +232,14 @@ class iOSGlassCard extends StatelessWidget {
 }
 
 /// iOS List Tile with Glass Effect
-class iOSGlassListTile extends StatelessWidget {
+class IOSGlassListTile extends StatelessWidget {
   final Widget? leading;
   final Widget title;
   final Widget? subtitle;
   final Widget? trailing;
   final VoidCallback? onTap;
 
-  const iOSGlassListTile({
+  const IOSGlassListTile({
     super.key,
     this.leading,
     required this.title,
@@ -254,7 +250,7 @@ class iOSGlassListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return iOSGlassContainer(
+    return IOSGlassContainer(
       blur: 20,
       opacity: 0.7,
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -299,13 +295,13 @@ class iOSGlassListTile extends StatelessWidget {
 }
 
 /// iOS Button with Glass Effect
-class iOSGlassButton extends StatelessWidget {
+class IOSGlassButton extends StatelessWidget {
   final VoidCallback? onPressed;
   final Widget child;
   final Color? color;
   final bool isPrimary;
 
-  const iOSGlassButton({
+  const IOSGlassButton({
     super.key,
     required this.onPressed,
     required this.child,
@@ -324,12 +320,12 @@ class iOSGlassButton extends StatelessWidget {
         child: child,
       );
     }
-    
+
     return CupertinoButton(
       onPressed: onPressed,
       borderRadius: BorderRadius.circular(12),
       padding: EdgeInsets.zero,
-      child: iOSGlassContainer(
+      child: IOSGlassContainer(
         blur: 20,
         opacity: 0.7,
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
@@ -340,12 +336,12 @@ class iOSGlassButton extends StatelessWidget {
 }
 
 /// iOS Navigation Bar with Glass Effect
-class iOSGlassNavigationBar extends StatelessWidget {
+class IOSGlassNavigationBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onDestinationSelected;
-  final List<iOSNavigationItem> items;
+  final List<IOSNavigationItem> items;
 
-  const iOSGlassNavigationBar({
+  const IOSGlassNavigationBar({
     super.key,
     required this.currentIndex,
     required this.onDestinationSelected,
@@ -360,10 +356,10 @@ class iOSGlassNavigationBar extends StatelessWidget {
         child: Container(
           height: 65,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.8),
+            color: Colors.white.withValues(alpha: 0.8),
             border: Border(
               top: BorderSide(
-                color: Colors.black.withOpacity(0.1),
+                color: Colors.black.withValues(alpha: 0.1),
                 width: 0.5,
               ),
             ),
@@ -373,7 +369,7 @@ class iOSGlassNavigationBar extends StatelessWidget {
             children: List.generate(items.length, (index) {
               final item = items[index];
               final isSelected = currentIndex == index;
-              
+
               return Expanded(
                 child: CupertinoButton(
                   padding: EdgeInsets.zero,
@@ -383,8 +379,8 @@ class iOSGlassNavigationBar extends StatelessWidget {
                     children: [
                       Icon(
                         isSelected ? item.selectedIcon : item.icon,
-                        color: isSelected 
-                            ? const Color(0xFF007AFF) 
+                        color: isSelected
+                            ? const Color(0xFF007AFF)
                             : Colors.grey[600],
                         size: 28,
                       ),
@@ -393,8 +389,8 @@ class iOSGlassNavigationBar extends StatelessWidget {
                         item.label,
                         style: TextStyle(
                           fontSize: 10,
-                          color: isSelected 
-                              ? const Color(0xFF007AFF) 
+                          color: isSelected
+                              ? const Color(0xFF007AFF)
                               : Colors.grey[600],
                         ),
                       ),
@@ -410,12 +406,12 @@ class iOSGlassNavigationBar extends StatelessWidget {
   }
 }
 
-class iOSNavigationItem {
+class IOSNavigationItem {
   final IconData icon;
   final IconData selectedIcon;
   final String label;
 
-  const iOSNavigationItem({
+  const IOSNavigationItem({
     required this.icon,
     required this.selectedIcon,
     required this.label,
@@ -423,12 +419,12 @@ class iOSNavigationItem {
 }
 
 /// iOS Search Bar with Glass Effect
-class iOSGlassSearchBar extends StatelessWidget {
+class IOSGlassSearchBar extends StatelessWidget {
   final TextEditingController? controller;
   final String? placeholder;
   final ValueChanged<String>? onChanged;
 
-  const iOSGlassSearchBar({
+  const IOSGlassSearchBar({
     super.key,
     this.controller,
     this.placeholder,
@@ -437,7 +433,7 @@ class iOSGlassSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return iOSGlassContainer(
+    return IOSGlassContainer(
       blur: 20,
       opacity: 0.7,
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

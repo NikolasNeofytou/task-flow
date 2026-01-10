@@ -74,7 +74,7 @@ class ProfileCompletenessCard extends StatelessWidget {
     }
 
     return Card(
-      color: AppColors.primary.withOpacity(0.05),
+      color: AppColors.primary.withValues(alpha: 0.05),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -125,7 +125,7 @@ class ProfileCompletenessCard extends StatelessWidget {
             const SizedBox(height: AppSpacing.md),
             LinearProgressIndicator(
               value: _completedSteps / 3,
-              backgroundColor: Colors.grey.withOpacity(0.2),
+              backgroundColor: Colors.grey.withValues(alpha: 0.2),
               valueColor: const AlwaysStoppedAnimation(AppColors.primary),
               minHeight: 6,
               borderRadius: BorderRadius.circular(AppRadii.pill),

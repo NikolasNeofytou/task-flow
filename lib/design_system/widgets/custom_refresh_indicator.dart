@@ -21,7 +21,9 @@ class CustomRefreshIndicator extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return RefreshIndicator(
       onRefresh: () async {
-        await ref.read(feedbackServiceProvider).trigger(FeedbackType.mediumImpact);
+        await ref
+            .read(feedbackServiceProvider)
+            .trigger(FeedbackType.mediumImpact);
         await onRefresh();
         await ref.read(feedbackServiceProvider).trigger(FeedbackType.success);
       },
@@ -46,13 +48,13 @@ class AnimatedRefreshIndicator extends StatefulWidget {
   final Widget child;
 
   @override
-  State<AnimatedRefreshIndicator> createState() => _AnimatedRefreshIndicatorState();
+  State<AnimatedRefreshIndicator> createState() =>
+      _AnimatedRefreshIndicatorState();
 }
 
 class _AnimatedRefreshIndicatorState extends State<AnimatedRefreshIndicator>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  late Animation<double> _animation;
   bool _isRefreshing = false;
 
   @override
@@ -77,9 +79,9 @@ class _AnimatedRefreshIndicatorState extends State<AnimatedRefreshIndicator>
   Future<void> _handleRefresh() async {
     setState(() => _isRefreshing = true);
     _controller.repeat();
-    
+
     await widget.onRefresh();
-    
+
     _controller.stop();
     setState(() => _isRefreshing = false);
   }

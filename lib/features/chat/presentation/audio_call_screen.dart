@@ -189,7 +189,7 @@ class _AudioCallScreenState extends ConsumerState<AudioCallScreen>
         color: Colors.white,
         borderRadius: BorderRadius.circular(AppRadii.lg),
         border: Border.all(
-          color: participant.isSpeaking ? Colors.green : AppColors.neutral.withOpacity(0.3),
+          color: participant.isSpeaking ? Colors.green : AppColors.neutral.withValues(alpha: 0.3),
           width: participant.isSpeaking ? 3 : 1,
         ),
       ),
@@ -209,7 +209,7 @@ class _AudioCallScreenState extends ConsumerState<AudioCallScreen>
                       height: 100 + (_pulseController.value * 20),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.green.withOpacity(0.2 * (1 - _pulseController.value)),
+                        color: Colors.green.withValues(alpha: 0.2 * (1 - _pulseController.value)),
                       ),
                     );
                   },
@@ -394,7 +394,7 @@ class FloatingCallIndicator extends ConsumerWidget {
                       Text(
                         '${call.durationText} • ${call.participantCount} participants',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(0.9),
+                          color: Colors.white.withValues(alpha: 0.9),
                           fontSize: 12,
                         ),
                       ),

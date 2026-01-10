@@ -157,7 +157,7 @@ class _TeamHeader extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(AppSpacing.md),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadii.md),
                   ),
                   child: const Icon(
@@ -218,7 +218,7 @@ class _TeamMemberCard extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28,
-              backgroundColor: AppColors.primary.withOpacity(0.1),
+              backgroundColor: AppColors.primary.withValues(alpha: 0.1),
               child: Text(
                 displayName.substring(0, 2).toUpperCase(),
                 style: const TextStyle(
@@ -264,7 +264,7 @@ class _TeamMemberCard extends StatelessWidget {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(status).withOpacity(0.1),
+                    color: _getStatusColor(status).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
                   child: Text(
@@ -347,7 +347,7 @@ class _EmptyTeamView extends StatelessWidget {
             Icon(
               Icons.groups_outlined,
               size: 120,
-              color: AppColors.neutral.withOpacity(0.3),
+              color: AppColors.neutral.withValues(alpha: 0.3),
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(
@@ -404,7 +404,7 @@ class _ErrorView extends StatelessWidget {
             Icon(
               Icons.error_outline,
               size: 80,
-              color: Colors.red.withOpacity(0.5),
+              color: Colors.red.withValues(alpha: 0.5),
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(

@@ -162,7 +162,7 @@ class _VoiceRecorderState extends State<VoiceRecorder>
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(AppRadii.lg),
-        border: Border.all(color: colorScheme.outline.withOpacity(0.3)),
+        border: Border.all(color: colorScheme.outline.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -372,7 +372,7 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer> {
             icon: Icon(_isPlaying ? Icons.pause : Icons.play_arrow),
             style: IconButton.styleFrom(
               backgroundColor: widget.isMe
-                  ? Colors.white.withOpacity(0.2)
+                  ? Colors.white.withValues(alpha: 0.2)
                   : colorScheme.primaryContainer,
               foregroundColor:
                   widget.isMe ? Colors.white : colorScheme.onPrimaryContainer,
@@ -392,8 +392,8 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer> {
                     value: progress,
                     minHeight: 4,
                     backgroundColor: widget.isMe
-                        ? Colors.white.withOpacity(0.3)
-                        : colorScheme.outline.withOpacity(0.2),
+                        ? Colors.white.withValues(alpha: 0.3)
+                        : colorScheme.outline.withValues(alpha: 0.2),
                     valueColor: AlwaysStoppedAnimation(
                       widget.isMe ? Colors.white : AppColors.primary,
                     ),
@@ -404,7 +404,7 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer> {
                   _formatDuration(_isPlaying ? _position : widget.duration),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
                         color: widget.isMe
-                            ? Colors.white.withOpacity(0.8)
+                            ? Colors.white.withValues(alpha: 0.8)
                             : colorScheme.onSurfaceVariant,
                         fontFeatures: [const FontFeature.tabularFigures()],
                       ),
@@ -417,8 +417,8 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer> {
             Icons.mic,
             size: 16,
             color: widget.isMe
-                ? Colors.white.withOpacity(0.6)
-                : colorScheme.onSurfaceVariant.withOpacity(0.6),
+                ? Colors.white.withValues(alpha: 0.6)
+                : colorScheme.onSurfaceVariant.withValues(alpha: 0.6),
           ),
         ],
       ),

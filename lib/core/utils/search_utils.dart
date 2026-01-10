@@ -251,7 +251,7 @@ class TextHighlighter {
     TextOverflow? overflow,
   }) {
     final highlightStyle = baseStyle.copyWith(
-      backgroundColor: highlightColor ?? Colors.yellow.withOpacity(0.3),
+      backgroundColor: highlightColor ?? Colors.yellow.withValues(alpha: 0.3),
       fontWeight: highlightWeight ?? FontWeight.bold,
     );
     

@@ -19,7 +19,7 @@ class AppPill extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final onSurface = Theme.of(context).colorScheme.onSurface;
-    final bg = outlined ? color.withOpacity(0.15) : color;
+    final bg = outlined ? color.withValues(alpha: 0.15) : color;
     final border = outlined ? color : Colors.transparent;
     final textColor = outlined ? onSurface : Colors.white;
 

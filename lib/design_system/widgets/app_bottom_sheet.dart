@@ -33,7 +33,7 @@ class AppBottomSheet {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: AppColors.neutral.withOpacity(0.3),
+                color: AppColors.neutral.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(AppRadii.pill),
               ),
             ),
@@ -229,7 +229,7 @@ class _CancelTile extends StatelessWidget {
           vertical: AppSpacing.md,
         ),
         decoration: BoxDecoration(
-          border: Border.all(color: AppColors.neutral.withOpacity(0.3)),
+          border: Border.all(color: AppColors.neutral.withValues(alpha: 0.3)),
           borderRadius: BorderRadius.circular(AppRadii.md),
         ),
         child: Text(

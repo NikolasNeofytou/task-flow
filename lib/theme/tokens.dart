@@ -80,7 +80,7 @@ class AppShadows {
   /// Colored shadow for primary elements
   static List<BoxShadow> colored(Color color) => [
         BoxShadow(
-          color: color.withOpacity(0.3),
+          color: color.withValues(alpha: 0.3),
           blurRadius: 20,
           offset: const Offset(0, 8),
           spreadRadius: -4,
@@ -100,7 +100,7 @@ class AppShadows {
   /// Glow effect for focus states
   static List<BoxShadow> glow(Color color) => [
         BoxShadow(
-          color: color.withOpacity(0.4),
+          color: color.withValues(alpha: 0.4),
           blurRadius: 16,
           offset: Offset.zero,
           spreadRadius: 2,

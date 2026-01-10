@@ -37,7 +37,7 @@ class AppBadge extends StatelessWidget {
         const SizedBox(width: AppSpacing.xs),
         Text(
           label!,
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: onSurface.withOpacity(0.8)),
+          style: Theme.of(context).textTheme.labelMedium?.copyWith(color: onSurface.withValues(alpha: 0.8)),
         ),
       ],
     );

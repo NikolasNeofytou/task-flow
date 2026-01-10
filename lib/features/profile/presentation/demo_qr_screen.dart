@@ -47,7 +47,7 @@ class _DemoQRScreenState extends ConsumerState<DemoQRScreen> {
         children: [
           // Header with instructions
           Card(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.md),
               child: Row(
@@ -96,7 +96,7 @@ class _DemoQRScreenState extends ConsumerState<DemoQRScreen> {
                         // Profile info
                         CircleAvatar(
                           radius: 40,
-                          backgroundColor: _selectedStyle.foregroundColor.withOpacity(0.1),
+                          backgroundColor: _selectedStyle.foregroundColor.withValues(alpha: 0.1),
                           child: Text(
                             _demoName.substring(0, 2).toUpperCase(),
                             style: TextStyle(
@@ -117,7 +117,7 @@ class _DemoQRScreenState extends ConsumerState<DemoQRScreen> {
                         Text(
                           _demoEmail,
                           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                color: _selectedStyle.foregroundColor.withOpacity(0.7),
+                                color: _selectedStyle.foregroundColor.withValues(alpha: 0.7),
                               ),
                         ),
                         const SizedBox(height: AppSpacing.xl),
@@ -136,14 +136,14 @@ class _DemoQRScreenState extends ConsumerState<DemoQRScreen> {
                         Container(
                           padding: const EdgeInsets.all(AppSpacing.sm),
                           decoration: BoxDecoration(
-                            color: _selectedStyle.foregroundColor.withOpacity(0.1),
+                            color: _selectedStyle.foregroundColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(AppRadii.sm),
                           ),
                           child: Text(
                             'Scan to connect',
                             style: TextStyle(
                               fontSize: 12,
-                              color: _selectedStyle.foregroundColor.withOpacity(0.7),
+                              color: _selectedStyle.foregroundColor.withValues(alpha: 0.7),
                             ),
                           ),
                         ),
@@ -221,7 +221,7 @@ class _DemoQRScreenState extends ConsumerState<DemoQRScreen> {
                                   boxShadow: isSelected
                                       ? [
                                           BoxShadow(
-                                            color: AppColors.primary.withOpacity(0.3),
+                                            color: AppColors.primary.withValues(alpha: 0.3),
                                             blurRadius: 8,
                                             offset: const Offset(0, 2),
                                           ),

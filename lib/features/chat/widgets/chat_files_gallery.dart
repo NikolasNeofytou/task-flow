@@ -20,7 +20,6 @@ class ChatFilesGallery extends StatefulWidget {
 class _ChatFilesGalleryState extends State<ChatFilesGallery>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  FileAttachmentType? _filterType;
   bool _isGridView = true;
 
   @override
@@ -124,9 +123,7 @@ class _ChatFilesGalleryState extends State<ChatFilesGallery>
         if (_allFiles.isNotEmpty) ...[
           _buildSectionHeader('Attachments (${_allFiles.length})'),
           const SizedBox(height: AppSpacing.sm),
-          _isGridView
-              ? _buildFileGrid(_allFiles)
-              : _buildFileList(_allFiles),
+          _isGridView ? _buildFileGrid(_allFiles) : _buildFileList(_allFiles),
         ],
         if (_allReferences.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.lg),
@@ -143,9 +140,7 @@ class _ChatFilesGalleryState extends State<ChatFilesGallery>
       return _buildEmptyState('No images shared yet');
     }
 
-    return _isGridView
-        ? _buildImageGrid(_images)
-        : _buildFileList(_images);
+    return _isGridView ? _buildImageGrid(_images) : _buildFileList(_images);
   }
 
   Widget _buildDocumentsView() {
@@ -176,7 +171,8 @@ class _ChatFilesGalleryState extends State<ChatFilesGallery>
           Icon(
             Icons.folder_open,
             size: 64,
-            color: Theme.of(context).colorScheme.onSurfaceVariant.withOpacity(0.5),
+            color:
+                Theme.of(context).colorScheme.onSurfaceVariant.withValues(alpha: 0.5),
           ),
           const SizedBox(height: AppSpacing.md),
           Text(
@@ -400,7 +396,7 @@ class _FileListItem extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.15),
+                  color: iconColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(AppRadii.sm),
                 ),
                 child: Icon(_getIcon(), color: iconColor),
@@ -496,7 +492,7 @@ class _FileReferenceListItem extends StatelessWidget {
                 width: 48,
                 height: 48,
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.15),
+                  color: iconColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(AppRadii.sm),
                 ),
                 child: Icon(_getIcon(), color: iconColor),

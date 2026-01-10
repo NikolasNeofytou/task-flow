@@ -30,13 +30,13 @@ class AppCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadii.md),
             boxShadow: AppShadows.level1,
-            border: Border.all(color: colorScheme.outline.withOpacity(0.2)),
+            border: Border.all(color: colorScheme.outline.withValues(alpha: 0.2)),
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                colorScheme.surface.withOpacity(0.9),
-                colorScheme.surfaceContainerHighest.withOpacity(0.9),
+                colorScheme.surface.withValues(alpha: 0.9),
+                colorScheme.surfaceContainerHighest.withValues(alpha: 0.9),
               ],
             ),
           ),

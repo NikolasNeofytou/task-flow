@@ -157,14 +157,14 @@ class _BadgeChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = unlocked ? AppColors.success : AppColors.neutral.withOpacity(0.4);
+    final color = unlocked ? AppColors.success : AppColors.neutral.withValues(alpha: 0.4);
     return Container(
       padding: const EdgeInsets.symmetric(
         horizontal: AppSpacing.md,
         vertical: AppSpacing.sm,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
+        color: color.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(AppRadii.pill),
         border: Border.all(color: color),
       ),

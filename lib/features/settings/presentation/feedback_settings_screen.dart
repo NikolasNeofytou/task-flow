@@ -194,7 +194,7 @@ class FeedbackSettingsScreen extends ConsumerWidget {
           
           // Info Card
           Card(
-            color: AppColors.info.withOpacity(0.1),
+            color: AppColors.info.withValues(alpha: 0.1),
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(

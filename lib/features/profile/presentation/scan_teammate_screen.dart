@@ -119,7 +119,7 @@ class _ScanTeammateScreenState extends ConsumerState<ScanTeammateScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: AppColors.primary.withOpacity(0.1),
+                color: AppColors.primary.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppRadii.md),
               ),
               child: Column(
@@ -315,7 +315,7 @@ class _ScanTeammateScreenState extends ConsumerState<ScanTeammateScreen> {
                   end: Alignment.bottomCenter,
                   colors: [
                     Colors.transparent,
-                    Colors.black.withOpacity(0.8),
+                    Colors.black.withValues(alpha: 0.8),
                   ],
                 ),
               ),
@@ -323,7 +323,7 @@ class _ScanTeammateScreenState extends ConsumerState<ScanTeammateScreen> {
                 children: [
                   Icon(
                     Icons.qr_code_scanner,
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     size: 48,
                   ),
                   const SizedBox(height: AppSpacing.md),
@@ -339,7 +339,7 @@ class _ScanTeammateScreenState extends ConsumerState<ScanTeammateScreen> {
                   Text(
                     'The code will be scanned automatically',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.white.withOpacity(0.8),
+                          color: Colors.white.withValues(alpha: 0.8),
                         ),
                     textAlign: TextAlign.center,
                   ),
@@ -358,7 +358,7 @@ class _ScannerOverlayPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
+      ..color = Colors.black.withValues(alpha: 0.5)
       ..style = PaintingStyle.fill;
 
     final scanAreaSize = size.width * 0.7;

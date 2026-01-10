@@ -113,7 +113,7 @@ class ChatScreen extends ConsumerWidget {
           final channel = channels[index];
           final last = channel.messages.isNotEmpty ? channel.messages.last : null;
           final subtitle = last?.text ?? 'No messages yet';
-          final accent = Theme.of(context).colorScheme.primary.withOpacity(0.15);
+          final accent = Theme.of(context).colorScheme.primary.withValues(alpha: 0.15);
           return ListTile(
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
@@ -251,9 +251,9 @@ class _ChatMessage extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final alignment = isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start;
     final bg = isMe
-        ? AppColors.primary.withOpacity(0.18)
+        ? AppColors.primary.withValues(alpha: 0.18)
         : colorScheme.surfaceContainerHighest;
-    final border = isMe ? AppColors.primary : colorScheme.outline.withOpacity(0.35);
+    final border = isMe ? AppColors.primary : colorScheme.outline.withValues(alpha: 0.35);
     final textColor = isMe ? Colors.white : colorScheme.onSurface;
     return Column(
       crossAxisAlignment: alignment,

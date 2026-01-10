@@ -23,7 +23,7 @@ class ShimmerList extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(AppRadii.md),
             boxShadow: AppShadows.level1,
-            border: Border.all(color: AppColors.neutral.withOpacity(0.1)),
+            border: Border.all(color: AppColors.neutral.withValues(alpha: 0.1)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

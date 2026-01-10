@@ -287,7 +287,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
             tag: 'qr-code',
             child: Card(
               elevation: 8,
-              shadowColor: colorScheme.primary.withOpacity(0.3),
+              shadowColor: colorScheme.primary.withValues(alpha: 0.3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppRadii.xl),
               ),
@@ -454,7 +454,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
                 left: AppSpacing.lg,
                 right: AppSpacing.lg,
                 child: Card(
-                  color: colorScheme.surface.withOpacity(0.9),
+                  color: colorScheme.surface.withValues(alpha: 0.9),
                   child: Padding(
                     padding: const EdgeInsets.all(AppSpacing.md),
                     child: Row(
@@ -577,7 +577,7 @@ class ScannerOverlayPainter extends CustomPainter {
     ));
 
     final backgroundPaint = Paint()
-      ..color = Colors.black.withOpacity(0.5)
+      ..color = Colors.black.withValues(alpha: 0.5)
       ..style = PaintingStyle.fill;
 
     canvas.drawPath(

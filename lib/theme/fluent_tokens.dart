@@ -67,37 +67,37 @@ class FluentElevation {
   
   // Shadow definitions
   static BoxShadow shadow2 = BoxShadow(
-    color: Colors.black.withOpacity(0.06),
+    color: Colors.black.withValues(alpha: 0.06),
     blurRadius: 2,
     offset: const Offset(0, 0.3),
   );
   
   static BoxShadow shadow4 = BoxShadow(
-    color: Colors.black.withOpacity(0.07),
+    color: Colors.black.withValues(alpha: 0.07),
     blurRadius: 4,
     offset: const Offset(0, 0.9),
   );
   
   static BoxShadow shadow8 = BoxShadow(
-    color: Colors.black.withOpacity(0.09),
+    color: Colors.black.withValues(alpha: 0.09),
     blurRadius: 8,
     offset: const Offset(0, 1.6),
   );
   
   static BoxShadow shadow16 = BoxShadow(
-    color: Colors.black.withOpacity(0.11),
+    color: Colors.black.withValues(alpha: 0.11),
     blurRadius: 16,
     offset: const Offset(0, 3.2),
   );
   
   static BoxShadow shadow28 = BoxShadow(
-    color: Colors.black.withOpacity(0.13),
+    color: Colors.black.withValues(alpha: 0.13),
     blurRadius: 28,
     offset: const Offset(0, 6.4),
   );
   
   static BoxShadow shadow64 = BoxShadow(
-    color: Colors.black.withOpacity(0.17),
+    color: Colors.black.withValues(alpha: 0.17),
     blurRadius: 64,
     offset: const Offset(0, 12.8),
   );
@@ -188,9 +188,9 @@ class FluentAcrylic {
   
   static BoxDecoration light({double opacity = 0.9}) {
     return BoxDecoration(
-      color: Colors.white.withOpacity(opacity),
+      color: Colors.white.withValues(alpha: opacity),
       border: Border.all(
-        color: Colors.white.withOpacity(0.2),
+        color: Colors.white.withValues(alpha: 0.2),
         width: 1,
       ),
       boxShadow: FluentElevation.card,
@@ -199,9 +199,9 @@ class FluentAcrylic {
   
   static BoxDecoration dark({double opacity = 0.7}) {
     return BoxDecoration(
-      color: FluentColors.gray120.withOpacity(opacity),
+      color: FluentColors.gray120.withValues(alpha: opacity),
       border: Border.all(
-        color: Colors.white.withOpacity(0.08),
+        color: Colors.white.withValues(alpha: 0.08),
         width: 1,
       ),
       boxShadow: FluentElevation.card,
@@ -210,9 +210,9 @@ class FluentAcrylic {
   
   static BoxDecoration accentLight({double opacity = 0.9}) {
     return BoxDecoration(
-      color: FluentColors.primary.withOpacity(opacity),
+      color: FluentColors.primary.withValues(alpha: opacity),
       border: Border.all(
-        color: Colors.white.withOpacity(0.3),
+        color: Colors.white.withValues(alpha: 0.3),
         width: 1,
       ),
       boxShadow: FluentElevation.card,
@@ -246,11 +246,11 @@ class FluentReveal {
   static BoxDecoration light({bool isHovered = false}) {
     return BoxDecoration(
       color: isHovered
-          ? Colors.black.withOpacity(0.03)
+          ? Colors.black.withValues(alpha: 0.03)
           : Colors.transparent,
       border: Border.all(
         color: isHovered
-            ? Colors.black.withOpacity(0.08)
+            ? Colors.black.withValues(alpha: 0.08)
             : Colors.transparent,
       ),
       borderRadius: BorderRadius.circular(FluentBorderRadius.medium),
@@ -260,11 +260,11 @@ class FluentReveal {
   static BoxDecoration dark({bool isHovered = false}) {
     return BoxDecoration(
       color: isHovered
-          ? Colors.white.withOpacity(0.06)
+          ? Colors.white.withValues(alpha: 0.06)
           : Colors.transparent,
       border: Border.all(
         color: isHovered
-            ? Colors.white.withOpacity(0.1)
+            ? Colors.white.withValues(alpha: 0.1)
             : Colors.transparent,
       ),
       borderRadius: BorderRadius.circular(FluentBorderRadius.medium),

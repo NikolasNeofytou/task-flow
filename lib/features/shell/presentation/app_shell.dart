@@ -329,7 +329,7 @@ class _ProjectList extends ConsumerWidget {
                       width: 40,
                       height: 40,
                       decoration: BoxDecoration(
-                        color: projectColor.withOpacity(0.2),
+                        color: projectColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(AppRadii.sm),
                       ),
                       child: Icon(
@@ -358,7 +358,7 @@ class _ProjectList extends ConsumerWidget {
                                   vertical: 2,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: projectColor.withOpacity(0.2),
+                                  color: projectColor.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(

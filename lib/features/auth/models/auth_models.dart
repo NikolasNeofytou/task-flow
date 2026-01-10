@@ -18,9 +18,10 @@ class User {
     return User(
       id: json['id'] as String? ?? json['_id'] as String,
       email: json['email'] as String,
-      displayName: json['displayName'] as String? ?? json['name'] as String? ?? 'User',
+      displayName:
+          json['displayName'] as String? ?? json['name'] as String? ?? 'User',
       photoUrl: json['photoUrl'] as String?,
-      createdAt: json['createdAt'] != null 
+      createdAt: json['createdAt'] != null
           ? DateTime.parse(json['createdAt'] as String)
           : null,
     );
@@ -104,6 +105,24 @@ class AuthResponse {
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) {
     return AuthResponse(
+      token: json['token'] as String,
+      user: User.fromJson(json['user'] as Map<String, dynamic>),
+    );
+  }
+}
+
+/// Login response (alias for AuthResponse for test compatibility)
+class LoginResponse {
+  const LoginResponse({
+    required this.token,
+    required this.user,
+  });
+
+  final String token;
+  final User user;
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
       token: json['token'] as String,
       user: User.fromJson(json['user'] as Map<String, dynamic>),
     );

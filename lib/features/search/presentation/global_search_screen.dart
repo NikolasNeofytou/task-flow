@@ -448,7 +448,7 @@ class _SectionHeader extends StatelessWidget {
             vertical: 2,
           ),
           decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(AppRadii.pill),
           ),
           child: Text(
@@ -481,7 +481,7 @@ class _TaskResultTile extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: _getStatusColor(task.status).withOpacity(0.2),
+          backgroundColor: _getStatusColor(task.status).withValues(alpha: 0.2),
           child: Icon(
             Icons.task_alt,
             color: _getStatusColor(task.status),
@@ -504,7 +504,7 @@ class _TaskResultTile extends ConsumerWidget {
                     vertical: 2,
                   ),
                   decoration: BoxDecoration(
-                    color: _getStatusColor(task.status).withOpacity(0.1),
+                    color: _getStatusColor(task.status).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
                   child: Text(
@@ -578,7 +578,7 @@ class _ProjectResultTile extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: AppColors.primary.withOpacity(0.2),
+          backgroundColor: AppColors.primary.withValues(alpha: 0.2),
           child: const Icon(
             Icons.folder,
             color: AppColors.primary,

@@ -69,7 +69,7 @@ class _AnimatedCardState extends ConsumerState<AnimatedCard>
                   : null,
               borderRadius: BorderRadius.circular(AppRadii.md),
               boxShadow: AppShadows.level1,
-              border: Border.all(color: colorScheme.outline.withOpacity(0.12)),
+              border: Border.all(color: colorScheme.outline.withValues(alpha: 0.12)),
               gradient: widget.backgroundGradient,
             ),
             child: content,

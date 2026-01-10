@@ -152,7 +152,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
               color: Theme.of(context).colorScheme.surface,
               border: Border(
                 top: BorderSide(
-                  color: Theme.of(context).colorScheme.outline.withOpacity(0.2),
+                  color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
                 ),
               ),
             ),
@@ -230,7 +230,7 @@ class _CommentCard extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: 16,
-                backgroundColor: AppColors.primary.withOpacity(0.15),
+                backgroundColor: AppColors.primary.withValues(alpha: 0.15),
                 child: Text(
                   authorName[0].toUpperCase(),
                   style: Theme.of(context).textTheme.labelMedium?.copyWith(
@@ -301,7 +301,7 @@ class _StatusChip extends StatelessWidget {
         vertical: AppSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
+        color: color.withValues(alpha: 0.15),
         borderRadius: BorderRadius.circular(AppRadii.pill),
         border: Border.all(color: color),
       ),

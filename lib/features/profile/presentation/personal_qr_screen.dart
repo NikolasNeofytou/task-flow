@@ -65,7 +65,7 @@ class PersonalQRScreen extends ConsumerWidget {
                   // Profile info
                   CircleAvatar(
                     radius: 40,
-                    backgroundColor: AppColors.primary.withOpacity(0.1),
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                     child: Text(
                       profile.displayName.substring(0, 2).toUpperCase(),
                       style: const TextStyle(
@@ -126,7 +126,7 @@ class PersonalQRScreen extends ConsumerWidget {
                       vertical: AppSpacing.sm,
                     ),
                     decoration: BoxDecoration(
-                      color: profile.statusColor.withOpacity(0.1),
+                      color: profile.statusColor.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadii.pill),
                     ),
                     child: Row(
@@ -194,7 +194,7 @@ class PersonalQRScreen extends ConsumerWidget {
 
           // Instructions
           Card(
-            color: AppColors.primary.withOpacity(0.05),
+            color: AppColors.primary.withValues(alpha: 0.05),
             child: Padding(
               padding: const EdgeInsets.all(AppSpacing.lg),
               child: Column(

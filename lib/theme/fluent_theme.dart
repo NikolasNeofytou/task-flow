@@ -36,7 +36,7 @@ class FluentTheme {
       cardTheme: CardThemeData(
         elevation: 0,
         clipBehavior: Clip.antiAlias,
-        shadowColor: Colors.black.withOpacity(0.07),
+        shadowColor: Colors.black.withValues(alpha: 0.07),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FluentBorderRadius.large),
           side: const BorderSide(
@@ -50,7 +50,7 @@ class FluentTheme {
       appBarTheme: AppBarTheme(
         elevation: 0,
         centerTitle: false,
-        backgroundColor: Colors.white.withOpacity(0.7),
+        backgroundColor: Colors.white.withValues(alpha: 0.7),
         foregroundColor: FluentColors.gray100,
         titleTextStyle: FluentTypography.title.copyWith(
           color: FluentColors.gray100,
@@ -58,13 +58,13 @@ class FluentTheme {
         iconTheme: const IconThemeData(
           color: FluentColors.gray90,
         ),
-        shadowColor: Colors.black.withOpacity(0.06),
+        shadowColor: Colors.black.withValues(alpha: 0.06),
       ),
       
       // Navigation bar with Fluent design
       navigationBarTheme: NavigationBarThemeData(
         elevation: 0,
-        backgroundColor: Colors.white.withOpacity(0.9),
+        backgroundColor: Colors.white.withValues(alpha: 0.9),
         indicatorColor: FluentColors.gray30,
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
@@ -217,7 +217,7 @@ class FluentTheme {
       // Chip with Fluent design
       chipTheme: ChipThemeData(
         backgroundColor: FluentColors.gray30,
-        selectedColor: FluentColors.primary.withOpacity(0.1),
+        selectedColor: FluentColors.primary.withValues(alpha: 0.1),
         labelStyle: FluentTypography.caption.copyWith(
           color: FluentColors.gray100,
         ),
@@ -235,7 +235,7 @@ class FluentTheme {
       dialogTheme: DialogThemeData(
         elevation: 0,
         backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.11),
+        shadowColor: Colors.black.withValues(alpha: 0.11),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(FluentBorderRadius.large),
           side: const BorderSide(
@@ -316,7 +316,7 @@ class FluentTheme {
         activeTrackColor: FluentColors.primary,
         inactiveTrackColor: FluentColors.gray50,
         thumbColor: Colors.white,
-        overlayColor: FluentColors.primary.withOpacity(0.1),
+        overlayColor: FluentColors.primary.withValues(alpha: 0.1),
         trackHeight: 4,
       ),
       
@@ -347,7 +347,7 @@ class FluentTheme {
       bottomSheetTheme: BottomSheetThemeData(
         elevation: 0,
         backgroundColor: Colors.white,
-        shadowColor: Colors.black.withOpacity(0.11),
+        shadowColor: Colors.black.withValues(alpha: 0.11),
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             top: Radius.circular(FluentBorderRadius.xLarge),

@@ -151,6 +151,38 @@ class AuthService {
     }
   }
 
+  /// Refresh authentication token
+  Future<AuthResponse> refreshToken() async {
+    try {
+      final currentToken = await _secureStorage.read(key: _tokenKey);
+      if (currentToken == null) {
+        throw ApiException('No token available');
+      }
+
+      final response = await _apiClient.post(
+        '${ApiConfig.authEndpoint}/refresh',
+        data: {'token': currentToken},
+      );
+
+      if (response.data == null) {
+        throw ApiException('No data received from server');
+      }
+
+      final authResponse =
+          AuthResponse.fromJson(response.data as Map<String, dynamic>);
+
+      // Store new token and user data
+      await _saveAuthData(authResponse);
+
+      return authResponse;
+    } on DioException catch (e) {
+      throw ApiException(
+        e.message ?? 'Token refresh failed',
+        statusCode: e.response?.statusCode,
+      );
+    }
+  }
+
   /// Convert user to string for storage (simple format)
   String _userToString(User user) {
     return 'id:${user.id},email:${user.email},displayName:${user.displayName}';

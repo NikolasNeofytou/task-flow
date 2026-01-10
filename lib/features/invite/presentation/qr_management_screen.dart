@@ -100,7 +100,7 @@ class _QRManagementScreenState extends ConsumerState<QRManagementScreen>
             Icon(
               isActive ? Icons.qr_code_2 : Icons.inbox_outlined,
               size: 80,
-              color: AppColors.neutral.withOpacity(0.3),
+              color: AppColors.neutral.withValues(alpha: 0.3),
             ),
             const SizedBox(height: AppSpacing.lg),
             Text(
@@ -114,7 +114,7 @@ class _QRManagementScreenState extends ConsumerState<QRManagementScreen>
               Text(
                 'Create a new invite to get started',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.neutral.withOpacity(0.7),
+                      color: AppColors.neutral.withValues(alpha: 0.7),
                     ),
               ),
           ],
@@ -154,8 +154,8 @@ class _QRManagementScreenState extends ConsumerState<QRManagementScreen>
                     padding: const EdgeInsets.all(AppSpacing.sm),
                     decoration: BoxDecoration(
                       color: isActive
-                          ? AppColors.success.withOpacity(0.1)
-                          : AppColors.neutral.withOpacity(0.1),
+                          ? AppColors.success.withValues(alpha: 0.1)
+                          : AppColors.neutral.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(AppRadii.sm),
                     ),
                     child: Icon(
@@ -294,7 +294,7 @@ class _QRManagementScreenState extends ConsumerState<QRManagementScreen>
         vertical: AppSpacing.xs,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppRadii.pill),
       ),
       child: Row(
@@ -326,9 +326,9 @@ class _QRManagementScreenState extends ConsumerState<QRManagementScreen>
         vertical: 4,
       ),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(AppRadii.sm),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,

@@ -205,7 +205,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
           Container(
             padding: const EdgeInsets.all(AppSpacing.sm),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppRadii.sm),
             ),
             child: Icon(icon, size: 20, color: color),
@@ -259,7 +259,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
               return ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: CircleAvatar(
-                  backgroundColor: AppColors.primary.withOpacity(0.1),
+                  backgroundColor: AppColors.primary.withValues(alpha: 0.1),
                   child: const Icon(Icons.qr_code_2, color: AppColors.primary),
                 ),
                 title: Text(
@@ -272,7 +272,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
                     vertical: 4,
                   ),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
+                    color: AppColors.primary.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(AppRadii.pill),
                   ),
                   child: Text(
@@ -350,7 +350,7 @@ class _QRAnalyticsDashboardState extends ConsumerState<QRAnalyticsDashboard> {
                       child: LinearProgressIndicator(
                         value: percentage / 100,
                         minHeight: 8,
-                        backgroundColor: AppColors.neutral.withOpacity(0.2),
+                        backgroundColor: AppColors.neutral.withValues(alpha: 0.2),
                         valueColor: const AlwaysStoppedAnimation<Color>(AppColors.info),
                       ),
                     ),
