@@ -313,14 +313,60 @@ VoiceRecorder(
 ### Attach File
 ```dart
 // Show picker
-showModalBottomSheet(
-  context: context,
-  builder: (context) => FileAttachmentSheet(
-    onImagePicked: (file) => _sendFile(file),
-    onDocumentPicked: (file) => _sendFile(file),
-    onFilePicked: (file) => _sendFile(file),
-  ),
-);
+void openAttachFileSheet(BuildContext context) {
+  showModalBottomSheet(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    showDragHandle: true,
+    builder: (ctx) {
+      return DraggableScrollableSheet(
+        expand: false,
+        initialChildSize: 0.35,
+        minChildSize: 0.25,
+        maxChildSize: 0.8,
+        builder: (ctx, scrollController) {
+          return ListView(
+            controller: scrollController,
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            children: [
+              Center(
+                child: Text(
+                  'Attach File',
+                  style: Theme.of(ctx).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+              const SizedBox(height: AppSpacing.lg),
+
+              ListTile(
+                leading: const Icon(Icons.image, color: Colors.green),
+                title: const Text('Image'),
+                onTap: () {
+                  Navigator.pop(ctx);
+                  // TODO: pick image
+                },
+              ),
+              const SizedBox(height: AppSpacing.sm),
+
+              ListTile(
+                leading: const Icon(Icons.description, color: Colors.blue),
+                title: const Text('Document'),
+                onTap: () {
+                  Navigator.pop(ctx);
+             
+                },
+              ),
+
+              const SizedBox(height: AppSpacing.lg),
+            ],
+          );
+        },
+      );
+    },
+  );
+}
 ```
 
 ### Add File Reference

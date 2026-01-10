@@ -1,6 +1,6 @@
 # Contributing to TaskFlow
 
-Thank you for your interest in contributing to TaskFlow! This document provides guidelines and instructions for contributing to the project.
+Thank you for your interest in contributing to GroupUp! This document provides guidelines and instructions for contributing to the project.
 
 ## 📋 Table of Contents
 
@@ -27,7 +27,7 @@ Thank you for your interest in contributing to TaskFlow! This document provides 
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
-   cd taskflow_app
+   cd groupup_app
    ```
 
 2. **Read the setup guide:**
@@ -93,7 +93,7 @@ Always run these checks before committing:
 // 1. Imports (sorted)
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:taskflow_app/core/utils.dart';
+import 'package:groupup_app/core/utils.dart';
 
 // 2. Class definition
 class MyWidget extends StatelessWidget {
@@ -142,7 +142,7 @@ New UI components should follow this pattern:
 // lib/design_system/components/my_component.dart
 
 import 'package:flutter/material.dart';
-import 'package:taskflow_app/design_system/design_system.dart';
+import 'package:groupup_app/design_system/design_system.dart';
 
 class MyComponent extends StatelessWidget {
   final String title;

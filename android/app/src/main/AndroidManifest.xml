@@ -11,7 +11,7 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES"/>
     
     <application
-        android:label="taskflow"
+        android:label="GroupUp"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -35,13 +35,13 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- Deep link intent filter for taskflow:// URLs -->
+            <!-- Deep link intent filter for Groupup:// URLs -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
-                <!-- taskflow:// scheme -->
-                <data android:scheme="taskflow"/>
+                <!-- Groupup:// scheme -->
+                <data android:scheme="Groupup"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.

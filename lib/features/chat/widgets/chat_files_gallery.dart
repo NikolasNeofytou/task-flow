@@ -389,7 +389,7 @@ class _FileListItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadii.md),
       child: InkWell(
         onTap: () {
-          // TODO: Open file preview
+
         },
         borderRadius: BorderRadius.circular(AppRadii.md),
         child: Padding(
@@ -485,7 +485,7 @@ class _FileReferenceListItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(AppRadii.md),
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to project file
+          
         },
         borderRadius: BorderRadius.circular(AppRadii.md),
         child: Padding(

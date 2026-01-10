@@ -5,19 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 import '../../../core/models/project.dart';
-import '../../../core/models/task_item.dart';
 import '../../../core/providers/data_providers.dart';
 import '../../../core/providers/qr_providers.dart';
 import '../../../core/providers/feedback_providers.dart';
 import '../../../core/services/feedback_service.dart';
-import '../../../design_system/widgets/app_state.dart';
-import '../../../design_system/widgets/shimmer_list.dart';
-import '../../../design_system/widgets/animated_card.dart';
-import '../../../design_system/widgets/empty_state.dart';
-import '../../../design_system/widgets/app_snackbar.dart';
-import '../../../design_system/widgets/app_bottom_sheet.dart';
 import '../../../theme/tokens.dart';
 import '../../invite/presentation/qr_scan_screen.dart';
+import '../../../core/utils/project_status_utils.dart';
 
 class ProjectDetailScreen extends ConsumerWidget {
   const ProjectDetailScreen({
@@ -31,144 +25,118 @@ class ProjectDetailScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final tasksAsync = ref.watch(projectTasksProvider(projectId));
     final projectsAsync = ref.watch(projectsProvider);
-    final resolvedProject =
-        project ?? projectsAsync.valueOrNull?.firstWhere((p) => p.id == projectId, orElse: () => const Project(id: '', name: 'Unknown', status: ProjectStatus.onTrack, tasks: 0));
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(resolvedProject?.name ?? 'Project'),
+    return projectsAsync.when(
+      loading: () => const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Wrap(
-              spacing: AppSpacing.md,
-              runSpacing: AppSpacing.sm,
-              children: [
-                _StatusPill(
-                  label: _statusLabel(resolvedProject?.status ?? ProjectStatus.onTrack),
-                  color: _statusColor(resolvedProject?.status ?? ProjectStatus.onTrack),
-                ),
-                Text(
-                  '${resolvedProject?.tasks ?? '-'} tasks',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelLarge
-                      ?.copyWith(color: AppColors.neutral),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Row(
-              children: [
-                Semantics(
-                  label: 'Create new task',
-                  button: true,
-                  child: FilledButton.icon(
-                    onPressed: () => context.go('/projects/$projectId/task/new'),
-                    icon: const Icon(Icons.add),
-                    label: const Text('New task'),
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Semantics(
-                  label: 'Invite member',
-                  button: true,
-                  child: Consumer(
-                    builder: (context, ref, _) {
-                      return OutlinedButton.icon(
-                        onPressed: () => _showInviteDialog(context, ref, projectId),
-                        icon: const Icon(Icons.qr_code),
-                        label: const Text('Invite'),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            Expanded(
-              child: tasksAsync.when(
-                data: (tasks) {
-                  if (tasks.isEmpty) {
-                    return const AppStateView.empty(
-                      message: 'No tasks for this project.',
-                    );
-                  }
-                  return ListView.separated(
-                    itemCount: tasks.length,
-                    separatorBuilder: (_, __) =>
-                        const SizedBox(height: AppSpacing.md),
-                  itemBuilder: (context, index) {
-                    final task = tasks[index];
-                    return _TaskTile(task: task, projectId: projectId);
-                  },
+      error: (e, _) => Scaffold(
+        body: Center(child: Text('Failed to load project: $e')),
+      ),
+      data: (projects) {
+        // resolve project είτε από το passed-in project είτε από τη λίστα
+        final Project? resolvedProject = project ??
+            projects.where((p) => p.id == projectId).cast<Project?>().firstWhere(
+                  (p) => p != null,
+                  orElse: () => null,
                 );
-              },
-                loading: () => const AppStateView.loading(
-                  shimmer: ShimmerList(),
-                ),
-                error: (err, _) =>
-                    AppStateView.error(message: 'Failed to load tasks: $err'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
-class _TaskTile extends StatelessWidget {
-  const _TaskTile({required this.task, required this.projectId});
+        if (resolvedProject == null) {
+          return const Scaffold(
+            body: Center(child: Text('Project not found')),
+          );
+        }
 
-  final TaskItem task;
-  final String projectId;
+        final p = resolvedProject;
+        final s = effectiveProjectStatus(p);
 
-  @override
-  Widget build(BuildContext context) {
-    final color = _taskStatusColor(task.status);
-    return AnimatedCard(
-      onTap: () => context.go('/projects/$projectId/task/${task.id}', extra: task),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 48,
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(AppRadii.sm),
-            ),
+        final deadlineText = (p.deadline == null)
+            ? 'No deadline'
+            : 'Deadline: ${p.deadline!.toLocal().toString().split(' ').first}';
+
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(p.name),
           ),
-          const SizedBox(width: AppSpacing.md),
-          Expanded(
+          body: Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(task.title, style: Theme.of(context).textTheme.bodyLarge),
-                const SizedBox(height: AppSpacing.xs),
-                Text(
-                  'Due: ${task.dueDate.toLocal().toString().split(' ').first}',
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelMedium
-                      ?.copyWith(color: AppColors.neutral),
+                Wrap(
+                  spacing: AppSpacing.md,
+                  runSpacing: AppSpacing.sm,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    _StatusPill(
+                      label: projectStatusLabel(s),
+                      color: projectStatusColor(s),
+                    ),
+                    Text(
+                      deadlineText,
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                          ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: AppSpacing.lg),
+
+                Row(
+                  children: [
+                    FilledButton.icon(
+                      onPressed: () => _showInviteDialog(context, ref, projectId),
+                      icon: const Icon(Icons.qr_code),
+                      label: const Text('Invite'),
+                    ),
+                    const SizedBox(width: AppSpacing.md),
+                    OutlinedButton.icon(
+                      onPressed: () => context.go('/projects'),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Back to projects'),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: AppSpacing.xl),
+
+                Text(
+                  'Team',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: AppSpacing.md),
+
+                if (p.teamMembers.isEmpty)
+                  Text(
+                    'No team members',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  )
+                else
+                  Wrap(
+                    spacing: AppSpacing.md,
+                    runSpacing: AppSpacing.sm,
+                    children: [
+                      for (final member in p.teamMembers)
+                        Chip(
+                          avatar: CircleAvatar(
+                            child: Text(member.isNotEmpty ? member[0].toUpperCase() : '?'),
+                          ),
+                          label: Text(member),
+                        ),
+                    ],
+                  ),
+
+                const SizedBox(height: AppSpacing.xl),
               ],
             ),
           ),
-          IconButton(
-            onPressed: () => context.go('/projects/${task.projectId}/task/${task.id}/edit', extra: task),
-            icon: const Icon(Icons.edit_outlined),
-            tooltip: 'Edit task',
-          ),
-          const Icon(Icons.chevron_right),
-        ],
-      ),
+        );
+      },
     );
   }
 }
@@ -189,48 +157,16 @@ class _StatusPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(AppRadii.pill),
+        border: Border.all(color: color.withOpacity(0.6)),
       ),
       child: Text(
         label,
-        style: Theme.of(context)
-            .textTheme
-            .labelLarge
-            ?.copyWith(color: AppColors.neutral),
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onSurface,
+              fontWeight: FontWeight.w600,
+            ),
       ),
     );
-  }
-}
-
-String _statusLabel(ProjectStatus status) {
-  switch (status) {
-    case ProjectStatus.onTrack:
-      return 'On track';
-    case ProjectStatus.dueSoon:
-      return 'Due soon';
-    case ProjectStatus.blocked:
-      return 'Blocked';
-  }
-}
-
-Color _statusColor(ProjectStatus status) {
-  switch (status) {
-    case ProjectStatus.onTrack:
-      return AppColors.success;
-    case ProjectStatus.dueSoon:
-      return AppColors.warning;
-    case ProjectStatus.blocked:
-      return AppColors.error;
-  }
-}
-
-Color _taskStatusColor(TaskStatus status) {
-  switch (status) {
-    case TaskStatus.pending:
-      return AppColors.warning;
-    case TaskStatus.done:
-      return AppColors.success;
-    case TaskStatus.blocked:
-      return AppColors.error;
   }
 }
 
@@ -277,13 +213,10 @@ Future<void> _showInviteDialog(BuildContext context, WidgetRef ref, String proje
   if (result == null || !context.mounted) return;
 
   if (result == 'qr_show') {
-    // Generate and show QR code
     await _showQRCode(context, ref, projectId);
   } else if (result == 'qr_scan') {
-    // Open QR scanner
     await _scanQRCode(context, ref);
   } else if (result == 'link') {
-    // Copy invite link
     final qrGenService = ref.read(qrGenerationServiceProvider);
     final projectIdInt = int.tryParse(projectId);
     if (projectIdInt == null) return;
@@ -319,58 +252,19 @@ Future<void> _showQRCode(BuildContext context, WidgetRef ref, String projectId) 
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // QR Code
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.shade300, width: 2),
-              ),
-              child: QrImageView(
-                data: inviteData.url,
-                version: QrVersions.auto,
-                size: 200,
-                backgroundColor: Colors.white,
-                errorCorrectionLevel: QrErrorCorrectLevel.H,
-              ),
+            QrImageView(
+              data: inviteData.url,
+              version: QrVersions.auto,
+              size: 220.0,
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Others can scan this QR code to join the project',
-              style: Theme.of(ctx).textTheme.bodyMedium,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Token: ${inviteData.token.substring(0, 8)}...',
-              style: Theme.of(ctx).textTheme.labelSmall?.copyWith(
-                    color: Colors.grey,
-                    fontFamily: 'monospace',
-                  ),
-            ),
+            const SizedBox(height: AppSpacing.md),
+            Text(inviteData.url),
           ],
         ),
         actions: [
           TextButton(
-            onPressed: () async {
-              await Clipboard.setData(ClipboardData(text: inviteData.url));
-              await ref.read(feedbackServiceProvider).trigger(FeedbackType.lightTap);
-              if (!ctx.mounted) return;
-              AppSnackbar.show(
-                ctx,
-                message: 'Link copied to clipboard',
-                type: SnackbarType.success,
-              );
-            },
-            child: const Text('Copy Link'),
-          ),
-          FilledButton(
-            onPressed: () {
-              ref.read(feedbackServiceProvider).trigger(FeedbackType.lightTap);
-              Navigator.of(ctx).pop();
-            },
-            child: const Text('Done'),
+            onPressed: () => Navigator.of(ctx).pop(),
+            child: const Text('Close'),
           ),
         ],
       );
@@ -379,44 +273,10 @@ Future<void> _showQRCode(BuildContext context, WidgetRef ref, String projectId) 
 }
 
 Future<void> _scanQRCode(BuildContext context, WidgetRef ref) async {
-  // Check camera permission first
-  final qrScanService = ref.read(qrScanServiceProvider);
-  final hasPermission = await qrScanService.hasPermission();
-
-  if (!hasPermission) {
-    if (!context.mounted) return;
-    final granted = await qrScanService.requestPermission();
-    if (!granted) {
-      if (!context.mounted) return;
-      await ref.read(feedbackServiceProvider).trigger(FeedbackType.warning);
-      AppSnackbar.show(
-        context,
-        message: 'Camera permission is required to scan QR codes',
-        type: SnackbarType.warning,
-      );
-      return;
-    }
-  }
-
+  await ref.read(feedbackServiceProvider).trigger(FeedbackType.lightTap);
   if (!context.mounted) return;
 
-  // Open QR scanner screen
-  final inviteData = await Navigator.of(context).push(
-    MaterialPageRoute(
-      builder: (context) => const QRScanScreen(),
-    ),
-  );
-
-  if (inviteData == null || !context.mounted) return;
-
-  // TODO: Process invite (join project)
-  // For now, just show success message
-  await ref.read(feedbackServiceProvider).trigger(FeedbackType.success);
-
-  if (!context.mounted) return;
-  AppSnackbar.show(
-    context,
-    message: 'Scanned invite for project #${inviteData.projectId}',
-    type: SnackbarType.success,
+  await Navigator.of(context).push(
+    MaterialPageRoute(builder: (_) => const QRScanScreen()),
   );
 }

@@ -49,6 +49,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
       await ref.read(userProfileProvider.notifier).updateProfile(
             displayName: _displayNameController.text.trim(),
             email: _emailController.text.trim(),
+            bio: _bioController.text.trim(),
           );
       
       if (context.mounted) {

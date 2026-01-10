@@ -25,12 +25,7 @@ class QuickActionsCard extends StatelessWidget {
               spacing: AppSpacing.sm,
               runSpacing: AppSpacing.sm,
               children: [
-                _QuickActionChip(
-                  icon: Icons.add_task,
-                  label: 'New Task',
-                  color: Colors.blue,
-                  onTap: () => context.push('/projects/new-task'),
-                ),
+
                 _QuickActionChip(
                   icon: Icons.create_new_folder,
                   label: 'New Project',
@@ -47,7 +42,7 @@ class QuickActionsCard extends StatelessWidget {
                   icon: Icons.calendar_today,
                   label: 'View Calendar',
                   color: Colors.orange,
-                  onTap: () => context.go('/schedule'),
+                  onTap: () => context.go('/calendar'),
                 ),
               ],
             ),

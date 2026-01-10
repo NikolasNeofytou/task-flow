@@ -1,36 +1,71 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../theme/tokens.dart';
+import '../providers/avatar_provider.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final avatarAsync = ref.watch(avatarProvider);
+
     return ListView(
       children: [
         Semantics(
           header: true,
           child: Row(
             children: [
-              const CircleAvatar(
-                radius: 32,
-                backgroundColor: AppColors.primary,
-                child: Text('DP', style: TextStyle(color: Colors.white)),
+              GestureDetector(
+                onTap: () => ref.read(avatarProvider.notifier).pickAndSaveAvatar(),
+                child: avatarAsync.when(
+                  data: (bytes) {
+                    return CircleAvatar(
+                      radius: 32,
+                      backgroundColor: AppColors.primary,
+                      backgroundImage: bytes != null ? MemoryImage(bytes) : null,
+                      child: bytes == null
+                          ? const Text('DP', style: TextStyle(color: Colors.white))
+                          : null,
+                    );
+                  },
+                  loading: () => const CircleAvatar(
+                    radius: 32,
+                    backgroundColor: AppColors.primary,
+                    child: SizedBox(
+                      width: 18,
+                      height: 18,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                    ),
+                  ),
+                  error: (_,__)=> const CircleAvatar(
+                    radius: 32,
+                    backgroundColor: AppColors.primary,
+                    child: Text('DP', style: TextStyle(color: Colors.white)),
+                  ),
+                ),
               ),
               const SizedBox(width: AppSpacing.lg),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Display Name',
-                      style: Theme.of(context).textTheme.titleLarge),
-                  Text('edit profile',
-                      style: Theme.of(context)
-                          .textTheme
-                          .labelLarge
-                          ?.copyWith(color: AppColors.neutral)),
+                  Text('Display Name', style: Theme.of(context).textTheme.titleLarge),
+                  Text(
+                    'edit profile',
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelLarge
+                        ?.copyWith(color: AppColors.neutral),
+                  ),
                 ],
+              ),
+              const Spacer(),
+              IconButton(
+                tooltip: 'Remove photo',
+                onPressed: () => ref.read(avatarProvider.notifier).clearAvatar(),
+                icon: const Icon(Icons.delete_outline),
               ),
             ],
           ),
@@ -137,10 +172,7 @@ class _ProfileTile extends StatelessWidget {
         title: Text(title),
         subtitle: Text(
           subtitle,
-          style: Theme.of(context)
-              .textTheme
-              .labelLarge
-              ?.copyWith(color: AppColors.neutral),
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.neutral),
         ),
         trailing: const Icon(Icons.chevron_right),
         onTap: route == null ? null : () => context.go(route!),
@@ -170,10 +202,7 @@ class _BadgeChip extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: Theme.of(context)
-            .textTheme
-            .labelLarge
-            ?.copyWith(color: AppColors.neutral),
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(color: AppColors.neutral),
       ),
     );
   }

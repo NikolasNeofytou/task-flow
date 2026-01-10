@@ -1,6 +1,6 @@
 {
-    "name": "taskflow",
-    "short_name": "taskflow",
+    "name": "GroupUp",
+    "short_name": "GroupUp",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

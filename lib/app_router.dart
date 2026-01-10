@@ -5,7 +5,6 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'core/models/app_notification.dart';
 import 'core/models/project.dart';
 import 'core/models/request.dart';
-import 'core/models/task_item.dart';
 import 'features/notifications/presentation/notifications_screen.dart';
 import 'features/notifications/presentation/notification_detail_screen.dart';
 import 'features/inbox/presentation/inbox_screen.dart';
@@ -20,8 +19,6 @@ import 'features/profile/presentation/signup_screen.dart';
 // import 'features/invite/presentation/unified_qr_screen.dart'; // TODO: Fix and re-enable
 import 'features/projects/presentation/projects_screen.dart';
 import 'features/projects/presentation/project_detail_screen.dart';
-import 'features/projects/presentation/task_form_screen.dart';
-import 'features/projects/presentation/task_detail_screen.dart';
 import 'features/requests/presentation/requests_screen.dart';
 import 'features/requests/presentation/request_detail_screen.dart';
 import 'features/schedule/presentation/calendar_screen.dart';
@@ -33,6 +30,7 @@ import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/shell/presentation/app_shell.dart';
 import 'features/chat/presentation/chat_screen.dart';
 import 'features/chat/presentation/enhanced_chat_screen.dart';
+import '../../features/requests/presentation/requests_screen.dart';
 
 GoRouter createRouter() {
   final rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -81,69 +79,38 @@ GoRouter createRouter() {
             AppShell(location: state.uri.toString(), child: child),
         routes: [
           GoRoute(
-            path: '/calendar',
-            name: 'calendar',
-            pageBuilder: (context, state) => fadeSlide(const CalendarScreen()),
-          ),
+  path: '/requests',
+  builder: (context, state) => const RequestsScreen(),
+),
+          GoRoute(
+  path: '/calendar',
+  pageBuilder: (context, state) =>
+      const NoTransitionPage(child: CalendarScreen()),
+),
           GoRoute(
             path: '/projects',
             name: 'projects',
-            pageBuilder: (context, state) => fadeSlide(const ProjectsScreen()),
+            pageBuilder: (context, state) =>  const NoTransitionPage(child: ProjectsScreen()),
             routes: [
-              GoRoute(
-                path: ':id',
-                name: 'project-detail',
-                builder: (context, state) {
-                  final id = state.pathParameters['id']!;
-                  final project = state.extra;
-                  return ProjectDetailScreen(
-                    projectId: id,
-                    project: project is Project ? project : null,
-                  );
-                },
-                routes: [
-                  GoRoute(
-                    path: 'task/new',
-                    name: 'task-new',
-                    builder: (context, state) {
-                      final id = state.pathParameters['id']!;
-                      return TaskFormScreen(projectId: id);
-                    },
-                  ),
-                  GoRoute(
-                    path: 'task/:taskId/edit',
-                    name: 'task-edit',
-                    builder: (context, state) {
-                      final id = state.pathParameters['id']!;
-                      final task = state.extra;
-                      return TaskFormScreen(
-                        projectId: id,
-                        initialTask: task is TaskItem ? task : null,
-                      );
-                    },
-                  ),
-                  GoRoute(
-                    path: 'task/:taskId',
-                    name: 'task-detail',
-                    builder: (context, state) {
-                      final id = state.pathParameters['id']!;
-                      final task = state.extra;
-                      if (task is TaskItem) {
-                        return TaskDetailScreen(projectId: id, task: task);
-                      }
-                      return const Scaffold(
-                        body: Center(child: Text('Task not found')),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ],
+  GoRoute(
+    path: ':id',
+    name: 'project-detail',
+    builder: (context, state) {
+      final id = state.pathParameters['id']!;
+      final project = state.extra;
+      return ProjectDetailScreen(
+        projectId: id,
+        project: project is Project ? project : null,
+      );
+    },
+  ),
+],
+
           ),
           GoRoute(
             path: '/profile',
             name: 'profile',
-            pageBuilder: (context, state) => fadeSlide(const EnhancedProfileScreen()),
+            pageBuilder: (context, state) => const NoTransitionPage(child: EnhancedProfileScreen()),
             routes: [
               GoRoute(
                 path: 'edit',
@@ -175,7 +142,8 @@ GoRouter createRouter() {
           GoRoute(
             path: '/chat',
             name: 'chat',
-            builder: (context, state) => const EnhancedChatScreen(),
+            pageBuilder: (context, state) => 
+            const NoTransitionPage(child: EnhancedChatScreen()),
             routes: [
               GoRoute(
                 path: ':channelId',

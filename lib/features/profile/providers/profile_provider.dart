@@ -8,7 +8,9 @@ import 'package:path_provider/path_provider.dart';
 
 import '../models/user_profile_model.dart';
 import '../models/badge_model.dart';
+import 'package:path/path.dart' as p;
 
+export 'badges_provider.dart';
 /// Provider for user profile state
 final userProfileProvider = StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
   return UserProfileNotifier();
@@ -32,6 +34,8 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
       final customStatus = await _storage.read(key: 'user_customStatus');
       final badgesStr = await _storage.read(key: 'user_unlockedBadges');
       final selectedBadge = await _storage.read(key: 'user_selectedBadge');
+      final bio = await _storage.read(key: 'user_bio');
+
 
       if (email != null && displayName != null) {
         final status = UserStatus.values.firstWhere(
@@ -50,6 +54,8 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
           customStatusMessage: customStatus,
           unlockedBadgeIds: unlockedBadges,
           selectedBadgeId: selectedBadge,
+          bio: bio,
+
           createdAt: DateTime.now(),
           lastActiveAt: DateTime.now(),
         );
@@ -88,41 +94,54 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     }
   }
 
-  /// Update profile picture from device
-  Future<void> updateProfilePicture() async {
-    try {
-      final XFile? image = await _imagePicker.pickImage(
-        source: ImageSource.gallery,
-        maxWidth: 512,
-        maxHeight: 512,
-        imageQuality: 85,
-      );
+/// Update profile picture from device
+Future<void> updateProfilePicture() async {
+  try {
+    final XFile? image = await _imagePicker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 85,
+    );
 
-      if (image == null) return;
+    if (image == null) return;
+    if (state == null) return;
 
-      // Save to app directory
-      final directory = await getApplicationDocumentsDirectory();
-      final fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}.jpg';
-      final savedPath = '${directory.path}/$fileName';
-      
-      await File(image.path).copy(savedPath);
+    // Read bytes from picker (πιο αξιόπιστο από copy(path))
+    final bytes = await image.readAsBytes();
 
-      // Delete old photo if exists
-      if (state?.photoPath != null) {
-        try {
-          await File(state!.photoPath!).delete();
-        } catch (e) {
-          debugPrint('Could not delete old photo: $e');
+    // Save to app directory
+    final directory = await getApplicationDocumentsDirectory();
+    final ext = p.extension(image.path).isNotEmpty ? p.extension(image.path) : '.jpg';
+    final fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}$ext';
+    final savedPath = p.join(directory.path, fileName);
+
+    final savedFile = File(savedPath);
+    await savedFile.writeAsBytes(bytes, flush: true);
+
+    // Delete old photo if exists
+    final oldPath = state!.photoPath;
+    if (oldPath != null && oldPath.isNotEmpty) {
+      try {
+        final oldFile = File(oldPath);
+        if (await oldFile.exists()) {
+          await oldFile.delete();
         }
+      } catch (e) {
+        debugPrint('Could not delete old photo: $e');
       }
-
-      await _storage.write(key: 'user_photoPath', value: savedPath);
-      state = state?.copyWith(photoPath: savedPath);
-    } catch (e) {
-      debugPrint('Error updating profile picture: $e');
-      rethrow;
     }
+
+    // Persist path + update state
+    await _storage.write(key: 'user_photoPath', value: savedPath);
+    state = state!.copyWith(photoPath: savedPath, lastActiveAt: DateTime.now());
+
+    debugPrint('✅ Profile picture saved at: $savedPath');
+  } catch (e) {
+    debugPrint('❌ Error updating profile picture: $e');
+    rethrow;
   }
+}
 
   /// Update user status
   Future<void> updateStatus(UserStatus newStatus, {String? customMessage}) async {
@@ -155,30 +174,41 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   /// Update profile information
-  Future<void> updateProfile({
-    String? displayName,
-    String? email,
-  }) async {
-    if (state == null) return;
-    
-    try {
-      if (displayName != null) {
-        await _storage.write(key: 'user_displayName', value: displayName);
-      }
-      if (email != null) {
-        await _storage.write(key: 'user_email', value: email);
-      }
-      
-      state = state!.copyWith(
-        displayName: displayName,
-        email: email,
-        lastActiveAt: DateTime.now(),
-      );
-    } catch (e) {
-      debugPrint('Error updating profile: $e');
-      rethrow;
+ Future<void> updateProfile({
+  String? displayName,
+  String? email,
+  String? bio,
+}) async {
+  if (state == null) return;
+
+  final nextDisplayName = displayName?.trim();
+  final nextEmail = email?.trim();
+  final nextBioRaw = bio?.trim();
+  final nextBio = (nextBioRaw == null || nextBioRaw.isEmpty) ? null : nextBioRaw;
+
+  if (nextDisplayName != null) {
+    await _storage.write(key: 'user_displayName', value: nextDisplayName);
+  }
+  if (nextEmail != null) {
+    await _storage.write(key: 'user_email', value: nextEmail);
+  }
+
+  if (bio != null) {
+    if (nextBio == null) {
+      await _storage.delete(key: 'user_bio');
+    } else {
+      await _storage.write(key: 'user_bio', value: nextBio);
     }
   }
+
+  state = state!.copyWith(
+    displayName: nextDisplayName,
+    email: nextEmail,
+    bio: bio == null ? state!.bio : nextBio,
+    lastActiveAt: DateTime.now(),
+  );
+}
+
 
   /// Select a badge to display
   Future<void> selectBadge(String? badgeId) async {
@@ -203,16 +233,3 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 }
 
-/// Provider for badge collection with unlock status
-final badgesProvider = Provider<List<AppBadge>>((ref) {
-  final profile = ref.watch(userProfileProvider);
-  if (profile == null) return BadgeCollection.all;
-
-  return BadgeCollection.all.map((badge) {
-    final isUnlocked = profile.unlockedBadgeIds.contains(badge.id);
-    return badge.copyWith(
-      isUnlocked: isUnlocked,
-      unlockedAt: isUnlocked ? DateTime.now() : null,
-    );
-  }).toList();
-});

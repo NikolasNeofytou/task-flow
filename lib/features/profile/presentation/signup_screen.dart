@@ -78,7 +78,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   
                   // Welcome text
                   Text(
-                    'Welcome to TaskFlow',
+                    'Welcome to GroupUp',
                     style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

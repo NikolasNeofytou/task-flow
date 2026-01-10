@@ -1,69 +1,40 @@
+import 'dart:convert';
 import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../../theme/tokens.dart';
 import '../models/chat_message.dart';
 
-/// File attachment picker and handler
 class FileAttachmentPicker {
   FileAttachmentPicker._();
 
-  /// Pick an image file
-  static Future<FileAttachment?> pickImage() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.image,
-      allowMultiple: false,
-    );
+  static String _mimeFromExt(String ext) {
+    final e = ext.toLowerCase();
+    if (e == 'png') return 'image/png';
+    if (e == 'jpg' || e == 'jpeg') return 'image/jpeg';
+    if (e == 'gif') return 'image/gif';
+    if (e == 'webp') return 'image/webp';
+    if (e == 'bmp') return 'image/bmp';
 
-    if (result == null || result.files.isEmpty) return null;
+    if (e == 'pdf') return 'application/pdf';
+    if (e == 'txt') return 'text/plain';
+    if (e == 'doc') return 'application/msword';
+    if (e == 'docx') {
+      return 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+    }
+    if (e == 'xls') return 'application/vnd.ms-excel';
+    if (e == 'xlsx') {
+      return 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+    }
+    if (e == 'ppt') return 'application/vnd.ms-powerpoint';
+    if (e == 'pptx') {
+      return 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+    }
 
-    final file = result.files.first;
-    return FileAttachment(
-      path: file.path!,
-      name: file.name,
-      size: file.size,
-      type: FileAttachmentType.image,
-    );
-  }
-
-  /// Pick a document file
-  static Future<FileAttachment?> pickDocument() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.custom,
-      allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'],
-      allowMultiple: false,
-    );
-
-    if (result == null || result.files.isEmpty) return null;
-
-    final file = result.files.first;
-    return FileAttachment(
-      path: file.path!,
-      name: file.name,
-      size: file.size,
-      type: FileAttachmentType.document,
-    );
-  }
-
-  /// Pick any file type
-  static Future<FileAttachment?> pickAnyFile() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
-      allowMultiple: false,
-    );
-
-    if (result == null || result.files.isEmpty) return null;
-
-    final file = result.files.first;
-    final type = _detectFileType(file.name);
-
-    return FileAttachment(
-      path: file.path!,
-      name: file.name,
-      size: file.size,
-      type: type,
-    );
+    return 'application/octet-stream';
   }
 
   static FileAttachmentType _detectFileType(String fileName) {
@@ -81,6 +52,139 @@ class FileAttachmentPicker {
       return FileAttachmentType.document;
     }
     return FileAttachmentType.other;
+  }
+
+  /// Pick an image file
+  static Future<FileAttachment?> pickImage() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.image,
+      allowMultiple: false,
+      withData: kIsWeb,
+    );
+
+    if (result == null || result.files.isEmpty) return null;
+
+    final file = result.files.first;
+
+    if (kIsWeb) {
+      final bytes = file.bytes;
+      if (bytes == null) return null;
+
+      final ext = (file.extension ?? '').toLowerCase();
+      final mime = _mimeFromExt(ext);
+      final dataUrl = 'data:$mime;base64,${base64Encode(bytes)}';
+
+      return FileAttachment(
+        path: dataUrl,
+        name: file.name,
+        size: file.size,
+        type: FileAttachmentType.image,
+      );
+    }
+
+    final path = file.path;
+    if (path == null) return null;
+
+    return FileAttachment(
+      path: path,
+      name: file.name,
+      size: file.size,
+      type: FileAttachmentType.image,
+    );
+  }
+
+  /// Pick a document file
+  static Future<FileAttachment?> pickDocument() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['pdf', 'doc', 'docx', 'txt', 'xls', 'xlsx', 'ppt', 'pptx'],
+      allowMultiple: false,
+      withData: kIsWeb, 
+    );
+
+    if (result == null || result.files.isEmpty) return null;
+
+    final file = result.files.first;
+
+    if (kIsWeb) {
+      final bytes = file.bytes;
+      if (bytes == null) {
+        return FileAttachment(
+          path: file.name,
+          name: file.name,
+          size: file.size,
+          type: FileAttachmentType.document,
+        );
+      }
+
+      final ext = (file.extension ?? '').toLowerCase();
+      final mime = _mimeFromExt(ext);
+      final dataUrl = 'data:$mime;base64,${base64Encode(bytes)}';
+
+      return FileAttachment(
+        path: dataUrl,
+        name: file.name,
+        size: file.size,
+        type: FileAttachmentType.document,
+      );
+    }
+
+    final path = file.path;
+    if (path == null) return null;
+
+    return FileAttachment(
+      path: path,
+      name: file.name,
+      size: file.size,
+      type: FileAttachmentType.document,
+    );
+  }
+
+  /// Pick any file type
+  static Future<FileAttachment?> pickAnyFile() async {
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.any,
+      allowMultiple: false,
+      withData: kIsWeb, 
+    );
+
+    if (result == null || result.files.isEmpty) return null;
+
+    final file = result.files.first;
+    final type = _detectFileType(file.name);
+
+    if (kIsWeb) {
+      final bytes = file.bytes;
+      if (bytes == null) {
+        return FileAttachment(
+          path: file.name,
+          name: file.name,
+          size: file.size,
+          type: type,
+        );
+      }
+
+      final ext = (file.extension ?? '').toLowerCase();
+      final mime = _mimeFromExt(ext);
+      final dataUrl = 'data:$mime;base64,${base64Encode(bytes)}';
+
+      return FileAttachment(
+        path: dataUrl,
+        name: file.name,
+        size: file.size,
+        type: type,
+      );
+    }
+
+    final path = file.path;
+    if (path == null) return null;
+
+    return FileAttachment(
+      path: path,
+      name: file.name,
+      size: file.size,
+      type: type,
+    );
   }
 }
 
@@ -150,10 +254,13 @@ class FileAttachmentPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-
     // For images, show thumbnail
     if (fileType == FileAttachmentType.image) {
+      final shouldUseNetwork = kIsWeb ||
+          filePath.startsWith('data:') ||
+          filePath.startsWith('http://') ||
+          filePath.startsWith('https://');
+
       return GestureDetector(
         onTap: onTap,
         child: ClipRRect(
@@ -163,19 +270,33 @@ class FileAttachmentPreview extends StatelessWidget {
               maxWidth: 250,
               maxHeight: 250,
             ),
-            child: Image.file(
-              File(filePath),
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return _FileCard(
-                  icon: _getIcon(),
-                  iconColor: _getIconColor(),
-                  fileName: fileName,
-                  fileSize: fileSize,
-                  isMe: isMe,
-                );
-              },
-            ),
+            child: shouldUseNetwork
+                ? Image.network(
+                    filePath,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _FileCard(
+                        icon: _getIcon(),
+                        iconColor: _getIconColor(),
+                        fileName: fileName,
+                        fileSize: fileSize,
+                        isMe: isMe,
+                      );
+                    },
+                  )
+                : Image.file(
+                    File(filePath),
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return _FileCard(
+                        icon: _getIcon(),
+                        iconColor: _getIconColor(),
+                        fileName: fileName,
+                        fileSize: fileSize,
+                        isMe: isMe,
+                      );
+                    },
+                  ),
           ),
         ),
       );
@@ -217,14 +338,10 @@ class _FileCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.md),
       decoration: BoxDecoration(
-        color: isMe
-            ? Colors.white.withOpacity(0.1)
-            : colorScheme.surfaceContainerHigh,
+        color: isMe ? Colors.white.withOpacity(0.1) : colorScheme.surfaceContainerHigh,
         borderRadius: BorderRadius.circular(AppRadii.md),
         border: Border.all(
-          color: isMe
-              ? Colors.white.withOpacity(0.2)
-              : colorScheme.outline.withOpacity(0.2),
+          color: isMe ? Colors.white.withOpacity(0.2) : colorScheme.outline.withOpacity(0.2),
         ),
       ),
       child: Row(
@@ -262,9 +379,7 @@ class _FileCard extends StatelessWidget {
                 Text(
                   FileSizeFormatter.format(fileSize),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: isMe
-                            ? Colors.white.withOpacity(0.7)
-                            : colorScheme.onSurfaceVariant,
+                        color: isMe ? Colors.white.withOpacity(0.7) : colorScheme.onSurfaceVariant,
                       ),
                 ),
               ],
@@ -274,9 +389,7 @@ class _FileCard extends StatelessWidget {
           Icon(
             Icons.download,
             size: 20,
-            color: isMe
-                ? Colors.white.withOpacity(0.7)
-                : colorScheme.onSurfaceVariant,
+            color: isMe ? Colors.white.withOpacity(0.7) : colorScheme.onSurfaceVariant,
           ),
         ],
       ),
@@ -304,10 +417,7 @@ class FileAttachmentSheet extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Attach File',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Text('Attach File', style: Theme.of(context).textTheme.titleLarge),
           const SizedBox(height: AppSpacing.lg),
           _AttachmentOption(
             icon: Icons.image,
@@ -391,10 +501,7 @@ class _AttachmentOption extends StatelessWidget {
                 child: Icon(icon, color: iconColor),
               ),
               const SizedBox(width: AppSpacing.md),
-              Text(
-                label,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text(label, style: Theme.of(context).textTheme.titleMedium),
             ],
           ),
         ),

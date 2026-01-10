@@ -249,7 +249,7 @@ class _UnifiedQRScreenState extends ConsumerState<UnifiedQRScreen>
 
   Widget _buildShowQRMode(ThemeData theme, ColorScheme colorScheme) {
     // Generate deep link for user profile
-    // TODO: Get actual user data from auth provider
+ 
     final userId = 'user123';
     final email = 'user@example.com';
     final displayName = 'John Doe';

@@ -878,11 +878,7 @@ void _showQuickActions(BuildContext context) {
     context: context,
     builder: (context) => QuickActionsSheet(
       actions: [
-        QuickAction(
-          icon: Icons.add_task,
-          label: 'New Task',
-          onTap: () => context.push('/tasks/new'),
-        ),
+
         QuickAction(
           icon: Icons.calendar_today,
           label: 'View Calendar',
@@ -1074,12 +1070,6 @@ class FeatureTour {
   final List<TourStep> steps = [
     TourStep(
       targetKey: GlobalKey(),
-      title: 'Create Tasks',
-      description: 'Tap here to add a new task with rich details',
-      overlayColor: Colors.black87,
-    ),
-    TourStep(
-      targetKey: GlobalKey(),
       title: 'Calendar View',
       description: 'See all your tasks in a beautiful month grid',
       overlayColor: Colors.black87,
@@ -1099,16 +1089,6 @@ class FeatureTour {
   }
 }
 
-// Usage in screen
-Showcase(
-  key: _tourKeys[0],
-  title: 'Add Task',
-  description: 'Create new tasks with a single tap',
-  child: FloatingActionButton(
-    onPressed: () => context.push('/tasks/new'),
-    child: Icon(Icons.add),
-  ),
-)
 ```
 
 #### C. Theme Customization

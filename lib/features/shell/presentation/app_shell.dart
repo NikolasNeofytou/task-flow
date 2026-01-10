@@ -2,82 +2,85 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/models/project.dart';
 import '../../../core/providers/data_providers.dart';
-import '../../../theme/tokens.dart';
 import '../../../design_system/widgets/app_scaffold.dart';
-import '../../../design_system/widgets/expandable_fab.dart';
 import '../../../theme/gradients.dart';
+import '../../../theme/tokens.dart';
 
-class AppShell extends StatefulWidget {
+const String kMeUserId = 'me';
+
+class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key, required this.child, required this.location});
 
   final Widget child;
   final String location;
 
   @override
-  State<AppShell> createState() => _AppShellState();
+  ConsumerState<AppShell> createState() => _AppShellState();
 }
 
-class _AppShellState extends State<AppShell> {
-
+class _AppShellState extends ConsumerState<AppShell> {
   static const _items = <_NavItem>[
     _NavItem(label: 'Chat', icon: Icons.chat_bubble_outline, path: '/chat'),
     _NavItem(label: 'Calendar', icon: Icons.calendar_month_outlined, path: '/calendar'),
     _NavItem(label: 'Projects', icon: Icons.folder_copy_outlined, path: '/projects'),
+    _NavItem(label:'Requests', icon: Icons.outgoing_mail, path: '/requests'),
     _NavItem(label: 'Profile', icon: Icons.person_outline, path: '/profile'),
+  
   ];
 
-  int _locationToIndex(String value) {
-    if (value.startsWith('/calendar')) return 1;
-    if (value.startsWith('/projects')) return 2;
-    if (value.startsWith('/profile')) return 3;
-    return 0; // chat default
+  int _locationToIndex(String location) {
+    if (location.startsWith('/chat')) return 0;
+    if (location.startsWith('/calendar')) return 1;
+    if (location.startsWith('/projects')) return 2;
+    if (location.startsWith('/profile')) return 4;
+    if (location.startsWith('/requests')) return 3;
+    return 2;
   }
 
+  int _prevIndex = 2;
+
   void _navigateToIndex(int index) {
-    if (index >= 0 && index < _items.length) {
-      final target = _items[index];
-      if (target.path != widget.location) {
-        context.go(target.path);
-      }
-    }
+    if (index < 0 || index >= _items.length) return;
+
+    final target = _items[index];
+    final currentIndex = _locationToIndex(widget.location);
+    if (target.path == widget.location) return;
+
+    setState(() => _prevIndex = currentIndex);
+    context.go(target.path);
   }
 
   void _onHorizontalSwipe(DragEndDetails details) {
     final velocity = details.primaryVelocity ?? 0;
-    
-    // Require minimum swipe velocity
     if (velocity.abs() < 500) return;
 
     final currentIndex = _locationToIndex(widget.location);
-    
-    if (velocity < 0) {
-      // Swipe left - go to next page
+
+    // δεξί swipe -> πάει μπροστά (next tab)
+    // αριστερό swipe -> πάει πίσω (previous tab)
+    if (velocity > 0) {
       _navigateToIndex(currentIndex + 1);
     } else {
-      // Swipe right - go to previous page
       _navigateToIndex(currentIndex - 1);
     }
   }
 
-  void _showProjectSelectionDialog(BuildContext context) async {
-    // Import required for dialog
-    final projects = await showDialog<String>(
+  Offset _slideBeginForTransition(int newIndex) {
+    final goingForward = newIndex > _prevIndex;
+    return goingForward ? const Offset(0.15, 0) : const Offset(-0.15, 0);
+  }
+
+  Future<void> _openNewProjectDialog() async {
+    await showDialog<void>(
       context: context,
-      builder: (BuildContext context) => const _ProjectSelectionDialog(),
+      builder: (ctx) => const _NewProjectDialog(),
     );
-    
-    if (projects != null && context.mounted) {
-      context.push('/projects/$projects/task/new');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final selectedIndex = _locationToIndex(widget.location);
-    final isProjectsScreen = widget.location.startsWith('/projects') && !widget.location.contains('/projects/');
-    final isCalendarScreen = widget.location.startsWith('/calendar');
 
     return AppScaffold(
       child: Scaffold(
@@ -111,20 +114,22 @@ class _AppShellState extends State<AppShell> {
                       vertical: AppSpacing.md,
                     ),
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 250),
+                      duration: const Duration(milliseconds: 280),
                       switchInCurve: Curves.easeOut,
                       switchOutCurve: Curves.easeIn,
-                      transitionBuilder: (widget, animation) {
-                        final slide = Tween<Offset>(
-                          begin: const Offset(0, 0.02),
-                          end: Offset.zero,
-                        ).animate(animation);
+                      transitionBuilder: (child, animation) {
+                        final begin = _slideBeginForTransition(selectedIndex);
+                        final slide = Tween<Offset>(begin: begin, end: Offset.zero).animate(animation);
+
                         return FadeTransition(
                           opacity: animation,
-                          child: SlideTransition(position: slide, child: widget),
+                          child: SlideTransition(position: slide, child: child),
                         );
                       },
-                      child: widget.child,
+                      child: KeyedSubtree(
+                        key: ValueKey<String>(_items[selectedIndex].path),
+                        child: widget.child,
+                      ),
                     ),
                   ),
                 ),
@@ -143,47 +148,18 @@ class _AppShellState extends State<AppShell> {
               ),
           ],
         ),
-        floatingActionButton: isProjectsScreen
-            ? ExpandableFab(
-                mainIcon: Icons.add,
-                actions: [
-                  FabAction(
-                    icon: Icons.folder_outlined,
-                    label: 'New Project',
-                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('New project creation coming soon')),
-                    ),
+        floatingActionButton: selectedIndex == 2
+            ? FloatingActionButton(
+                onPressed: _openNewProjectDialog,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    gradient: AppGradients.primary,
+                    shape: BoxShape.circle,
                   ),
-                  FabAction(
-                    icon: Icons.task_alt,
-                    label: 'Quick Task',
-                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Quick task creation coming soon')),
-                    ),
-                  ),
-                  FabAction(
-                    icon: Icons.qr_code_scanner,
-                    label: 'Scan QR',
-                    onTap: () => context.push('/qr-scanner'),
-                    color: AppColors.accent,
-                  ),
-                ],
+                  child: const Center(child: Icon(Icons.add, color: Colors.white)),
+                ),
               )
-            : isCalendarScreen
-                ? FloatingActionButton(
-                    onPressed: () => _showProjectSelectionDialog(context),
-                    tooltip: 'Add new task',
-                    child: Container(
-                      decoration: BoxDecoration(
-                        gradient: AppGradients.primary,
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.add, color: Colors.white),
-                      ),
-                    ),
-                  )
-                : null,
+            : null,
       ),
     );
   }
@@ -201,226 +177,202 @@ class _NavItem {
   final String path;
 }
 
-class _ProjectSelectionDialog extends StatelessWidget {
-  const _ProjectSelectionDialog();
+class _NewProjectDialog extends ConsumerStatefulWidget {
+  const _NewProjectDialog();
+
+  @override
+  ConsumerState<_NewProjectDialog> createState() => _NewProjectDialogState();
+}
+
+class _NewProjectDialogState extends ConsumerState<_NewProjectDialog> {
+  final _nameCtrl = TextEditingController();
+  DateTime? _deadline;
+  String _assigneeId = kMeUserId;
+
+  @override
+  void dispose() {
+    _nameCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickDeadline() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      firstDate: DateTime(now.year, now.month, now.day),
+      lastDate: DateTime(now.year + 5),
+      initialDate: _deadline ?? DateTime(now.year, now.month, now.day),
+    );
+
+    if (picked != null) {
+      setState(() => _deadline = picked);
+    }
+  }
+
+  Future<void> _create() async {
+    final name = _nameCtrl.text.trim();
+    if (name.isEmpty) return;
+
+    final teamMembers = <String>[_assigneeId];
+
+    final notifier = ref.read(projectsProvider.notifier);
+
+    try {
+      await (notifier as dynamic).addProject(
+        name: name,
+        deadline: _deadline,
+        teamMembers: teamMembers,
+      );
+    } catch (_) {
+      try {
+        await (notifier as dynamic).addProject(name, _deadline);
+      } catch (_) {
+        await (notifier as dynamic).createProject(
+          name: name,
+          deadline: _deadline,
+          teamMembers: teamMembers,
+        );
+      }
+    }
+
+    if (mounted) Navigator.of(context).pop();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final usersAsync = ref.watch(usersProvider);
+
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppRadii.lg),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(AppSpacing.lg),
-        constraints: const BoxConstraints(maxWidth: 400),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    gradient: AppGradients.primary,
-                    borderRadius: BorderRadius.circular(AppRadii.md),
-                  ),
-                  child: const Icon(
-                    Icons.task_alt,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: AppSpacing.md),
-                Expanded(
-                  child: Text(
-                    'Select Project',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => Navigator.of(context).pop(),
-                ),
-              ],
-            ),
-            const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Choose a project to add your new task',
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-            ),
-            const SizedBox(height: AppSpacing.lg),
-            const Flexible(
-              child: _ProjectList(),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ProjectList extends ConsumerWidget {
-  const _ProjectList();
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final asyncProjects = ref.watch(projectsProvider);
-
-    return asyncProjects.when(
-      data: (projects) {
-        if (projects.isEmpty) {
-          return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(
-                    Icons.folder_off_outlined,
-                    size: 48,
-                    color: Theme.of(context).colorScheme.onSurfaceVariant,
-                  ),
-                  const SizedBox(height: AppSpacing.md),
-                  Text(
-                    'No projects available',
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        return ListView.separated(
-          shrinkWrap: true,
-          itemCount: projects.length,
-          separatorBuilder: (context, index) => const SizedBox(height: AppSpacing.sm),
-          itemBuilder: (context, index) {
-            final project = projects[index];
-            final projectColor = _getProjectColor(project.status);
-            
-            return InkWell(
-              onTap: () => Navigator.of(context).pop(project.id),
-              borderRadius: BorderRadius.circular(AppRadii.md),
-              child: Container(
-                padding: const EdgeInsets.all(AppSpacing.md),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.outlineVariant,
-                  ),
-                  borderRadius: BorderRadius.circular(AppRadii.md),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: projectColor.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(AppRadii.sm),
-                      ),
-                      child: Icon(
-                        Icons.folder,
-                        color: projectColor,
-                        size: 20,
-                      ),
-                    ),
-                    const SizedBox(width: AppSpacing.md),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            project.name,
-                            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                          ),
-                          const SizedBox(height: AppSpacing.xs),
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: projectColor.withOpacity(0.2),
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  project.status.name.toUpperCase(),
-                                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                                        color: projectColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                ),
-                              ),
-                              const SizedBox(width: AppSpacing.sm),
-                              Text(
-                                '${project.tasks} tasks',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                                    ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Icon(
-                      Icons.chevron_right,
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
-        );
-      },
-      loading: () => const Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 420),
         child: Padding(
-          padding: EdgeInsets.all(AppSpacing.xl),
-          child: CircularProgressIndicator(),
-        ),
-      ),
-      error: (error, stack) => Center(
-        child: Padding(
-          padding: const EdgeInsets.all(AppSpacing.xl),
+          padding: const EdgeInsets.all(AppSpacing.lg),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
-                Icons.error_outline,
-                size: 48,
-                color: Theme.of(context).colorScheme.error,
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(AppSpacing.sm),
+                    decoration: BoxDecoration(
+                      gradient: AppGradients.primary,
+                      borderRadius: BorderRadius.circular(AppRadii.md),
+                    ),
+                    child: const Icon(Icons.folder_outlined, color: Colors.white),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Text(
+                      'New Project',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                ],
               ),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              TextField(
+                controller: _nameCtrl,
+                decoration: InputDecoration(
+                  labelText: 'Project name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(AppRadii.md),
+                  ),
+                ),
+              ),
+
               const SizedBox(height: AppSpacing.md),
-              Text(
-                'Failed to load projects',
-                style: Theme.of(context).textTheme.titleMedium,
+
+              usersAsync.when(
+                loading: () => const LinearProgressIndicator(),
+                error: (e, st) => const Text('Failed to load team members'),
+                data: (users) {
+                  final others = users.where((u) => u.id != kMeUserId).toList();
+
+                  final items = <DropdownMenuItem<String>>[
+                    const DropdownMenuItem<String>(
+                      value: kMeUserId,
+                      child: Text('Me'),
+                    ),
+                    ...others.map(
+                      (u) => DropdownMenuItem<String>(
+                        value: u.id,
+                        child: Text(u.name),
+                      ),
+                    ),
+                  ];
+
+                  final validValues = items.map((e) => e.value).toSet();
+                  final value = validValues.contains(_assigneeId) ? _assigneeId : kMeUserId;
+
+                  return DropdownButtonFormField<String>(
+                    value: value,
+                    decoration: InputDecoration(
+                      labelText: 'Assign to',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppRadii.md),
+                      ),
+                    ),
+                    items: items,
+                    onChanged: (v) {
+                      if (v == null) return;
+                      setState(() => _assigneeId = v);
+                    },
+                  );
+                },
+              ),
+
+              const SizedBox(height: AppSpacing.md),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton.icon(
+                      onPressed: _pickDeadline,
+                      icon: const Icon(Icons.event_outlined),
+                      label: Text(
+                        _deadline == null
+                            ? 'Pick deadline'
+                            : 'Deadline: ${_deadline!.toLocal().toString().split(' ').first}',
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: AppSpacing.lg),
+
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('Cancel'),
+                    ),
+                  ),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: _create,
+                      child: const Text('Create'),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-Color _getProjectColor(ProjectStatus status) {
-  switch (status) {
-    case ProjectStatus.onTrack:
-      return AppColors.success;
-    case ProjectStatus.dueSoon:
-      return AppColors.warning;
-    case ProjectStatus.blocked:
-      return AppColors.error;
   }
 }

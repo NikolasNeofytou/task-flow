@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// User online status (Discord-style)
+/// User online status 
 enum UserStatus {
   online,
   away,
@@ -13,6 +13,7 @@ class UserProfile {
   final String id;
   final String displayName;
   final String email;
+  final String? bio;
   final String? photoPath; // Local file path to profile picture
   final UserStatus status;
   final String? customStatusMessage;
@@ -25,6 +26,7 @@ class UserProfile {
     required this.id,
     required this.displayName,
     required this.email,
+    this.bio, 
     this.photoPath,
     this.status = UserStatus.online,
     this.customStatusMessage,
@@ -38,6 +40,7 @@ class UserProfile {
     String? id,
     String? displayName,
     String? email,
+    String? bio, 
     String? photoPath,
     UserStatus? status,
     String? customStatusMessage,
@@ -50,6 +53,7 @@ class UserProfile {
       id: id ?? this.id,
       displayName: displayName ?? this.displayName,
       email: email ?? this.email,
+      bio: bio ?? this.bio,
       photoPath: photoPath ?? this.photoPath,
       status: status ?? this.status,
       customStatusMessage: customStatusMessage ?? this.customStatusMessage,
