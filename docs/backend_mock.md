@@ -1,44 +1,55 @@
-# Mock Backend (Node/Express)
+# Backend Architecture - Current Implementation
 
-Paths: `backend_mock/`
+## Current Status: No Backend Required ✅
 
-Endpoints (http://localhost:4000 by default):
-- Requests:
-  - GET `/requests`
-  - POST `/requests` body `{ title, dueDate? }`
-  - PATCH `/requests/{id}` body `{ status }`
-- Notifications:
-  - GET `/notifications`
-- Projects:
-  - GET `/projects`
-  - GET `/projects/{id}/tasks`
-- Calendar:
-  - GET `/calendar/tasks`
+**For this academic submission, TaskFlow operates completely offline using local device storage.**
 
-Run:
-```
+## Architecture Overview
+
+### Mock Data System
+- **Location**: `lib/core/data/mock_data.dart`
+- **Purpose**: Provides sample data for demonstration
+- **Integration**: Works with local storage providers
+
+### Local Storage Stack
+1. **FlutterSecureStorage**: User profiles, authentication
+2. **SharedPreferences**: App settings, non-sensitive data  
+3. **Mock Repositories**: In-memory data simulation
+
+## Optional Mock Backend Server
+
+The `backend_mock/` directory contains an optional Node.js server for testing network integration, but it's **not required** for the current implementation.
+
+### If You Want to Test the Mock Backend:
+
+**Start Server:**
+```bash
 cd backend_mock
 npm install
-npm run dev   # or npm start
+npm start   # Runs on http://localhost:4000
 ```
 
-If npm throws TAR_ENTRY/EBADF errors on OneDrive/long paths, copy to a short path first:
-```
-$dest="C:\temp\taskflow-backend"
-New-Item -ItemType Directory -Force -Path $dest | Out-Null
-Copy-Item -Recurse -Force backend_mock\* $dest
-Push-Location $dest
-npm install
-npm run dev
-Pop-Location
-```
-
-Flutter against mock backend:
-```
+**Configure Flutter to Use It:**
+```bash
 flutter run --dart-define=API_BASE_URL=http://localhost:4000 --dart-define=USE_MOCKS=false
 ```
 
-Notes:
-- Data is in-memory; restart resets it.
-- Logging via `morgan` is enabled.
-- Update `server.js` if you need more routes or persistence.
+**Available Endpoints:**
+- GET `/requests` - Mock task requests
+- GET `/notifications` - Mock notifications  
+- GET `/projects` - Mock projects
+- GET `/calendar/tasks` - Mock calendar tasks
+
+## Academic Compliance
+
+✅ **Self-Contained**: No external dependencies required  
+✅ **Persistent Data**: Local storage survives app restarts  
+✅ **Mock Authentication**: Any credentials work for demonstration  
+✅ **Offline First**: Complete functionality without internet
+
+**For academic submission, simply use:**
+```bash
+.\quick_start.ps1
+```
+
+This starts the app with the default local storage configuration.

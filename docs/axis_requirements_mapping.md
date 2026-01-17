@@ -582,22 +582,21 @@ final notificationsProvider = FutureProvider.autoDispose<List<AppNotification>>(
 
 ---
 
-### 3.3 Backend API Integration
+### 3.3 Local Data Management & Mock Integration
 
-**Feature:** Mock backend server with RESTful API endpoints
+**Feature:** Mock data system with local device storage for persistence
 
 **Implementation:**
-- **Server:** Express.js backend (`backend/server.js`)
-- **Package:** `dio: ^5.7.0` for HTTP requests
-- **Endpoints:** Full CRUD for tasks, projects, comments, invites
+- **Mock Data:** Sample data providers (`lib/core/data/mock_data.dart`)
+- **Storage:** FlutterSecureStorage for user data (`lib/core/network/auth_token_provider.dart`)
+- **Configuration:** Environment-based mock/real API toggling
 
-**API Endpoints:**
+**Data Sources:**
 
-**Projects:**
-- `GET /projects` - List all projects
-- `GET /projects/:id` - Get project details
-- `POST /projects/:id/invite` - Generate invite token
-- `GET /invite/:token` - Validate invite
+**Mock Repositories:**
+- `MockProjectsRepository` - Sample projects and tasks
+- `MockRequestsRepository` - Assignment requests simulation
+- `MockNotificationsRepository` - Team notification simulation
 - `POST /invite/:token/accept` - Accept invite
 
 **Tasks:**

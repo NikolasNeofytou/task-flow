@@ -1,47 +1,51 @@
-# API Configuration
+# API Configuration - TaskFlow Current Implementation
 
-The app reads its API settings from compile-time environment variables:
+## Current Architecture
 
-- `API_BASE_URL` (string): Base URL for the backend, e.g. `https://api.yourdomain.com`.
-- `USE_MOCKS` (bool as string: `true`/`false`): Toggle between mock repositories and real network repositories.
+TaskFlow uses a **mock data approach** with local storage for this academic submission. The app is designed to work completely offline without requiring external backend services.
 
-Defaults:
-- `API_BASE_URL`: `https://api.example.com`
-- `USE_MOCKS`: `true` (keeps the app offline-friendly until the backend is ready).
+## Data Storage
 
-Examples:
-- Run with real API and a base URL:
-  ```
-  flutter run --dart-define=API_BASE_URL=https://api.yourdomain.com --dart-define=USE_MOCKS=false
-  ```
-- Keep mocks:
-  ```
-  flutter run --dart-define=USE_MOCKS=true
-  ```
+### Primary Storage: FlutterSecureStorage
+- **Purpose**: User credentials, profile data, authentication tokens
+- **Location**: `lib/core/network/auth_token_provider.dart`, `lib/features/profile/providers/profile_provider.dart`  
+- **Encryption**: AES-256 via device keystore (iOS Keychain/Android Keystore)
+- **Persistence**: Survives app restarts, device reboots
 
-Current mock backend (Node in `backend_mock/server.js`) endpoints:
-- Requests:
-  - GET `/requests`
-  - POST `/requests` body `{ title, dueDate? }`
-  - PATCH `/requests/{id}` body `{ status }`
-- Notifications:
-  - GET `/notifications`
-- Projects:
-  - GET `/projects`
-  - GET `/projects/{id}/tasks`
-- Calendar:
-  - GET `/calendar/tasks`
+### Secondary Storage: SharedPreferences
+- **Purpose**: App settings and form data
+- **Persistence**: Non-sensitive data that persists across sessions
 
-Start mock backend:
-```
-cd backend_mock
-npm install
-npm run dev   # defaults to http://localhost:4000
+### Mock Data Sources
+- **Location**: `lib/core/data/mock_data.dart`
+- **Purpose**: Provides sample tasks, projects, users, notifications
+- **Integration**: Seamlessly works with local storage layers
+
+## Configuration
+
+### App Config Provider
+```dart
+// lib/core/config/app_config.dart
+final appConfigProvider = Provider<AppConfig>((ref) => AppConfig.fromEnvironment());
+
+// Default settings:
+// - useMocks: true (always uses mock data)
+// - baseUrl: 'https://api.example.com' (not used in current implementation)
 ```
 
-Run Flutter against it:
-```
-flutter run --dart-define=API_BASE_URL=http://localhost:4000 --dart-define=USE_MOCKS=false
+### Mock Repository Selection
+```dart
+// lib/core/providers/data_providers.dart
+final projectsRepositoryProvider = Provider<ProjectsRepository>((ref) {
+  final config = ref.watch(appConfigProvider);
+  if (config.useMocks) return MockProjectsRepository();  // Always used in current branch
+  // Real repositories not implemented in current branch
+});
 ```
 
-Update endpoints/DTOs if your real backend differs. Ensure auth token retrieval is wired (see `auth_token_provider.dart` and `dioProvider`).
+## Academic Compliance
+
+✅ **Data Persistence**: Profile names and form data persist via FlutterSecureStorage  
+✅ **Cross-Session Storage**: Data survives app restarts as required  
+✅ **No Backend Required**: Completely self-contained for demonstration  
+✅ **Mock Authentication**: Any email/password combination works

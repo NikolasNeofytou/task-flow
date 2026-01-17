@@ -32,22 +32,25 @@ lib/
 ├── app_router.dart                  # Routing configuration
 │
 ├── core/                            # Core utilities & services
-│   ├── constants/
-│   │   ├── app_constants.dart       # App-wide constants
-│   │   └── api_config.dart          # API endpoints
-│   ├── services/
-│   │   ├── storage_service.dart     # Local storage
-│   │   ├── api_service.dart         # API client
-│   │   ├── socket_service.dart      # WebSocket connection
-│   │   ├── notification_service.dart
-│   │   ├── haptic_service.dart      # Haptic feedback
-│   │   └── sound_service.dart       # Sound effects
-│   ├── utils/
-│   │   ├── date_utils.dart
-│   │   ├── validators.dart
-│   │   └── helpers.dart
-│   └── errors/
-│       ├── exceptions.dart
+│   ├── config/                      # App configuration
+│   │   └── app_config.dart          # Environment config
+│   ├── data/                        # Data layer
+│   │   └── mock_data.dart           # Sample data for demo
+│   ├── models/                      # Data models
+│   ├── network/                     # Network layer
+│   │   └── auth_token_provider.dart # Token management
+│   ├── providers/                   # Riverpod providers
+│   │   └── data_providers.dart      # Data state management
+│   ├── repositories/                # Data repositories
+│   │   └── mock/                    # Mock implementations
+│   ├── services/                    # Core services
+│   │   ├── audio_service.dart       # Audio feedback
+│   │   ├── haptics_service.dart     # Haptic feedback
+│   │   ├── qr_generation_service.dart # QR code generation
+│   │   ├── qr_scan_service.dart     # QR code scanning
+│   │   └── team_service.dart        # Team management
+│   ├── utils/                       # Utility functions
+│   └── widgets/                     # Reusable widgets
 │       └── failures.dart
 │
 ├── design_system/                   # Design tokens & components
@@ -85,26 +88,22 @@ lib/
 │       └── glass_theme.dart         # iOS Glass UI
 │
 ├── features/                        # Feature modules
-│   ├── auth/                        # Authentication
-│   │   ├── data/
-│   │   │   ├── models/
-│   │   │   │   ├── user_model.dart
-│   │   │   │   └── login_response.dart
-│   │   │   ├── repositories/
-│   │   │   │   └── auth_repository.dart
-│   │   │   └── providers/
-│   │   │       └── auth_providers.dart
-│   │   ├── domain/
-│   │   │   └── entities/
-│   │   │       └── user.dart
-│   │   └── presentation/
-│   │       ├── screens/
-│   │       │   ├── login_screen.dart
-│   │       │   ├── register_screen.dart
-│   │       │   └── splash_screen.dart
-│   │       ├── widgets/
-│   │       │   └── auth_form.dart
-│   │       └── providers/
+│   ├── chat/                        # Team chat system
+│   ├── inbox/                       # Notification inbox
+│   ├── invite/                      # Project invites
+│   ├── notifications/               # Push notifications
+│   ├── onboarding/                  # First-time user flow
+│   ├── profile/                     # User profile management
+│   │   ├── models/
+│   │   │   └── user_profile_model.dart
+│   │   └── providers/
+│   │       └── profile_provider.dart
+│   ├── projects/                    # Project management
+│   ├── requests/                    # Task assignment requests
+│   ├── schedule/                    # Calendar & scheduling
+│   ├── settings/                    # App settings
+│   ├── shell/                       # Main app shell/navigation
+│   └── tour/                        # Feature tour
 │   │           └── login_state_provider.dart
 │   │
 │   ├── tasks/                       # Task management
@@ -236,19 +235,15 @@ lib/
 
 ```
 test/
-├── design_system_widgets_test.dart   # Component tests
-├── golden_screens_test.dart          # Visual regression
-├── widget_test.dart                  # Widget tests
-├── goldens/                          # Golden images
-│   ├── projects_screen_android.png
-│   ├── projects_screen_ios.png
-│   └── ...
-├── unit/                             # Unit tests
-│   ├── services/
-│   ├── repositories/
-│   └── utils/
-├── widget/                           # Widget tests
-│   └── components/
+├── design_system_widgets_test.dart   # Design system component tests
+├── golden_screens_test.dart          # Visual regression tests  
+├── widget_test.dart                  # Basic widget tests
+└── goldens/                          # Reference images for golden tests
+    ├── calendar.png                  # Calendar screen
+    ├── notifications.png             # Notifications screen
+    ├── projects.png                  # Projects screen
+    └── requests.png                  # Requests screen
+```
 └── integration/                      # Integration tests
     └── flows/
 ```
