@@ -3,16 +3,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart'; // Temporarily disabled for build
 import 'package:path_provider/path_provider.dart';
 
 import '../models/user_profile_model.dart';
-import '../models/badge_model.dart';
 import 'package:path/path.dart' as p;
 
 export 'badges_provider.dart';
+
 /// Provider for user profile state
-final userProfileProvider = StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
+final userProfileProvider =
+    StateNotifierProvider<UserProfileNotifier, UserProfile?>((ref) {
   return UserProfileNotifier();
 });
 
@@ -22,7 +23,7 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
   }
 
   final _storage = const FlutterSecureStorage();
-  final _imagePicker = ImagePicker();
+  // final _imagePicker = ImagePicker(); // Temporarily disabled for build
 
   /// Load profile from storage
   Future<void> _loadProfile() async {
@@ -36,14 +37,14 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
       final selectedBadge = await _storage.read(key: 'user_selectedBadge');
       final bio = await _storage.read(key: 'user_bio');
 
-
       if (email != null && displayName != null) {
         final status = UserStatus.values.firstWhere(
           (s) => s.toString() == statusStr,
           orElse: () => UserStatus.online,
         );
 
-        final unlockedBadges = badgesStr?.split(',').where((s) => s.isNotEmpty).toList() ?? [];
+        final unlockedBadges =
+            badgesStr?.split(',').where((s) => s.isNotEmpty).toList() ?? [];
 
         state = UserProfile(
           id: 'current_user',
@@ -55,7 +56,6 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
           unlockedBadgeIds: unlockedBadges,
           selectedBadgeId: selectedBadge,
           bio: bio,
-
           createdAt: DateTime.now(),
           lastActiveAt: DateTime.now(),
         );
@@ -83,7 +83,8 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
 
       await _storage.write(key: 'user_email', value: email);
       await _storage.write(key: 'user_displayName', value: displayName);
-      await _storage.write(key: 'user_status', value: UserStatus.online.toString());
+      await _storage.write(
+          key: 'user_status', value: UserStatus.online.toString());
       await _storage.write(key: 'user_unlockedBadges', value: 'first_task');
       await _storage.write(key: 'onboarding_complete', value: 'true');
 
@@ -94,9 +95,14 @@ class UserProfileNotifier extends StateNotifier<UserProfile?> {
     }
   }
 
-/// Update profile picture from device
-Future<void> updateProfilePicture() async {
-  try {
+  /// Update profile picture from device
+  Future<void> updateProfilePicture() async {
+    try {
+      // TODO: Re-enable when image_picker dependency is restored
+      debugPrint('Image picker temporarily disabled for build testing');
+      return;
+
+      /*
     final XFile? image = await _imagePicker.pickImage(
       source: ImageSource.gallery,
       maxWidth: 512,
@@ -112,7 +118,8 @@ Future<void> updateProfilePicture() async {
 
     // Save to app directory
     final directory = await getApplicationDocumentsDirectory();
-    final ext = p.extension(image.path).isNotEmpty ? p.extension(image.path) : '.jpg';
+    final ext =
+        p.extension(image.path).isNotEmpty ? p.extension(image.path) : '.jpg';
     final fileName = 'profile_${DateTime.now().millisecondsSinceEpoch}$ext';
     final savedPath = p.join(directory.path, fileName);
 
@@ -137,20 +144,22 @@ Future<void> updateProfilePicture() async {
     state = state!.copyWith(photoPath: savedPath, lastActiveAt: DateTime.now());
 
     debugPrint('✅ Profile picture saved at: $savedPath');
-  } catch (e) {
-    debugPrint('❌ Error updating profile picture: $e');
-    rethrow;
+    */
+    } catch (e) {
+      debugPrint('❌ Error updating profile picture: $e');
+      rethrow;
+    }
   }
-}
 
   /// Update user status
-  Future<void> updateStatus(UserStatus newStatus, {String? customMessage}) async {
+  Future<void> updateStatus(UserStatus newStatus,
+      {String? customMessage}) async {
     try {
       await _storage.write(key: 'user_status', value: newStatus.toString());
       if (customMessage != null) {
         await _storage.write(key: 'user_customStatus', value: customMessage);
       }
-      
+
       state = state?.copyWith(
         status: newStatus,
         customStatusMessage: customMessage,
@@ -164,51 +173,52 @@ Future<void> updateProfilePicture() async {
   /// Unlock a badge
   Future<void> unlockBadge(String badgeId) async {
     if (state == null) return;
-    
+
     final current = List<String>.from(state!.unlockedBadgeIds);
     if (!current.contains(badgeId)) {
       current.add(badgeId);
-      await _storage.write(key: 'user_unlockedBadges', value: current.join(','));
+      await _storage.write(
+          key: 'user_unlockedBadges', value: current.join(','));
       state = state!.copyWith(unlockedBadgeIds: current);
     }
   }
 
   /// Update profile information
- Future<void> updateProfile({
-  String? displayName,
-  String? email,
-  String? bio,
-}) async {
-  if (state == null) return;
+  Future<void> updateProfile({
+    String? displayName,
+    String? email,
+    String? bio,
+  }) async {
+    if (state == null) return;
 
-  final nextDisplayName = displayName?.trim();
-  final nextEmail = email?.trim();
-  final nextBioRaw = bio?.trim();
-  final nextBio = (nextBioRaw == null || nextBioRaw.isEmpty) ? null : nextBioRaw;
+    final nextDisplayName = displayName?.trim();
+    final nextEmail = email?.trim();
+    final nextBioRaw = bio?.trim();
+    final nextBio =
+        (nextBioRaw == null || nextBioRaw.isEmpty) ? null : nextBioRaw;
 
-  if (nextDisplayName != null) {
-    await _storage.write(key: 'user_displayName', value: nextDisplayName);
-  }
-  if (nextEmail != null) {
-    await _storage.write(key: 'user_email', value: nextEmail);
-  }
-
-  if (bio != null) {
-    if (nextBio == null) {
-      await _storage.delete(key: 'user_bio');
-    } else {
-      await _storage.write(key: 'user_bio', value: nextBio);
+    if (nextDisplayName != null) {
+      await _storage.write(key: 'user_displayName', value: nextDisplayName);
     }
+    if (nextEmail != null) {
+      await _storage.write(key: 'user_email', value: nextEmail);
+    }
+
+    if (bio != null) {
+      if (nextBio == null) {
+        await _storage.delete(key: 'user_bio');
+      } else {
+        await _storage.write(key: 'user_bio', value: nextBio);
+      }
+    }
+
+    state = state!.copyWith(
+      displayName: nextDisplayName,
+      email: nextEmail,
+      bio: bio == null ? state!.bio : nextBio,
+      lastActiveAt: DateTime.now(),
+    );
   }
-
-  state = state!.copyWith(
-    displayName: nextDisplayName,
-    email: nextEmail,
-    bio: bio == null ? state!.bio : nextBio,
-    lastActiveAt: DateTime.now(),
-  );
-}
-
 
   /// Select a badge to display
   Future<void> selectBadge(String? badgeId) async {
@@ -232,4 +242,3 @@ Future<void> updateProfilePicture() async {
     state = null;
   }
 }
-

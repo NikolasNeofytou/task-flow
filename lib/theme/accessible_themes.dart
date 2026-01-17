@@ -25,14 +25,11 @@ class HighContrastThemes {
         error: Color(0xFF8B0000),            // Dark red
         onError: Color(0xFFFFFFFF),
         errorContainer: Color(0xFF8B0000),
-        onErrorContainer: Color(0xFFFFFFFF),
-        
-        background: Color(0xFFFFFFFF),       // Pure white
-        onBackground: Color(0xFF000000),     // Pure black
+        onErrorContainer: Color(0xFFFFFFFF),     // Pure black
         
         surface: Color(0xFFFFFFFF),
         onSurface: Color(0xFF000000),
-        surfaceVariant: Color(0xFFF0F0F0),
+        surfaceContainerHighest: Color(0xFFF0F0F0),
         onSurfaceVariant: Color(0xFF000000),
         
         outline: Color(0xFF000000),
@@ -176,14 +173,11 @@ class HighContrastThemes {
         error: Color(0xFFFF6B6B),            // Bright red
         onError: Color(0xFF000000),
         errorContainer: Color(0xFFFF6B6B),
-        onErrorContainer: Color(0xFF000000),
-        
-        background: Color(0xFF000000),       // Pure black
-        onBackground: Color(0xFFFFFFFF),     // Pure white
+        onErrorContainer: Color(0xFF000000),     // Pure white
         
         surface: Color(0xFF000000),
         onSurface: Color(0xFFFFFFFF),
-        surfaceVariant: Color(0xFF1A1A1A),
+        surfaceContainerHighest: Color(0xFF1A1A1A),
         onSurfaceVariant: Color(0xFFFFFFFF),
         
         outline: Color(0xFFFFFFFF),

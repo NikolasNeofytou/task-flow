@@ -66,7 +66,7 @@ class NotificationDetailScreen extends ConsumerWidget {
                   FilledButton.icon(
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text('Opening related \${_typeLabel(resolved?.type ?? NotificationType.taskAssignment)}...'),
                         ),
                       );

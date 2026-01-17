@@ -64,12 +64,47 @@ class _VoiceRecorderState extends State<VoiceRecorder>
     if (!_isInitialized) return;
 
     try {
-      // Check permissions
-      final status = await Permission.microphone.request();
-      if (status != PermissionStatus.granted) {
+      // Debug: Check what the permission system thinks
+      print('=== MICROPHONE PERMISSION DEBUG ===');
+      final currentStatus = await Permission.microphone.status;
+      print('Initial permission status: $currentStatus');
+
+      // If not granted, request permission
+      if (currentStatus != PermissionStatus.granted) {
+        print('Requesting microphone permission...');
+        final requestedStatus = await Permission.microphone.request();
+        print('Permission request result: $requestedStatus');
+
+        if (requestedStatus != PermissionStatus.granted) {
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    'Microphone permission required. Status: $requestedStatus'),
+                action: requestedStatus.isPermanentlyDenied
+                    ? SnackBarAction(
+                        label: 'Open Settings',
+                        onPressed: () => openAppSettings(),
+                      )
+                    : null,
+                duration: const Duration(seconds: 5),
+              ),
+            );
+          }
+          return;
+        }
+      } else if (currentStatus.isPermanentlyDenied) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Microphone permission required')),
+            SnackBar(
+              content: const Text(
+                  'Microphone permission permanently denied. Please enable in Settings.'),
+              action: SnackBarAction(
+                label: 'Open Settings',
+                onPressed: () => openAppSettings(),
+              ),
+              duration: const Duration(seconds: 5),
+            ),
           );
         }
         return;
@@ -77,8 +112,11 @@ class _VoiceRecorderState extends State<VoiceRecorder>
 
       // Get temporary directory
       final directory = await getTemporaryDirectory();
-      final filePath = '${directory.path}/voice_${DateTime.now().millisecondsSinceEpoch}.aac';
-      
+      final filePath =
+          '${directory.path}/voice_${DateTime.now().millisecondsSinceEpoch}.aac';
+
+      print('Starting recording to: $filePath');
+
       // Start recording
       await _recorder.startRecorder(
         toFile: filePath,
@@ -178,7 +216,9 @@ class _VoiceRecorderState extends State<VoiceRecorder>
             ),
             const SizedBox(width: AppSpacing.sm),
             Text(
-              _isInitialized ? 'Tap to record voice message' : 'Initializing...',
+              _isInitialized
+                  ? 'Tap to record voice message'
+                  : 'Initializing...',
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -202,8 +242,8 @@ class _VoiceRecorderState extends State<VoiceRecorder>
                   Text(
                     _formatDuration(_duration),
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontFeatures: [const FontFeature.tabularFigures()],
-                        ),
+                      fontFeatures: [const FontFeature.tabularFigures()],
+                    ),
                   ),
                 ],
               ),
@@ -251,7 +291,10 @@ class _WaveformAnimation extends StatelessWidget {
             children: List.generate(5, (index) {
               final delay = index * 0.15;
               final value = (controller.value + delay) % 1.0;
-              final height = 8 + (24 * (0.5 + 0.5 * (value < 0.5 ? value * 2 : (1 - value) * 2)));
+              final height = 8 +
+                  (24 *
+                      (0.5 +
+                          0.5 * (value < 0.5 ? value * 2 : (1 - value) * 2)));
 
               return Container(
                 width: 3,
@@ -403,11 +446,11 @@ class _VoiceMessagePlayerState extends State<VoiceMessagePlayer> {
                 Text(
                   _formatDuration(_isPlaying ? _position : widget.duration),
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: widget.isMe
-                            ? Colors.white.withOpacity(0.8)
-                            : colorScheme.onSurfaceVariant,
-                        fontFeatures: [const FontFeature.tabularFigures()],
-                      ),
+                    color: widget.isMe
+                        ? Colors.white.withOpacity(0.8)
+                        : colorScheme.onSurfaceVariant,
+                    fontFeatures: [const FontFeature.tabularFigures()],
+                  ),
                 ),
               ],
             ),

@@ -43,6 +43,8 @@
 	</array>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera is used for QR scanning and profile photos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Microphone is used for voice messages and audio calls.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

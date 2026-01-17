@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dart:ui' as ui;
-import 'dart:typed_data';
 
 import '../../../theme/tokens.dart';
 import '../../../core/services/haptics_service.dart';
@@ -70,7 +68,7 @@ class PersonalQRScreen extends ConsumerWidget {
                     backgroundColor: AppColors.primary.withOpacity(0.1),
                     child: Text(
                       profile.displayName.substring(0, 2).toUpperCase(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: AppColors.primary,
@@ -204,7 +202,7 @@ class PersonalQRScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.lightbulb_outline,
                         color: AppColors.primary,
                         size: 20,
@@ -220,15 +218,15 @@ class PersonalQRScreen extends ConsumerWidget {
                     ],
                   ),
                   const SizedBox(height: AppSpacing.md),
-                  _InstructionItem(
+                  const _InstructionItem(
                     number: '1',
                     text: 'Show your QR code to teammates',
                   ),
-                  _InstructionItem(
+                  const _InstructionItem(
                     number: '2',
                     text: 'They scan it with their camera',
                   ),
-                  _InstructionItem(
+                  const _InstructionItem(
                     number: '3',
                     text: 'You\'re instantly added to their team!',
                   ),
@@ -279,7 +277,7 @@ class _InstructionItem extends StatelessWidget {
           Container(
             width: 28,
             height: 28,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.primary,
               shape: BoxShape.circle,
             ),

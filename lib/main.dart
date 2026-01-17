@@ -268,7 +268,7 @@ Color _tint(Color c, double amount) => Color.lerp(c, Colors.white, amount) ?? c;
 Color _shade(Color c, double amount) => Color.lerp(c, Colors.black, amount) ?? c;
 
 ThemeData _boldifyTheme(ThemeData base) {
-  TextStyle? b(TextStyle? s) => s == null ? null : s.copyWith(fontWeight: FontWeight.bold);
+  TextStyle? b(TextStyle? s) => s?.copyWith(fontWeight: FontWeight.bold);
 
   TextTheme bt(TextTheme t) => t.copyWith(
         displayLarge: b(t.displayLarge),

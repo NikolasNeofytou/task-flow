@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../theme/tokens.dart';
 import '../models/chat_message.dart';
@@ -222,7 +220,7 @@ class _FileReferenceInputState extends State<FileReferenceInput> {
           const SizedBox(height: AppSpacing.lg),
           // Project selector
           DropdownButtonFormField<String>(
-            value: _selectedProjectId,
+            initialValue: _selectedProjectId,
             decoration: const InputDecoration(
               labelText: 'Project',
               prefixIcon: Icon(Icons.folder),
@@ -240,7 +238,7 @@ class _FileReferenceInputState extends State<FileReferenceInput> {
           const SizedBox(height: AppSpacing.md),
           // File type selector
           DropdownButtonFormField<FileAttachmentType>(
-            value: _selectedType,
+            initialValue: _selectedType,
             decoration: const InputDecoration(
               labelText: 'File Type',
               prefixIcon: Icon(Icons.category),

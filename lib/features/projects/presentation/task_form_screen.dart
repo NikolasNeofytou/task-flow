@@ -7,7 +7,6 @@ import '../../../core/models/user.dart';
 import '../../../core/providers/data_providers.dart';
 import '../../../core/providers/tasks_provider.dart';
 import '../../../theme/tokens.dart';
-import '../../../theme/gradients.dart';
 
 class TaskFormScreen extends ConsumerStatefulWidget {
   const TaskFormScreen({
@@ -149,7 +148,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
             Semantics(
               label: 'Task status',
               child: DropdownButtonFormField<TaskStatus>(
-                value: _status,
+                initialValue: _status,
                 items: TaskStatus.values
                     .map(
                       (s) => DropdownMenuItem(
@@ -189,7 +188,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     DropdownButtonFormField<User>(
-                      value: _assignedUser,
+                      initialValue: _assignedUser,
                       decoration: InputDecoration(
                         labelText: 'Select assignee',
                         prefixIcon: const Icon(Icons.person),
@@ -269,7 +268,7 @@ class _TaskFormScreenState extends ConsumerState<TaskFormScreen> {
                                       const SizedBox(width: AppSpacing.xs),
                                       Text(
                                         _sendAsRequest ? 'Send as Request' : 'Direct Assignment',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.primary,
                                         ),

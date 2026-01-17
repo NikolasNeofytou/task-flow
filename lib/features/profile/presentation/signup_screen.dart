@@ -69,7 +69,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // App logo/icon
-                  Icon(
+                  const Icon(
                     Icons.task_alt,
                     size: 80,
                     color: AppColors.primary,

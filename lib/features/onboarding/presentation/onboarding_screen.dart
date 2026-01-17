@@ -17,25 +17,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
   
   final List<OnboardingPage> _pages = [
-    OnboardingPage(
+    const OnboardingPage(
       icon: Icons.task_alt,
       title: 'Organize Your Tasks',
       description: 'Create, manage, and complete tasks with ease. Stay on top of your projects with our intuitive task management system.',
       gradient: AppGradients.primary,
     ),
-    OnboardingPage(
+    const OnboardingPage(
       icon: Icons.people_outline,
       title: 'Collaborate Seamlessly',
       description: 'Work together with your team. Share projects, assign tasks, and track progress in real-time.',
       gradient: AppGradients.success,
     ),
-    OnboardingPage(
+    const OnboardingPage(
       icon: Icons.calendar_today,
       title: 'Plan Your Schedule',
       description: 'Visualize your tasks in a beautiful calendar view. Never miss a deadline with smart reminders.',
       gradient: AppGradients.warning,
     ),
-    OnboardingPage(
+    const OnboardingPage(
       icon: Icons.accessibility_new,
       title: 'Built for Everyone',
       description: 'High contrast themes, text scaling, and screen reader support. We believe productivity is for everyone.',
@@ -125,7 +125,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     decoration: BoxDecoration(
                       color: _currentPage == index
                           ? Theme.of(context).colorScheme.primary
-                          : Theme.of(context).colorScheme.surfaceVariant,
+                          : Theme.of(context).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),

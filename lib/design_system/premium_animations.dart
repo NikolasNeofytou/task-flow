@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../theme/tokens.dart';
 
 /// Premium loading indicator with custom styling
 class PremiumLoadingIndicator extends StatelessWidget {
@@ -306,7 +305,7 @@ class _ShimmerEffectState extends State<ShimmerEffect>
   @override
   Widget build(BuildContext context) {
     final baseColor = widget.baseColor ??
-        Theme.of(context).colorScheme.surfaceVariant;
+        Theme.of(context).colorScheme.surfaceContainerHighest;
     final highlightColor = widget.highlightColor ??
         Theme.of(context).colorScheme.surface;
     

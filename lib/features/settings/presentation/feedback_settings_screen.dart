@@ -75,7 +75,7 @@ class FeedbackSettingsScreen extends ConsumerWidget {
                           style: Theme.of(context).textTheme.labelLarge,
                         ),
                         const SizedBox(height: AppSpacing.md),
-                        Wrap(
+                        const Wrap(
                           spacing: AppSpacing.sm,
                           runSpacing: AppSpacing.sm,
                           children: [
@@ -202,7 +202,7 @@ class FeedbackSettingsScreen extends ConsumerWidget {
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.info_outline, color: AppColors.info),
+                      const Icon(Icons.info_outline, color: AppColors.info),
                       const SizedBox(width: AppSpacing.md),
                       Text(
                         'About Feedback',

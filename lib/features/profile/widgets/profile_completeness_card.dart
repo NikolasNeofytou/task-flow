@@ -26,7 +26,7 @@ class ProfileCompletenessCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final completed = (_hasPhoto ? 1 : 0) + (_hasStatus ? 1 : 0) + (_hasBadge ? 1 : 0);
-    final total = 2;
+    const total = 2;
     final progress = completed / total;
 
     return Card(

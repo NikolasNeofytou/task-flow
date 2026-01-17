@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Empty state pattern - Recognition over Recall
 /// Shows helpful illustrations and actions when no data exists

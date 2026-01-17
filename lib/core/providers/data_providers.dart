@@ -18,7 +18,6 @@ import '../repositories/remote/notifications_remote_repository.dart';
 import '../repositories/remote/projects_remote_repository.dart';
 import '../repositories/remote/requests_remote_repository.dart';
 import '../repositories/requests_repository.dart';
-import '../data/mock_data.dart';
 
 enum ProjectRequestStatus { pending, accepted, denied }
 

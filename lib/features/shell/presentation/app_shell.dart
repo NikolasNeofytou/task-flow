@@ -316,7 +316,7 @@ class _NewProjectDialogState extends ConsumerState<_NewProjectDialog> {
                   final value = validValues.contains(_assigneeId) ? _assigneeId : kMeUserId;
 
                   return DropdownButtonFormField<String>(
-                    value: value,
+                    initialValue: value,
                     decoration: InputDecoration(
                       labelText: 'Assign to',
                       border: OutlineInputBorder(

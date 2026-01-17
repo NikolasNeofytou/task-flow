@@ -159,9 +159,9 @@ class _PatternShowcaseScreenState extends ConsumerState<PatternShowcaseScreen> {
               title: 'Just-in-Time Help',
               description: 'Help appears exactly when needed',
               pattern: 'Contextual Help',
-              child: Row(
+              child: const Row(
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: Text('Complex feature explanation'),
                   ),
                   ContextualHelpButton(

@@ -7,8 +7,6 @@ import '../../../design_system/widgets/animated_card.dart';
 import '../../../design_system/widgets/app_state.dart';
 import '../../../design_system/widgets/shimmer_list.dart';
 import '../../../design_system/widgets/empty_state.dart';
-import '../../../design_system/widgets/app_snackbar.dart';
-import '../../../design_system/widgets/loading_button.dart';
 import '../../../theme/tokens.dart';
 import '../application/comments_controller.dart';
 
@@ -124,7 +122,7 @@ class _TaskDetailScreenState extends ConsumerState<TaskDetailScreen> {
             child: commentsAsync.when(
               data: (comments) {
                 if (comments.isEmpty) {
-                  return EmptyState(
+                  return const EmptyState(
                     icon: Icons.chat_bubble_outline,
                     title: 'No comments yet',
                     subtitle: 'Start the conversation by adding a comment!',

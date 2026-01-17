@@ -5,11 +5,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'core/models/app_notification.dart';
 import 'core/models/project.dart';
 import 'core/models/request.dart';
-import 'features/notifications/presentation/notifications_screen.dart';
 import 'features/notifications/presentation/notification_detail_screen.dart';
 import 'features/inbox/presentation/inbox_screen.dart';
 import 'features/invite/presentation/invite_accept_screen.dart';
-import 'features/profile/presentation/profile_screen.dart';
 import 'features/profile/presentation/enhanced_profile_screen.dart';
 import 'features/profile/presentation/edit_profile_screen.dart';
 import 'features/profile/presentation/personal_qr_screen.dart';
@@ -28,14 +26,12 @@ import 'features/settings/presentation/theme_customization_screen.dart';
 import 'features/settings/presentation/pattern_showcase_screen.dart';
 import 'features/onboarding/presentation/onboarding_screen.dart';
 import 'features/shell/presentation/app_shell.dart';
-import 'features/chat/presentation/chat_screen.dart';
 import 'features/chat/presentation/enhanced_chat_screen.dart';
-import '../../features/requests/presentation/requests_screen.dart';
 
 GoRouter createRouter() {
   final rootNavigatorKey = GlobalKey<NavigatorState>();
   final shellNavigatorKey = GlobalKey<NavigatorState>();
-  final storage = const FlutterSecureStorage();
+  const storage = FlutterSecureStorage();
 
   CustomTransitionPage<T> fadeSlide<T>(Widget child) {
     return CustomTransitionPage<T>(

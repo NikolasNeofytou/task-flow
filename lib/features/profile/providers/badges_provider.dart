@@ -8,7 +8,7 @@ import '../../../core/models/project.dart';
 class BadgeCollection {
   static List<AppBadge> base() {
     return [
-      AppBadge(
+      const AppBadge(
         id: 'first_steps',
         name: 'First Steps',
         description: 'Complete your first project',
@@ -19,7 +19,7 @@ class BadgeCollection {
         maxProgress: 1,
         isUnlocked: false,
       ),
-      AppBadge(
+      const AppBadge(
         id: 'the_organizer',
         name: 'The Organizer',
         description: 'Create 5 projects',
@@ -29,7 +29,7 @@ class BadgeCollection {
         maxProgress: 5,
         isUnlocked: false,
       ),
-      AppBadge(
+      const AppBadge(
         id: 'steady_worker',
         name: 'Steady Worker',
         description: 'Have 10 projects assigned to you',
@@ -39,7 +39,7 @@ class BadgeCollection {
         maxProgress: 10,
         isUnlocked: false,
       ),
-      AppBadge(
+      const AppBadge(
         id: 'helper_hero',
         name: 'Helper Hero',
         description: 'Accept 5 requests',

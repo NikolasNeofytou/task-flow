@@ -119,7 +119,7 @@ class _ProjectsScreenState extends ConsumerState<ProjectsScreen> {
             return AlertDialog(
               title: const Text('Ask for help'),
               content: DropdownButtonFormField<String>(
-                value: selectedUserId,
+                initialValue: selectedUserId,
                 decoration: const InputDecoration(labelText: 'Send to'),
                 items: [
                   for (final u in others)

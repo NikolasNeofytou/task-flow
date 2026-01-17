@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ActionBackground extends StatelessWidget {
-  const ActionBackground({
+  const ActionBackground({super.key, 
     required this.color,
     required this.icon,
     required this.label,

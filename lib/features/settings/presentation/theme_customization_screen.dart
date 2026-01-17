@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../theme/tokens.dart';
-import '../../../theme/gradients.dart';
 import '../../../design_system/animations/micro_interactions.dart';
 
 /// Theme customization provider
@@ -99,7 +98,7 @@ class ThemeCustomizationScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
           
           // Theme mode section
-          _SectionHeader(title: 'Appearance'),
+          const _SectionHeader(title: 'Appearance'),
           const SizedBox(height: AppSpacing.sm),
           SegmentedButton<ThemeMode>(
             segments: const [
@@ -128,7 +127,7 @@ class ThemeCustomizationScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
           
           // Color customization
-          _SectionHeader(title: 'Colors'),
+          const _SectionHeader(title: 'Colors'),
           const SizedBox(height: AppSpacing.md),
           
           // Primary color
@@ -150,7 +149,7 @@ class ThemeCustomizationScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
           
           // Visual effects
-          _SectionHeader(title: 'Visual Effects'),
+          const _SectionHeader(title: 'Visual Effects'),
           const SizedBox(height: AppSpacing.sm),
           
           SwitchListTile(
@@ -170,7 +169,7 @@ class ThemeCustomizationScreen extends ConsumerWidget {
           const SizedBox(height: AppSpacing.xl),
           
           // Preset themes
-          _SectionHeader(title: 'Preset Themes'),
+          const _SectionHeader(title: 'Preset Themes'),
           const SizedBox(height: AppSpacing.md),
           
           Wrap(
