@@ -30,8 +30,7 @@ git checkout backup-2026
 ```
 
 ### Βήμα 3: Σύνδεση
-- **Email**: demo@taskflow.com
-- **Password**: demo2025
+- Χρησιμοποιήστε οποιοδήποτε email και password για είσοδο
 
 ### Βήμα 4: Χρήση
 
