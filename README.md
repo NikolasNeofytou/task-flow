@@ -2,6 +2,9 @@
 
 **Συνεργατική Εφαρμογή Διαχείρισης Έργων**
 
+**GitHub Repository:** https://github.com/NikolasNeofytou/task-flow  
+**⚠️ ΣΗΜΑΝΤΙΚΟ: Η τελική υποβολή βρίσκεται στο branch `backup-2026`**
+
 **Ομάδα Ανάπτυξης:**
 - Νικόλας Νεοφύτου
 - Δήμητρα Παπακωνσταντίνου  
@@ -17,9 +20,10 @@
 
 ### Βήμα 2: Εγκατάσταση
 ```bash
-# Κλώνος έργου
+# Κλώνος έργου (σημαντικό: χρησιμοποιήστε το backup-2026 branch)
 git clone https://github.com/NikolasNeofytou/task-flow
 cd task-flow
+git checkout backup-2026
 
 # Αυτόματη εγκατάσταση και εκτέλεση
 .\quick_start.ps1
