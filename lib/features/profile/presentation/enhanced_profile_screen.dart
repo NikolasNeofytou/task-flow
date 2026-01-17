@@ -9,8 +9,7 @@ import '../models/user_profile_model.dart';
 import '../providers/profile_provider.dart';
 import '../widgets/profile_completeness_card.dart';
 import '../widgets/quick_actions_card.dart';
-import '../../../core/providers/data_providers.dart';
-import '../../../core/models/project.dart';
+
 class EnhancedProfileScreen extends ConsumerWidget {
   const EnhancedProfileScreen({super.key});
 
@@ -22,7 +21,7 @@ class EnhancedProfileScreen extends ConsumerWidget {
     if (profile == null) {
       return const Center(child: CircularProgressIndicator());
     }
-    
+
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.lg),
       children: [
@@ -33,12 +32,12 @@ class EnhancedProfileScreen extends ConsumerWidget {
         // Profile completeness card
         ProfileCompletenessCard(
           profile: profile,
-          onAddPhoto: () => ref.read(userProfileProvider.notifier).updateProfilePicture(),
+          onAddPhoto: () =>
+              ref.read(userProfileProvider.notifier).updateProfilePicture(),
           onSetStatus: () => _showStatusPicker(context, ref, profile.status),
           onSelectBadge: () => _showBadgesSheet(context, ref, badges),
         ),
         const SizedBox(height: AppSpacing.lg),
-
 
         // Quick actions
         const QuickActionsCard(),
@@ -56,7 +55,7 @@ class EnhancedProfileScreen extends ConsumerWidget {
           _SelectedBadgeShowcase(
             badge: badges.firstWhere((b) => b.id == profile.selectedBadgeId),
           ),
-        
+
         const SizedBox(height: AppSpacing.lg),
 
         // QR Code & Team actions
@@ -82,7 +81,7 @@ class EnhancedProfileScreen extends ConsumerWidget {
                     color: AppColors.primary.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(AppRadii.sm),
                   ),
-                  child: Text(
+                  child: const Text(
                     'NEW',
                     style: TextStyle(
                       fontSize: 10,
@@ -117,7 +116,8 @@ class EnhancedProfileScreen extends ConsumerWidget {
               _ProfileTile(
                 icon: Icons.emoji_events_outlined,
                 title: 'My Badges',
-                subtitle: '${badges.where((b) => b.isUnlocked).length}/${badges.length} unlocked',
+                subtitle:
+                    '${badges.where((b) => b.isUnlocked).length}/${badges.length} unlocked',
                 onTap: () => _showBadgesSheet(context, ref, badges),
               ),
             ],
@@ -175,7 +175,7 @@ class EnhancedProfileScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                onTap: () => context.go('/settings/patterns'),
+                onTap: () => context.push('/settings/patterns'),
               ),
               _ProfileTile(
                 icon: Icons.logout,
@@ -190,7 +190,8 @@ class EnhancedProfileScreen extends ConsumerWidget {
     );
   }
 
-  void _showBadgesSheet(BuildContext context, WidgetRef ref, List<AppBadge> badgesList) {
+  void _showBadgesSheet(
+      BuildContext context, WidgetRef ref, List<AppBadge> badgesList) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -199,7 +200,8 @@ class EnhancedProfileScreen extends ConsumerWidget {
     );
   }
 
-  void _showStatusPicker(BuildContext context, WidgetRef ref, UserStatus currentStatus) {
+  void _showStatusPicker(
+      BuildContext context, WidgetRef ref, UserStatus currentStatus) {
     showModalBottomSheet(
       context: context,
       builder: (context) => _StatusPickerSheet(currentStatus: currentStatus),
@@ -267,30 +269,28 @@ class _ProfileHeader extends ConsumerWidget {
               ),
             ),
             Positioned(
-  bottom: 0,
-  right: 0,
-  child: GestureDetector(
-    child: Container(
-      decoration: BoxDecoration(
-        color: primary,
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white, width: 2),
-      ),
-      padding: const EdgeInsets.all(4),
-    ),
-  ),
-),
-
+              bottom: 0,
+              right: 0,
+              child: GestureDetector(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: primary,
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.white, width: 2),
+                  ),
+                  padding: const EdgeInsets.all(4),
+                ),
+              ),
+            ),
           ],
         ),
         const SizedBox(width: AppSpacing.lg),
-        
+
         // Name and email
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              
               Text(
                 profile.displayName,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -305,17 +305,16 @@ class _ProfileHeader extends ConsumerWidget {
                     ),
               ),
               if ((profile.bio ?? '').trim().isNotEmpty) ...[
-  const SizedBox(height: 4),
-  Text(
-    profile.bio!.trim(),
-    maxLines: 2,
-    overflow: TextOverflow.ellipsis,
-    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-          color: AppColors.neutral,
-        ),
-  ),
-],
-
+                const SizedBox(height: 4),
+                Text(
+                  profile.bio!.trim(),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.neutral,
+                      ),
+                ),
+              ],
             ],
           ),
         ),
@@ -414,108 +413,107 @@ class _StatusPickerSheetState extends ConsumerState<_StatusPickerSheet> {
     super.dispose();
   }
 
-@override
-Widget build(BuildContext context) {
-  return SafeArea(
-    child: Padding(
-      padding: EdgeInsets.only(
-        left: AppSpacing.xl,
-        right: AppSpacing.xl,
-        top: AppSpacing.xl,
-        bottom: AppSpacing.xl + MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: ConstrainedBox(
-        constraints: BoxConstraints(
-          maxHeight: MediaQuery.of(context).size.height * 0.8,
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: AppSpacing.xl,
+          right: AppSpacing.xl,
+          top: AppSpacing.xl,
+          bottom: AppSpacing.xl + MediaQuery.of(context).viewInsets.bottom,
         ),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-      
-              Center(
-                child: Container(
-                  width: 48,
-                  height: 5,
-                  margin: const EdgeInsets.only(bottom: AppSpacing.lg),
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.outlineVariant,
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-                ),
-              ),
-
-              Text(
-                'Set Status',
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            maxHeight: MediaQuery.of(context).size.height * 0.8,
+          ),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 48,
+                    height: 5,
+                    margin: const EdgeInsets.only(bottom: AppSpacing.lg),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(999),
                     ),
-              ),
-              const SizedBox(height: AppSpacing.lg),
-
-              // Status options
-              ...UserStatus.values.map((status) {
-                final profile = UserProfile(
-                  id: '',
-                  email: '',
-                  displayName: '',
-                  status: status,
-                  createdAt: DateTime.now(),
-                  lastActiveAt: DateTime.now(),
-                );
-
-                return RadioListTile<UserStatus>(
-                  value: status,
-                  groupValue: _selectedStatus,
-                  onChanged: (value) {
-                    if (value == null) return;
-                    setState(() => _selectedStatus = value);
-                  },
-                  title: Text(profile.statusName),
-                  secondary: Icon(profile.statusIcon, color: profile.statusColor),
-                );
-              }),
-
-              const SizedBox(height: AppSpacing.lg),
-
-              // Custom message
-              TextField(
-                controller: _messageController,
-                decoration: InputDecoration(
-                  labelText: 'Custom Status Message (optional)',
-                  hintText: 'What are you up to?',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(AppRadii.md),
                   ),
                 ),
-                maxLength: 100,
-              ),
-              const SizedBox(height: AppSpacing.lg),
 
-              // Save button
-              FilledButton(
-                onPressed: () async {
-                  await ref.read(userProfileProvider.notifier).updateStatus(
-                        _selectedStatus,
-                        customMessage: _messageController.text.trim().isEmpty
-                            ? null
-                            : _messageController.text.trim(),
-                      );
-                  if (context.mounted) {
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text('Save Status'),
-              ),
-            ],
+                Text(
+                  'Set Status',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+                const SizedBox(height: AppSpacing.lg),
+
+                // Status options
+                ...UserStatus.values.map((status) {
+                  final profile = UserProfile(
+                    id: '',
+                    email: '',
+                    displayName: '',
+                    status: status,
+                    createdAt: DateTime.now(),
+                    lastActiveAt: DateTime.now(),
+                  );
+
+                  return RadioListTile<UserStatus>(
+                    value: status,
+                    groupValue: _selectedStatus,
+                    onChanged: (value) {
+                      if (value == null) return;
+                      setState(() => _selectedStatus = value);
+                    },
+                    title: Text(profile.statusName),
+                    secondary:
+                        Icon(profile.statusIcon, color: profile.statusColor),
+                  );
+                }),
+
+                const SizedBox(height: AppSpacing.lg),
+
+                // Custom message
+                TextField(
+                  controller: _messageController,
+                  decoration: InputDecoration(
+                    labelText: 'Custom Status Message (optional)',
+                    hintText: 'What are you up to?',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(AppRadii.md),
+                    ),
+                  ),
+                  maxLength: 100,
+                ),
+                const SizedBox(height: AppSpacing.lg),
+
+                // Save button
+                FilledButton(
+                  onPressed: () async {
+                    await ref.read(userProfileProvider.notifier).updateStatus(
+                          _selectedStatus,
+                          customMessage: _messageController.text.trim().isEmpty
+                              ? null
+                              : _messageController.text.trim(),
+                        );
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
+                  },
+                  child: const Text('Save Status'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 }
 
 class _SelectedBadgeShowcase extends StatelessWidget {
@@ -548,9 +546,10 @@ class _SelectedBadgeShowcase extends StatelessWidget {
                     children: [
                       Text(
                         badge.name,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
                       ),
                       const SizedBox(width: AppSpacing.sm),
                       Container(
@@ -606,7 +605,8 @@ class _BadgesSheet extends ConsumerWidget {
       height: MediaQuery.of(context).size.height * 0.8,
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadii.xxl)),
+        borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(AppRadii.xxl)),
       ),
       child: Column(
         children: [
@@ -620,7 +620,7 @@ class _BadgesSheet extends ConsumerWidget {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          
+
           // Title
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
@@ -644,7 +644,7 @@ class _BadgesSheet extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.lg),
-          
+
           // Badges grid
           Expanded(
             child: ListView(
@@ -662,8 +662,13 @@ class _BadgesSheet extends ConsumerWidget {
                         badge: badge,
                         isSelected: badge.id == profile?.selectedBadgeId,
                         onTap: () async {
-                          final newSelection = badge.id == profile?.selectedBadgeId ? null : badge.id;
-                          await ref.read(userProfileProvider.notifier).selectBadge(newSelection);
+                          final newSelection =
+                              badge.id == profile?.selectedBadgeId
+                                  ? null
+                                  : badge.id;
+                          await ref
+                              .read(userProfileProvider.notifier)
+                              .selectBadge(newSelection);
                           if (context.mounted) {
                             Navigator.pop(context);
                           }
@@ -671,7 +676,6 @@ class _BadgesSheet extends ConsumerWidget {
                       )),
                   const SizedBox(height: AppSpacing.xl),
                 ],
-                
                 if (lockedBadges.isNotEmpty) ...[
                   Text(
                     'Locked Badges',
@@ -710,7 +714,7 @@ class _BadgeTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isLocked = !badge.isUnlocked;
-    
+
     return Card(
       color: isSelected ? badge.rarityColor.withOpacity(0.1) : null,
       child: ListTile(
@@ -762,7 +766,8 @@ class _BadgeTile extends StatelessWidget {
           children: [
             Text(
               badge.description,
-              style: TextStyle(color: isLocked ? Colors.grey : AppColors.neutral),
+              style:
+                  TextStyle(color: isLocked ? Colors.grey : AppColors.neutral),
             ),
             if (!isLocked && badge.progressPercentage < 1.0) ...[
               const SizedBox(height: 4),
@@ -780,7 +785,8 @@ class _BadgeTile extends StatelessWidget {
           ],
         ),
         trailing: isSelected
-            ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
+            ? Icon(Icons.check_circle,
+                color: Theme.of(context).colorScheme.primary)
             : (isLocked ? const Icon(Icons.lock, color: Colors.grey) : null),
         onTap: onTap,
         enabled: !isLocked,
